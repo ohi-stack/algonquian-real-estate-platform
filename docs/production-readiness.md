@@ -183,6 +183,79 @@ The dashboard must be restricted to authorized internal users. The default produ
 - Dashboard should support future role-based visibility.
 - Dashboard should be prepared for CSV export, PDF reporting, audit logging, and saved dashboard layouts.
 
+## Priority System Page: /plugins
+
+### Purpose
+
+The /plugins page is the internal plugin catalog and product library for the Algonquian Real Estate Platform. It should present each production plugin as a product-style module with versioning, documentation, getting-started links, and visual branding.
+
+### Recommended Page Title
+
+Plugin Library
+
+### Recommended URL
+
+/plugins
+
+### Recommended Shortcode
+
+```text
+[algq_plugin_library]
+```
+
+If the shortcode is not yet implemented, the page should temporarily render static catalog content until the plugin library renderer is available.
+
+### WPBakery Implementation
+
+Use:
+
+```text
+[vc_column_text]
+[algq_plugin_library]
+[/vc_column_text]
+```
+
+Never use:
+
+```html
+</vc_column_text>
+```
+
+### Required Plugin Cards
+
+1. Algonquian Deal Intake
+2. Algonquian Pipeline CRM
+3. Algonquian MAO Engine
+4. Algonquian Offer Generator
+5. Algonquian Buyer Portal
+6. Algonquian Funding Tracker
+7. Algonquian Automation Engine
+8. Algonquian PDF & Signature Engine
+9. Algonquian Document Library
+10. Algonquian Admin Command Center
+
+### Required Card Elements
+
+- Plugin logo
+- UI mockup image
+- Plugin name
+- Version number
+- By Onegodian
+- Short description
+- View Details button
+- Getting Started button
+- Documentation button
+
+### Production Requirements
+
+- Page must be generated on plugin activation if it does not already exist.
+- Page must not duplicate if the slug already exists.
+- Page must use valid shortcode syntax.
+- Each plugin card must escape text, URLs, and attributes before output.
+- Buttons should route to the plugin page map documented in `docs/plugin-page-map.md`.
+- Version numbers must follow semantic versioning.
+- The page should support future filtering by category: Acquisition, Capital, Automation, Documents, Revenue, and Command Center.
+
 ## WPBakery Rule
 
 Use:
