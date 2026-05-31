@@ -4,7 +4,11 @@ Enterprise real estate acquisition, underwriting, CRM, buyer registration, docum
 
 ## Version
 
-**1.0.0**
+**1.0.0 Release Candidate**
+
+## Release Status
+
+**1.0.0 Release Candidate**
 
 ## Version 1.0 Core Modules
 
@@ -16,7 +20,7 @@ Enterprise real estate acquisition, underwriting, CRM, buyer registration, docum
 
 ## Platform Purpose
 
-This repository contains the WordPress plugin source, documentation, roadmap, branding placeholders, database schema, and deployment notes for AlgonquianRealEstate.com.
+This repository contains the WordPress plugin source, documentation, roadmap, branding placeholders, database schema, and deployment notes for Algonquian Real Estate LLC, a Connecticut limited liability company organized on February 11, 2026. fileciteturn1file0L7-L18
 
 The Version 1.0 objective is to convert the website into a working acquisition and operations platform that can capture seller leads, create deal records, underwrite opportunities, register buyers, and give internal users a command dashboard.
 
@@ -50,4 +54,4 @@ branding/    Brand guidelines and image placeholders
 
 ## Current Status
 
-Private production repository. Version 1.0 buildout in progress.
+Private production repository. Release Status: 1.0.0 Release Candidate.
