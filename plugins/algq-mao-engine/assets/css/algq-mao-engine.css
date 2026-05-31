@@ -1,0 +1,213 @@
+:root {
+	--algq-mao-black: #080808;
+	--algq-mao-charcoal: #151515;
+	--algq-mao-panel: #202328;
+	--algq-mao-gold: #c8a54a;
+	--algq-mao-gold-soft: #efd57a;
+	--algq-mao-blue: #0b4f7f;
+	--algq-mao-ink: #111827;
+	--algq-mao-muted: #6b7280;
+	--algq-mao-border: rgba(200, 165, 74, 0.28);
+	--algq-mao-white: #ffffff;
+	--algq-mao-good: #0f8a4b;
+	--algq-mao-warn: #b7791f;
+	--algq-mao-risk: #b42318;
+}
+
+.algq-mao-wrap,
+.algq-mao-page,
+.algq-mao-admin {
+	font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.algq-mao-page {
+	background: linear-gradient(135deg, #080808 0%, #171717 52%, #0b0b0b 100%);
+	border: 1px solid var(--algq-mao-border);
+	border-radius: 22px;
+	box-shadow: 0 22px 60px rgba(0, 0, 0, 0.18);
+	color: var(--algq-mao-white);
+	margin: 24px 0;
+	padding: 36px;
+	position: relative;
+	overflow: hidden;
+}
+
+.algq-mao-page::before {
+	background: radial-gradient(circle, rgba(200, 165, 74, 0.32), transparent 62%);
+	content: "";
+	height: 280px;
+	position: absolute;
+	right: -90px;
+	top: -110px;
+	width: 280px;
+}
+
+.algq-mao-page h1,
+.algq-mao-page h2,
+.algq-mao-page h3 {
+	color: var(--algq-mao-gold-soft);
+	letter-spacing: 0.02em;
+	margin-top: 0;
+}
+
+.algq-mao-page p,
+.algq-mao-page li {
+	color: rgba(255, 255, 255, 0.84);
+	font-size: 16px;
+	line-height: 1.7;
+}
+
+.algq-mao-page a {
+	background: linear-gradient(135deg, var(--algq-mao-gold), var(--algq-mao-gold-soft));
+	border-radius: 999px;
+	color: #101010;
+	display: inline-flex;
+	font-weight: 800;
+	margin-top: 12px;
+	padding: 12px 18px;
+	text-decoration: none;
+}
+
+.algq-mao-card {
+	background: var(--algq-mao-white);
+	border: 1px solid rgba(17, 24, 39, 0.08);
+	border-radius: 24px;
+	box-shadow: 0 24px 70px rgba(17, 24, 39, 0.16);
+	color: var(--algq-mao-ink);
+	display: grid;
+	gap: 18px;
+	margin: 24px auto;
+	max-width: 980px;
+	padding: 28px;
+}
+
+.algq-mao-card h2 {
+	border-bottom: 1px solid rgba(200, 165, 74, 0.32);
+	color: var(--algq-mao-black);
+	font-size: 28px;
+	margin: 0 0 10px;
+	padding-bottom: 14px;
+}
+
+.algq-mao-card label {
+	color: var(--algq-mao-muted);
+	display: grid;
+	font-size: 13px;
+	font-weight: 800;
+	gap: 7px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.algq-mao-card input,
+.algq-mao-card select {
+	background: #f9fafb;
+	border: 1px solid #d7dce3;
+	border-radius: 12px;
+	color: var(--algq-mao-ink);
+	font-size: 16px;
+	min-height: 46px;
+	padding: 10px 13px;
+	width: 100%;
+}
+
+.algq-mao-card input:focus,
+.algq-mao-card select:focus {
+	border-color: var(--algq-mao-gold);
+	box-shadow: 0 0 0 3px rgba(200, 165, 74, 0.18);
+	outline: none;
+}
+
+.algq-mao-card .button,
+.algq-mao-card button {
+	align-items: center;
+	border: 0;
+	border-radius: 12px;
+	cursor: pointer;
+	display: inline-flex;
+	font-weight: 800;
+	justify-content: center;
+	min-height: 46px;
+	padding: 12px 18px;
+}
+
+.algq-mao-calc-button {
+	background: var(--algq-mao-black) !important;
+	color: var(--algq-mao-white) !important;
+}
+
+.algq-mao-card .button-primary {
+	background: linear-gradient(135deg, var(--algq-mao-gold), var(--algq-mao-gold-soft)) !important;
+	color: #111 !important;
+}
+
+.algq-mao-result {
+	background: linear-gradient(135deg, #101010, #222);
+	border: 1px solid var(--algq-mao-border);
+	border-radius: 18px;
+	color: var(--algq-mao-white);
+	font-size: 16px;
+	font-weight: 700;
+	margin-top: 8px;
+	min-height: 58px;
+	padding: 18px;
+}
+
+.algq-mao-result strong {
+	color: var(--algq-mao-gold-soft);
+}
+
+.algq-mao-kpis {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	margin-top: 18px;
+}
+
+.algq-mao-kpis > div {
+	background: linear-gradient(135deg, #101010, #242424);
+	border: 1px solid var(--algq-mao-border);
+	border-radius: 18px;
+	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+	color: var(--algq-mao-white);
+	padding: 22px;
+}
+
+.algq-mao-kpis strong {
+	color: var(--algq-mao-gold-soft);
+	display: block;
+	font-size: 13px;
+	letter-spacing: 0.08em;
+	margin-bottom: 9px;
+	text-transform: uppercase;
+}
+
+.algq-mao-kpis span {
+	display: block;
+	font-size: 30px;
+	font-weight: 900;
+}
+
+.algq-risk-acceptable {
+	color: var(--algq-mao-good);
+}
+
+.algq-risk-review {
+	color: var(--algq-mao-warn);
+}
+
+.algq-risk-high-risk {
+	color: var(--algq-mao-risk);
+}
+
+@media (max-width: 782px) {
+	.algq-mao-page,
+	.algq-mao-card {
+		border-radius: 16px;
+		padding: 20px;
+	}
+
+	.algq-mao-kpis {
+		grid-template-columns: 1fr;
+	}
+}
