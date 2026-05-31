@@ -119,6 +119,70 @@ Algonquian Real Estate reviews residential property opportunities in Connecticut
 - Successful submissions should create or prepare a deal intake record.
 - Internal users should be able to review submissions from the admin dashboard or deal intake module.
 
+## Priority System Page: /dashboard
+
+### Purpose
+
+The /dashboard page is the internal executive command center for Algonquian Real Estate operations. It should provide a controlled overview of deal flow, buyer activity, underwriting status, document activity, funding status, automation events, and revenue indicators.
+
+### Recommended Page Title
+
+Dashboard
+
+### Recommended URL
+
+/dashboard
+
+### Required Shortcode
+
+```text
+[algq_admin_dashboard]
+```
+
+### WPBakery Implementation
+
+Use:
+
+```text
+[vc_column_text]
+[algq_admin_dashboard]
+[/vc_column_text]
+```
+
+Never use:
+
+```html
+</vc_column_text>
+```
+
+### Access Rule
+
+The dashboard must be restricted to authorized internal users. The default production capability should be `manage_options` until a custom Algonquian role and capability matrix is implemented.
+
+### Recommended Dashboard Widgets
+
+1. Active deal count.
+2. New seller submissions.
+3. Pipeline stage summary.
+4. Offers generated.
+5. Buyer registrations.
+6. Funding status summary.
+7. Document generation activity.
+8. Automation event log.
+9. Digital store revenue summary.
+10. System health and plugin dependency checks.
+
+### Production Requirements
+
+- Page must be generated on plugin activation if it does not already exist.
+- Page must not duplicate if the slug already exists.
+- Page must use valid shortcode syntax.
+- Dashboard shortcode must deny access to unauthorized users.
+- All widget data must be escaped before output.
+- Administrative actions must require capability checks and nonces.
+- Dashboard should support future role-based visibility.
+- Dashboard should be prepared for CSV export, PDF reporting, audit logging, and saved dashboard layouts.
+
 ## WPBakery Rule
 
 Use:
