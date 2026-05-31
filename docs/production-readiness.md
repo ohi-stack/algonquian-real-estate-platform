@@ -60,6 +60,65 @@ Education:
 - /community
 - /resources
 
+## Priority Public Page: /sell-your-property
+
+### Purpose
+
+The /sell-your-property page is the primary seller acquisition page for AlgonquianRealEstate.com. It should convert motivated property owners into structured deal intake records for internal review.
+
+### Recommended Page Title
+
+Sell Your Property
+
+### Recommended URL
+
+/sell-your-property
+
+### Required Shortcode
+
+```text
+[algq_seller_intake]
+```
+
+### WPBakery Implementation
+
+Use:
+
+```text
+[vc_column_text]
+[algq_seller_intake]
+[/vc_column_text]
+```
+
+Never use:
+
+```html
+</vc_column_text>
+```
+
+### Recommended Page Sections
+
+1. Hero statement for property owners.
+2. Short explanation of flexible purchase options.
+3. Seller intake form.
+4. Privacy and no-obligation review notice.
+5. Contact information for Algonquian Real Estate LLC.
+
+### Suggested Public Copy
+
+Algonquian Real Estate reviews residential property opportunities in Connecticut and surrounding markets. Property owners may submit information for review, including address, asking price, condition, and preferred contact method. Submission does not create a binding offer or obligation. A representative may follow up after internal review.
+
+### Production Requirements
+
+- Page must be generated on plugin activation if it does not already exist.
+- Page must not duplicate if the slug already exists.
+- Page content must use valid shortcode syntax.
+- Form submissions must be nonce-protected.
+- Seller inputs must be sanitized before storage.
+- Rendered seller data must be escaped before output.
+- Successful submissions should create or prepare a deal intake record.
+- Internal users should be able to review submissions from the admin dashboard or deal intake module.
+
 ## WPBakery Rule
 
 Use:
