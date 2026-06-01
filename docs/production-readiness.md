@@ -256,6 +256,102 @@ Never use:
 - Version numbers must follow semantic versioning.
 - The page should support future filtering by category: Acquisition, Capital, Automation, Documents, Revenue, and Command Center.
 
+## Priority System Page: /deals
+
+### Purpose
+
+The /deals page is the central acquisition operations hub. It should list, filter, and manage all property opportunities created from seller intake, internal entry, pipeline movement, underwriting, offer generation, buyer assignment, funding review, document production, and closing status.
+
+### Recommended Page Title
+
+Deals
+
+### Recommended URL
+
+/deals
+
+### Recommended Shortcode
+
+```text
+[algq_deals]
+```
+
+If the shortcode is not yet implemented, the page should render an internal placeholder with links to seller intake, underwriting, pipeline, funding, and documents.
+
+### WPBakery Implementation
+
+Use:
+
+```text
+[vc_column_text]
+[algq_deals]
+[/vc_column_text]
+```
+
+Never use:
+
+```html
+</vc_column_text>
+```
+
+### Access Rule
+
+The /deals page must be restricted to authorized internal users. The default production capability should be `manage_options` until custom acquisition roles are implemented.
+
+### Required Deal Fields
+
+- Deal ID
+- Property address
+- Seller name
+- Seller contact information
+- Lead source
+- Asking price
+- ARV
+- Repair estimate
+- MAO
+- Stage
+- Assigned user
+- Buyer assignment status
+- Funding status
+- Document status
+- Created date
+- Updated date
+
+### Required Deal Stages
+
+1. Lead Captured
+2. Underwriting
+3. Offer Sent
+4. Under Contract
+5. Buyer Assigned
+6. Funding Review
+7. Documents Pending
+8. Closed
+9. Archived
+
+### Related Pages
+
+- /deals/new
+- /deals/{id}
+- /deals/{id}/edit
+- /deals/{id}/documents
+- /deals/{id}/buyers
+- /underwriting/{deal-id}
+- /funding/{deal-id}
+
+### Production Requirements
+
+- Page must be generated on plugin activation if it does not already exist.
+- Page must not duplicate if the slug already exists.
+- Page must use valid shortcode syntax.
+- Deal records must be created from seller intake submissions where applicable.
+- Deal table output must escape all values before rendering.
+- Deal update actions must require capability checks and nonces.
+- Numeric values must be sanitized and normalized before calculation.
+- Deal status changes should be logged in the activity table.
+- Deal records should be linkable to underwriting, buyers, funding, and documents.
+- The page should support future Kanban view, CSV export, PDF deal summaries, saved filters, and role-based visibility.
+
 ## WPBakery Rule
 
 Use:
