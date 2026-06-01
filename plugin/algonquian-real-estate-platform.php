@@ -22,6 +22,8 @@ define( 'ALGQ_PLATFORM_FILE', __FILE__ );
 define( 'ALGQ_PLATFORM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ALGQ_PLATFORM_URL', plugin_dir_url( __FILE__ ) );
 
+require_once ALGQ_PLATFORM_DIR . 'includes/class-page-generator.php';
+
 final class ALGQ_Platform {
 	private static $instance = null;
 
@@ -110,51 +112,8 @@ final class ALGQ_Platform {
 			)
 		);
 
-		self::create_default_pages();
-	}
-
-	private static function create_default_pages() {
-		$pages = array(
-			'sell-your-property' => array( 'title' => 'Sell Your Property', 'shortcode' => 'algq_seller_intake' ),
-			'mao-calculator'     => array( 'title' => 'MAO Calculator', 'shortcode' => 'algq_mao_calculator' ),
-			'buyer-registration' => array( 'title' => 'Buyer Registration', 'shortcode' => 'algq_buyer_registration' ),
-			'dashboard'          => array( 'title' => 'Algonquian Dashboard', 'shortcode' => 'algq_admin_dashboard' ),
-			'digital-store'      => array( 'title' => 'Digital Store', 'shortcode' => 'algq_digital_store' ),
-			'product-vault'      => array( 'title' => 'Product Vault', 'shortcode' => 'algq_product_vault' ),
-			'store-checkout'     => array( 'title' => 'Store Checkout', 'shortcode' => 'algq_store_checkout' ),
-			'pipeline'           => array( 'title' => 'Pipeline CRM', 'shortcode' => 'algq_pipeline_crm' ),
-			'buyer-dashboard'    => array( 'title' => 'Buyer Portal', 'shortcode' => 'algq_buyer_portal' ),
-			'funding-dashboard'  => array( 'title' => 'Funding Tracker', 'shortcode' => 'algq_funding_tracker' ),
-			'documents'          => array( 'title' => 'Document Library', 'shortcode' => 'algq_document_library' ),
-			'automation-rules'   => array( 'title' => 'Automation Engine', 'shortcode' => 'algq_automation_engine' ),
-			'plugin-suite'       => array( 'title' => 'Plugin Suite', 'shortcode' => 'algq_plugin_suite' ),
-		);
-
-		foreach ( $pages as $slug => $page ) {
-			$existing = get_page_by_path( $slug );
-			$content  = "[vc_column_text]\n[" . $page['shortcode'] . "]\n[/vc_column_text]";
-
-			if ( $existing instanceof WP_Post ) {
-				if ( false === strpos( $existing->post_content, '[' . $page['shortcode'] . ']' ) ) {
-					wp_update_post(
-						array(
-							'ID'           => $existing->ID,
-							'post_content' => $content,
-						)
-					);
-				}
-				continue;
-			}
-
-			wp_insert_post(
-				array(
-					'post_title'   => $page['title'],
-					'post_name'    => $slug,
-					'post_status'  => 'publish',
-					'post_type'    => 'page',
-					'post_content' => $content,
-				)
-			);
+		if ( class_exists( 'ALGQ_Platform_Page_Generator' ) ) {
+			ALGQ_Platform_Page_Generator::create_pages();
 		}
 	}
 
