@@ -37,9 +37,56 @@ final class ALGQ_Platform {
 
 	private function __construct() {
 		add_action( 'init', array( $this, 'register_shortcodes' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
 		add_action( 'admin_post_algq_platform_save_settings', array( $this, 'handle_save_settings' ) );
 		add_action( 'admin_post_algq_platform_clear_activity', array( $this, 'handle_clear_activity' ) );
+	}
+
+	public function enqueue_public_assets() {
+		$css_path = ALGQ_PLATFORM_DIR . 'assets/css/algq-platform.css';
+		$js_path  = ALGQ_PLATFORM_DIR . 'assets/js/algq-platform.js';
+
+		if ( file_exists( $css_path ) ) {
+			wp_enqueue_style( 'algq-platform', ALGQ_PLATFORM_URL . 'assets/css/algq-platform.css', array(), filemtime( $css_path ) );
+		}
+
+		if ( file_exists( $js_path ) ) {
+			wp_enqueue_script( 'algq-platform', ALGQ_PLATFORM_URL . 'assets/js/algq-platform.js', array(), filemtime( $js_path ), true );
+			wp_localize_script(
+				'algq-platform',
+				'ALGQPlatform',
+				array(
+					'version' => ALGQ_PLATFORM_VERSION,
+					'homeUrl' => esc_url_raw( home_url( '/' ) ),
+					'ajaxUrl' => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
+					'nonce'   => wp_create_nonce( 'algq_platform_public' ),
+				)
+			);
+		}
+	}
+
+	public function enqueue_admin_assets( $hook_suffix ) {
+		$css_path = ALGQ_PLATFORM_DIR . 'assets/css/algq-platform.css';
+		$js_path  = ALGQ_PLATFORM_DIR . 'assets/js/algq-platform.js';
+
+		$allowed_hooks = array(
+			'toplevel_page_algq-platform',
+			'algonquian_page_algq-platform-settings',
+		);
+
+		if ( ! in_array( $hook_suffix, $allowed_hooks, true ) ) {
+			return;
+		}
+
+		if ( file_exists( $css_path ) ) {
+			wp_enqueue_style( 'algq-platform-admin', ALGQ_PLATFORM_URL . 'assets/css/algq-platform.css', array(), filemtime( $css_path ) );
+		}
+
+		if ( file_exists( $js_path ) ) {
+			wp_enqueue_script( 'algq-platform-admin', ALGQ_PLATFORM_URL . 'assets/js/algq-platform.js', array(), filemtime( $js_path ), true );
+		}
 	}
 
 	public static function activate() {
