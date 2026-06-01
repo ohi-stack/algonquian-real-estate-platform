@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Algonquian Real Estate Platform
  * Plugin URI: https://algonquianrealestate.com
- * Description: Core acquisition, underwriting, buyer registration, digital store, buyer portal, document automation, and admin dashboard platform for Algonquian Real Estate LLC.
- * Version: 1.0.0-rc.2
+ * Description: Core acquisition, underwriting, buyer registration, digital store, buyer portal, tenant services, document automation, and admin dashboard platform for Algonquian Real Estate LLC.
+ * Version: 1.0.0-rc.3
  * Author: Onegodian
  * Text Domain: algonquian-real-estate-platform
  * Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ALGQ_PLATFORM_VERSION', '1.0.0-rc.2' );
+define( 'ALGQ_PLATFORM_VERSION', '1.0.0-rc.3' );
 define( 'ALGQ_PLATFORM_FILE', __FILE__ );
 define( 'ALGQ_PLATFORM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ALGQ_PLATFORM_URL', plugin_dir_url( __FILE__ ) );
@@ -148,7 +148,7 @@ final class ALGQ_Platform {
 		}
 
 		update_option( 'algq_platform_version', ALGQ_PLATFORM_VERSION );
-		add_option( 'algq_platform_release_status', '1.0.0 Release Candidate' );
+		update_option( 'algq_platform_release_status', '1.0.0 Release Candidate' );
 		add_option(
 			'algq_platform_brand_colors',
 			array(
@@ -178,6 +178,12 @@ final class ALGQ_Platform {
 		add_shortcode( 'algq_document_library', array( $this, 'document_library_shortcode' ) );
 		add_shortcode( 'algq_automation_engine', array( $this, 'automation_engine_shortcode' ) );
 		add_shortcode( 'algq_plugin_suite', array( $this, 'plugin_suite_shortcode' ) );
+		add_shortcode( 'algq_tenant_center', array( $this, 'tenant_center_shortcode' ) );
+		add_shortcode( 'algq_tenant_application', array( $this, 'tenant_application_shortcode' ) );
+		add_shortcode( 'algq_rent_payment', array( $this, 'rent_payment_shortcode' ) );
+		add_shortcode( 'algq_maintenance_request', array( $this, 'maintenance_request_shortcode' ) );
+		add_shortcode( 'algq_tenant_forms', array( $this, 'tenant_forms_shortcode' ) );
+		add_shortcode( 'algq_tenant_portal', array( $this, 'tenant_portal_shortcode' ) );
 	}
 
 	public function register_admin_menu() {
@@ -196,6 +202,19 @@ final class ALGQ_Platform {
 		return ob_get_clean();
 	}
 
+	private function link_card( $title, $copy, $url, $label ) {
+		ob_start();
+		?>
+		<div class="algq-kpi">
+			<span class="algq-badge"><?php echo esc_html__( 'Tenant Services', 'algonquian-real-estate-platform' ); ?></span>
+			<h3><?php echo esc_html( $title ); ?></h3>
+			<p><?php echo esc_html( $copy ); ?></p>
+			<a class="algq-button" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $label ); ?></a>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+
 	public function seller_intake_shortcode() { return $this->card( 'Seller Intake', 'Capture seller leads, property submissions, and acquisition opportunities.' ); }
 	public function mao_calculator_shortcode() { return $this->card( 'MAO Calculator', 'Calculate maximum allowable offer using ARV, repairs, fees, holding costs, and strategy assumptions.' ); }
 	public function buyer_registration_shortcode() { return $this->card( 'Buyer Registration', 'Register buyers, capture criteria, and prepare gated deal access.' ); }
@@ -209,6 +228,33 @@ final class ALGQ_Platform {
 	public function automation_engine_shortcode() { return $this->card( 'Automation Engine', 'Trigger workflow actions, notifications, document generation, and closeout processes.' ); }
 	public function plugin_suite_shortcode() { return $this->card( 'Algonquian Plugin Suite', 'Production plugin catalog with version, author, overview, getting started, and documentation routes.' ); }
 
+	public function tenant_center_shortcode() {
+		ob_start();
+		?>
+		<section class="algq-platform-card algq-tenant-center">
+			<span class="algq-badge"><?php echo esc_html__( 'Tenant / Renter Center', 'algonquian-real-estate-platform' ); ?></span>
+			<h2><?php echo esc_html__( 'Tenant Services', 'algonquian-real-estate-platform' ); ?></h2>
+			<p><?php echo esc_html__( 'Apply for housing, submit renter documents, pay rent online, request maintenance, access tenant forms, and use the tenant portal for property-management communications.', 'algonquian-real-estate-platform' ); ?></p>
+			<div class="algq-grid algq-tenant-grid">
+				<?php
+				echo $this->link_card( 'Apply Online', 'Submit renter application information and supporting documentation.', home_url( '/tenants/apply/' ), 'Start Application' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $this->link_card( 'Pay Rent Online', 'Access rent-payment instructions, payment links, receipts, and policy information.', home_url( '/tenants/pay-rent/' ), 'Pay Rent' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $this->link_card( 'Maintenance Request', 'Submit repair requests, non-emergency maintenance issues, and move-in notes.', home_url( '/tenants/maintenance/' ), 'Request Service' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $this->link_card( 'Tenant Forms', 'Access applications, income verification, inspection forms, security deposit forms, and notices.', home_url( '/tenants/forms/' ), 'View Forms' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $this->link_card( 'Tenant Portal', 'Log in to view account information, documents, maintenance status, and property notices.', home_url( '/tenants/portal/' ), 'Open Portal' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				?>
+			</div>
+		</section>
+		<?php
+		return ob_get_clean();
+	}
+
+	public function tenant_application_shortcode() { return $this->card( 'Tenant Application', 'Renter application intake for applicant identity, household details, rental history, employment, income verification, references, pets, vehicles, and required uploads.' ); }
+	public function rent_payment_shortcode() { return $this->card( 'Pay Rent Online', 'Rent payment hub for secure payment links, payment policy, due dates, late-fee disclosures, receipts, and account support.' ); }
+	public function maintenance_request_shortcode() { return $this->card( 'Maintenance Request', 'Tenant maintenance intake for property address, unit, issue category, urgency, access permission, photo uploads, and status tracking.' ); }
+	public function tenant_forms_shortcode() { return $this->card( 'Tenant Forms', 'Tenant application, income verification, move-in / move-out inspection, security deposit handling, maintenance request, late notice, and lease renewal / non-renewal forms.' ); }
+	public function tenant_portal_shortcode() { return $this->card( 'Tenant Portal', 'Secure renter dashboard for account information, rent-payment access, documents, maintenance requests, notices, and property-management support.' ); }
+
 	public function admin_dashboard_shortcode() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return esc_html__( 'You do not have permission to view this dashboard.', 'algonquian-real-estate-platform' );
@@ -221,7 +267,7 @@ final class ALGQ_Platform {
 			wp_die( esc_html__( 'Insufficient permissions.', 'algonquian-real-estate-platform' ) );
 		}
 		?>
-		<div class="wrap"><h1><?php echo esc_html__( 'Algonquian Real Estate Platform', 'algonquian-real-estate-platform' ); ?></h1><p><strong><?php echo esc_html__( 'Release Status:', 'algonquian-real-estate-platform' ); ?></strong> <?php echo esc_html( get_option( 'algq_platform_release_status', '1.0.0 Release Candidate' ) ); ?></p></div>
+		<div class="wrap"><h1><?php echo esc_html__( 'Algonquian Real Estate Platform', 'algonquian-real-estate-platform' ); ?></h1><p><strong><?php echo esc_html__( 'Release Status:', 'algonquian-real-estate-platform' ); ?></strong> <?php echo esc_html( get_option( 'algq_platform_release_status', '1.0.0 Release Candidate' ) ); ?></p><h2><?php echo esc_html__( 'Tenant / Renter Center', 'algonquian-real-estate-platform' ); ?></h2><p><?php echo esc_html__( 'Tenant services module added: tenant center, applications, online rent payment hub, maintenance requests, tenant forms, resources, and portal pages.', 'algonquian-real-estate-platform' ); ?></p></div>
 		<?php
 	}
 
