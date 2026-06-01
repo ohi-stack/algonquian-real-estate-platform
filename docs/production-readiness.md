@@ -352,6 +352,112 @@ The /deals page must be restricted to authorized internal users. The default pro
 - Deal records should be linkable to underwriting, buyers, funding, and documents.
 - The page should support future Kanban view, CSV export, PDF deal summaries, saved filters, and role-based visibility.
 
+## Priority System Page: /buyers
+
+### Purpose
+
+The /buyers page is the buyer relationship and deal-distribution hub. It should support buyer registration, buyer review, buyer qualification, NDA-gated deal access, buyer interest submissions, controlled downloads, buyer notes, and monetized access where applicable.
+
+### Recommended Page Title
+
+Buyers
+
+### Recommended URL
+
+/buyers
+
+### Recommended Shortcode
+
+```text
+[algq_buyers]
+```
+
+For public buyer registration, use:
+
+```text
+[algq_buyer_registration]
+```
+
+### WPBakery Implementation
+
+Use:
+
+```text
+[vc_column_text]
+[algq_buyers]
+[/vc_column_text]
+```
+
+For registration pages, use:
+
+```text
+[vc_column_text]
+[algq_buyer_registration]
+[/vc_column_text]
+```
+
+Never use:
+
+```html
+</vc_column_text>
+```
+
+### Access Rule
+
+The internal /buyers page must be restricted to authorized internal users. Buyer-facing pages such as /buyers/register and /buyer-dashboard may be available to logged-in buyer users according to role and access rules.
+
+### Required Buyer Fields
+
+- Buyer ID
+- Buyer name
+- Email
+- Phone
+- Company name
+- Buying criteria
+- Target markets
+- Proof of funds status
+- NDA status
+- Membership or access tier
+- Interested deals
+- Download history
+- Notes
+- Created date
+- Updated date
+
+### Related Pages
+
+- /buyers/register
+- /buyers/login
+- /buyer-dashboard
+- /buyer/deals
+- /buyer/deals/{id}
+- /deals/{id}/buyers
+
+### Buyer Workflow
+
+1. Buyer registers.
+2. Buyer profile is created.
+3. Internal user reviews buyer profile.
+4. Buyer submits proof of funds or qualification details if required.
+5. Buyer accepts NDA if deal access requires it.
+6. Buyer receives controlled access to visible deals.
+7. Buyer submits interest on a deal.
+8. Internal user tracks buyer status from /buyers and /deals/{id}/buyers.
+
+### Production Requirements
+
+- Page must be generated on plugin activation if it does not already exist.
+- Page must not duplicate if the slug already exists.
+- Page must use valid shortcode syntax.
+- Buyer registration must use nonce protection.
+- Buyer inputs must be sanitized before storage.
+- Buyer data must be escaped before output.
+- Internal buyer management actions must require capability checks and nonces.
+- Buyer-facing deal visibility must be permission-based.
+- NDA status and download access should be logged.
+- Buyer activity should feed into the dashboard and deal records.
+- The page should support future membership tiers, Stripe/WooCommerce access, premium deal access, CSV export, and buyer scoring.
+
 ## WPBakery Rule
 
 Use:
