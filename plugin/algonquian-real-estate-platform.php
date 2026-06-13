@@ -3,7 +3,7 @@
  * Plugin Name: Algonquian Real Estate Platform
  * Plugin URI: https://algonquianrealestate.com
  * Description: Core acquisition, underwriting, buyer registration, digital store, buyer portal, tenant services, document automation, and admin dashboard platform for Algonquian Real Estate LLC.
- * Version: 1.0.0-rc.3
+ * Version: 1.0.0-rc.4
  * Author: Onegodian
  * Text Domain: algonquian-real-estate-platform
  * Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ALGQ_PLATFORM_VERSION', '1.0.0-rc.3' );
+define( 'ALGQ_PLATFORM_VERSION', '1.0.0-rc.4' );
 define( 'ALGQ_PLATFORM_FILE', __FILE__ );
 define( 'ALGQ_PLATFORM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ALGQ_PLATFORM_URL', plugin_dir_url( __FILE__ ) );
@@ -253,7 +253,78 @@ final class ALGQ_Platform {
 	public function rent_payment_shortcode() { return $this->card( 'Pay Rent Online', 'Rent payment hub for secure payment links, payment policy, due dates, late-fee disclosures, receipts, and account support.' ); }
 	public function maintenance_request_shortcode() { return $this->card( 'Maintenance Request', 'Tenant maintenance intake for property address, unit, issue category, urgency, access permission, photo uploads, and status tracking.' ); }
 	public function tenant_forms_shortcode() { return $this->card( 'Tenant Forms', 'Tenant application, income verification, move-in / move-out inspection, security deposit handling, maintenance request, late notice, and lease renewal / non-renewal forms.' ); }
-	public function tenant_portal_shortcode() { return $this->card( 'Tenant Portal', 'Secure renter dashboard for account information, rent-payment access, documents, maintenance requests, notices, and property-management support.' ); }
+
+	public function tenant_portal_shortcode() {
+		$tenant_name      = is_user_logged_in() ? wp_get_current_user()->display_name : __( 'Tenant', 'algonquian-real-estate-platform' );
+		$dashboard_cards  = array(
+			array( 'label' => 'Rent Status', 'value' => 'Current', 'detail' => 'Next payment window visible in payment center.' ),
+			array( 'label' => 'Lease File', 'value' => 'Active', 'detail' => 'Lease, addenda, and renewal notices.' ),
+			array( 'label' => 'Maintenance', 'value' => '0 Open', 'detail' => 'Track requests and service updates.' ),
+			array( 'label' => 'Documents', 'value' => 'Ready', 'detail' => 'Forms, notices, receipts, and inspections.' ),
+		);
+		$quick_actions = array(
+			array( 'title' => 'Pay Rent', 'copy' => 'Open rent-payment instructions and secure payment access.', 'url' => home_url( '/tenants/pay-rent/' ) ),
+			array( 'title' => 'Request Maintenance', 'copy' => 'Submit a repair issue with unit, priority, access notes, and photos.', 'url' => home_url( '/tenants/maintenance/' ) ),
+			array( 'title' => 'View Tenant Forms', 'copy' => 'Access application, inspection, security deposit, renewal, and notice forms.', 'url' => home_url( '/tenants/forms/' ) ),
+			array( 'title' => 'Contact Management', 'copy' => 'Send a property-management support request or update your contact information.', 'url' => home_url( '/contact/' ) ),
+		);
+		ob_start();
+		?>
+		<section class="algq-platform-card algq-tenant-dashboard">
+			<div class="algq-tenant-hero">
+				<div>
+					<span class="algq-badge"><?php echo esc_html__( 'Tenant Portal Dashboard', 'algonquian-real-estate-platform' ); ?></span>
+					<h2><?php echo esc_html( sprintf( __( 'Welcome, %s', 'algonquian-real-estate-platform' ), $tenant_name ) ); ?></h2>
+					<p><?php echo esc_html__( 'Central dashboard for rent access, lease documents, maintenance requests, tenant notices, inspections, and property-management support.', 'algonquian-real-estate-platform' ); ?></p>
+				</div>
+				<a class="algq-button" href="<?php echo esc_url( home_url( '/tenants/pay-rent/' ) ); ?>"><?php echo esc_html__( 'Pay Rent', 'algonquian-real-estate-platform' ); ?></a>
+			</div>
+
+			<div class="algq-grid algq-tenant-kpis">
+				<?php foreach ( $dashboard_cards as $card ) : ?>
+					<div class="algq-kpi algq-tenant-kpi">
+						<span><?php echo esc_html( $card['label'] ); ?></span>
+						<strong><?php echo esc_html( $card['value'] ); ?></strong>
+						<p><?php echo esc_html( $card['detail'] ); ?></p>
+					</div>
+				<?php endforeach; ?>
+			</div>
+
+			<div class="algq-tenant-dashboard-layout">
+				<div class="algq-tenant-panel">
+					<h3><?php echo esc_html__( 'Lease & Unit Snapshot', 'algonquian-real-estate-platform' ); ?></h3>
+					<ul class="algq-tenant-list">
+						<li><strong><?php echo esc_html__( 'Property:', 'algonquian-real-estate-platform' ); ?></strong> <?php echo esc_html__( 'Assigned rental property / unit record', 'algonquian-real-estate-platform' ); ?></li>
+						<li><strong><?php echo esc_html__( 'Lease Status:', 'algonquian-real-estate-platform' ); ?></strong> <?php echo esc_html__( 'Active / pending renewal review', 'algonquian-real-estate-platform' ); ?></li>
+						<li><strong><?php echo esc_html__( 'Security Deposit:', 'algonquian-real-estate-platform' ); ?></strong> <?php echo esc_html__( 'Tracked through CT-compliant handling record', 'algonquian-real-estate-platform' ); ?></li>
+						<li><strong><?php echo esc_html__( 'Inspection File:', 'algonquian-real-estate-platform' ); ?></strong> <?php echo esc_html__( 'Move-in / move-out condition documentation', 'algonquian-real-estate-platform' ); ?></li>
+					</ul>
+				</div>
+
+				<div class="algq-tenant-panel">
+					<h3><?php echo esc_html__( 'Notices & Documents', 'algonquian-real-estate-platform' ); ?></h3>
+					<div class="algq-document-row"><span><?php echo esc_html__( 'Residential Lease Agreement', 'algonquian-real-estate-platform' ); ?></span><em><?php echo esc_html__( 'Available', 'algonquian-real-estate-platform' ); ?></em></div>
+					<div class="algq-document-row"><span><?php echo esc_html__( 'Security Deposit Handling Form', 'algonquian-real-estate-platform' ); ?></span><em><?php echo esc_html__( 'Available', 'algonquian-real-estate-platform' ); ?></em></div>
+					<div class="algq-document-row"><span><?php echo esc_html__( 'Move-In / Move-Out Inspection Form', 'algonquian-real-estate-platform' ); ?></span><em><?php echo esc_html__( 'Available', 'algonquian-real-estate-platform' ); ?></em></div>
+					<div class="algq-document-row"><span><?php echo esc_html__( 'Lease Renewal / Non-Renewal Notice', 'algonquian-real-estate-platform' ); ?></span><em><?php echo esc_html__( 'Template', 'algonquian-real-estate-platform' ); ?></em></div>
+				</div>
+			</div>
+
+			<div class="algq-tenant-panel algq-tenant-actions">
+				<h3><?php echo esc_html__( 'Quick Actions', 'algonquian-real-estate-platform' ); ?></h3>
+				<div class="algq-grid">
+					<?php foreach ( $quick_actions as $action ) : ?>
+						<a class="algq-action-card" href="<?php echo esc_url( $action['url'] ); ?>">
+							<strong><?php echo esc_html( $action['title'] ); ?></strong>
+							<span><?php echo esc_html( $action['copy'] ); ?></span>
+						</a>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+		<?php
+		return ob_get_clean();
+	}
 
 	public function admin_dashboard_shortcode() {
 		if ( ! current_user_can( 'manage_options' ) ) {
