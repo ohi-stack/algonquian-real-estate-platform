@@ -1,0 +1,1 @@
+(function(){document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.algq-offer-form select[name="offer_strategy"]').forEach(function(select){select.addEventListener('change',function(){document.body.setAttribute('data-algq-offer-strategy',select.value);});});});})();
