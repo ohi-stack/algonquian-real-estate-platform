@@ -1,0 +1,1 @@
+(function(){'use strict';document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-algq-confirm]').forEach(function(btn){btn.addEventListener('click',function(e){if(!window.confirm(btn.getAttribute('data-algq-confirm'))){e.preventDefault();}});});});})();
