@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "site": "https://algonquianrealestate.com",
+  "public_sitemap_priorities": [
+    "company",
+    "property-owner-solutions",
+    "property-stewardship",
+    "investment-opportunities",
+    "investor-network",
+    "capital-partners",
+    "development-concepts",
+    "technology",
+    "resources",
+    "lead-generation"
+  ],
+  "exclude_route_prefixes": [
+    "/dashboard/",
+    "/deals/",
+    "/pipeline/",
+    "/underwriting/",
+    "/offers/",
+    "/buyer-dashboard/",
+    "/property-stewardship-portal/",
+    "/documents/",
+    "/funding-dashboard/",
+    "/funding/",
+    "/automation-rules/",
+    "/automation-queue/",
+    "/automation-history/",
+    "/automation-failures/",
+    "/account/",
+    "/admin/"
+  ],
+  "exclude_exact_routes": [
+    "/login/",
+    "/register/",
+    "/forgot-password/",
+    "/reset-password/",
+    "/logout/",
+    "/store/account/",
+    "/store/cart/",
+    "/store/checkout/",
+    "/store/order-received/",
+    "/marketplace/login/",
+    "/marketplace/my-account/",
+    "/marketplace/interests/"
+  ],
+  "exclude_patterns": [
+    "^/deals/[^/]+/",
+    "^/underwriting/[^/]+/",
+    "^/offers/[^/]+/",
+    "^/documents/[^/]+/",
+    "^/funding/[^/]+/",
+    "^/marketplace/deals/[^/]+/",
+    "[?&](s|search|filter|sort|page|status)="
+  ],
+  "requirements": {
+    "protected_routes_require_authorization": true,
+    "restricted_documents_noindex": true,
+    "account_pages_noindex": true,
+    "administrative_routes_noindex": true,
+    "seo_exclusion_is_not_access_control": true
+  }
+}
