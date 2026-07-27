@@ -1,0 +1,59 @@
+name: WordPress Plugin Release Gate
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+    paths:
+      - 'plugins/**'
+      - 'build/**'
+      - 'docs/WORDPRESS-RELEASE-STANDARD.md'
+      - '.github/workflows/wordpress-plugin-release.yml'
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - 'build/**'
+      - 'docs/WORDPRESS-RELEASE-STANDARD.md'
+      - '.github/workflows/wordpress-plugin-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-package:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1', '8.2', '8.3']
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: Install packaging tools
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Validate canonical plugin sources
+        run: php build/validate-wordpress-plugins.php
+
+      - name: Build WordPress-installable ZIP files
+        if: matrix.php-version == '8.2'
+        run: bash build/package-wordpress-plugins.sh
+
+      - name: Upload release packages
+        if: matrix.php-version == '8.2'
+        uses: actions/upload-artifact@v4
+        with:
+          name: algonquian-wordpress-plugin-suite
+          path: releases/
+          if-no-files-found: error
+          retention-days: 30
