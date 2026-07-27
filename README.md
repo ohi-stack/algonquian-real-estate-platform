@@ -1,57 +1,125 @@
 # Algonquian Real Estate Platform
 
-Enterprise real estate acquisition, underwriting, CRM, buyer registration, document automation, and investor operations platform for Algonquian Real Estate LLC.
+Enterprise WordPress platform for real estate acquisition, seller intake, canonical deal management, underwriting, offers, documents, signatures, automation, buyer access, capital relationships, property stewardship, commerce, reporting, and system administration.
 
-## Version
+## Organization
 
-**1.0.0 Release Candidate**
+- **Parent entity:** Algonquian Real Estate LLC
+- **Technology division:** Algonquian Real Estate Technology Division
+- **Primary market:** Connecticut
+- **Author display:** Onegodian | Algonquian Real Estate
+
+Algonquian Real Estate LLC was organized as a Connecticut limited liability company on February 11, 2026.
 
 ## Release Status
 
-**1.0.0 Release Candidate**
+**Production Candidate — acceptance testing required**
 
-## Version 1.0 Core Modules
+The repository contains production-directed source and release controls, but a plugin is not classified as production-ready solely because a ZIP or plugin header says `1.0.0`. Each package must pass the installation-readiness gate in `docs/wordpress-installation-readiness.md`.
 
-1. Seller Intake
-2. Deal CRM
-3. MAO Calculator
-4. Buyer Registration
-5. Admin Dashboard
+## Protected Foundation
 
-## Platform Purpose
+1. Algonquian Real Estate Platform Plugin
+2. Algonquian Deal Intake
+3. Algonquian Pipeline CRM
+4. Algonquian MAO Engine
+5. Algonquian Offer Generator
+6. Algonquian Document Library
+7. Algonquian PDF & Signature Engine
+8. Algonquian Automation Engine
+9. Algonquian Admin Command Center
 
-This repository contains the WordPress plugin source, documentation, roadmap, branding placeholders, database schema, and deployment notes for Algonquian Real Estate LLC, a Connecticut limited liability company organized on February 11, 2026. fileciteturn1file0L7-L18
+The Platform Plugin owns shared bootstrap, registry, dependency checks, roles and capabilities, security utilities, mail delivery, audit logging, private file services, page generation, common UI, and health monitoring. Operational plugins retain authority over their own record types.
 
-The Version 1.0 objective is to convert the website into a working acquisition and operations platform that can capture seller leads, create deal records, underwrite opportunities, register buyers, and give internal users a command dashboard.
+## Additional Platform Modules
 
-## Initial Shortcodes
+- Algonquian Buyer Portal
+- Algonquian Deal Marketplace
+- Algonquian Digital Store
+- Algonquian WooCommerce Bridge
+- Algonquian Property Stewardship Services
+
+The canonical authority, dependency, entry-file, and release requirements are defined in `config/plugin-manifest.json`.
+
+## Core Workflow
 
 ```text
-[algq_seller_intake]
-[algq_mao_calculator]
-[algq_buyer_registration]
-[algq_admin_dashboard]
+Seller submission
+→ Deal Intake
+→ canonical deal creation in Pipeline CRM
+→ versioned underwriting in MAO Engine
+→ approved offer in Offer Generator
+→ document storage and PDF generation
+→ signature workflow
+→ funding, buyer distribution and closing activity
+→ automation actions
+→ Command Center reporting and audit verification
 ```
 
-## WPBakery Usage
+## Shared Production Standards
+
+Every independently installable plugin must include:
+
+- Valid WordPress plugin metadata.
+- A protected bootstrap process and direct-access guard.
+- Safe dependency validation.
+- Activation, deactivation, migration, upgrade, and conservative uninstall behavior.
+- Granular capabilities, nonce checks, REST permission callbacks, validation, sanitization, and escaping.
+- Secure private-file access and upload validation where applicable.
+- Centralized Platform Mail Gateway and audit services where applicable.
+- `README.md`, `CHANGELOG.md`, `SECURITY.md`, and `uninstall.php`.
+- No plaintext credentials or uncontrolled debug output.
+- Accessible and responsive administration screens using the common Algonquian interface system.
+
+## WPBakery Rule
+
+Generated WPBakery content must use:
 
 ```text
 [vc_column_text]
-[algq_seller_intake]
+[algq_shortcode]
 [/vc_column_text]
 ```
+
+Never use the malformed closing tag `</vc_column_text>`.
+
+Generated pages must be idempotent and must preserve administrator-edited content when the required shortcode or generation metadata remains present.
 
 ## Repository Layout
 
 ```text
-plugin/      WordPress plugin source
-assets/      Branding and front-end assets
-database/    SQL schema and table notes
-docs/        Installation and module documentation
-roadmap/     Version roadmap and launch plan
-branding/    Brand guidelines and image placeholders
+plugin/       Legacy or current Platform Plugin source
+plugins/      Canonical independently installable plugin source directories
+modules/      Platform-integrated or transitional modules
+assets/       Shared front-end and administrative assets
+branding/     Brand standards and approved placeholders
+database/     Schema and migration documentation
+docs/         Architecture, installation, security and user documentation
+config/       Machine-readable plugin and route manifests
+scripts/      Validation and build tooling
+roadmap/      Version roadmap and launch planning
+releases/     Generated release artifacts; never the only source of record
 ```
 
-## Current Status
+## Validation
 
-Private production repository. Release Status: 1.0.0 Release Candidate.
+Run:
+
+```bash
+php scripts/validate-wordpress-plugins.php
+```
+
+The GitHub Actions **WordPress Plugin Release Gate** verifies manifest integrity, source layout, plugin headers, required package files, PHP syntax, malformed WPBakery tags, debug indicators, and release-policy documentation.
+
+Static validation does not replace activation and end-to-end testing in a disposable WordPress environment.
+
+## Documentation
+
+- `docs/wordpress-installation-readiness.md` — mandatory installation and production acceptance matrix.
+- `SECURITY.md` — vulnerability handling and platform security baseline.
+- `CHANGELOG.md` — release history and outstanding production requirements.
+- `config/plugin-manifest.json` — authoritative plugin inventory, dependency graph, and release contract.
+
+## Current Objective
+
+Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, and publish only packages supported by recorded test evidence.
