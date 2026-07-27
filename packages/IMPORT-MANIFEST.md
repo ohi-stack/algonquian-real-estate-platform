@@ -1,17 +1,16 @@
 # Algonquian Real Estate Plugin Package Import Manifest
 
-## Import Date
-2026-06-04
-
 ## Repository
+
 `ohi-stack/algonquian-real-estate-platform`
 
-## Source
-Uploaded package artifacts from the active project workspace.
+## Canonical-source rule
 
-## Package Artifacts Available
+Extracted source under `plugins/{plugin-slug}/` is the source of record. ZIP files are import or release artifacts only. Production packages must be rebuilt from the reviewed canonical directories and must pass the automated and manual release gates.
 
-The following package ZIPs were present and available for import review:
+## Source artifacts received
+
+The project workspace has included the following package artifacts:
 
 1. `Algonquian-Real-Estate-Platform-v1.0.0.zip`
 2. `algonquian-real-estate-plugin-suite.zip`
@@ -26,46 +25,101 @@ The following package ZIPs were present and available for import review:
 11. `algq-pipeline-crm-1.0.0-production.zip`
 12. `algq-woocommerce-bridge-1.0.0-rc3-dashboard-branding.zip`
 
-## Note on Count
-Twelve ZIP artifacts were available when including the platform package and plugin-suite bundle ZIPs. Fewer than twelve standalone individual plugin ZIPs were present.
+Bundle ZIP files may contain products not represented by separate source artifacts. No artifact should be called production-ready solely because its filename contains `production` or `1.0.0`.
 
-## Installed Platform Modules Reported on Site as of 2026-06-02
+## Expected product inventory
 
-- Algonquian Admin Command Center
-- Algonquian Automation Engine
-- Algonquian Buyer Portal
-- Algonquian Deal Intake
-- Algonquian Deal Marketplace
-- Algonquian Digital Products
-- Algonquian Digital Store
-- Algonquian Document Library
-- Algonquian Funding Tracker
-- Algonquian MAO Engine
-- Algonquian Offer Generator
-- Algonquian PDF & Signature Engine
-- Algonquian Pipeline CRM
-- Algonquian Real Estate Platform Plugin
-- ALGQ WooCommerce Bridge
+The canonical repository should maintain and package the complete ecosystem:
 
-## Production-Hardening Status
+- `algq-platform`
+- `algq-deal-intake`
+- `algq-pipeline-crm`
+- `algq-mao-engine`
+- `algq-offer-generator`
+- `algq-funding-tracker`
+- `algq-buyer-portal`
+- `algq-deal-marketplace`
+- `algq-document-library`
+- `algq-pdf-signature`
+- `algq-automation-engine`
+- `algq-command-center`
+- `algq-digital-store`
+- `algq-digital-products`
+- `algq-woocommerce-bridge`
 
-These packages should be treated as release-candidate or production-hardening artifacts, not final audited production releases, until each plugin passes the universal release gate:
+A missing canonical directory is a release blocker even when a corresponding ZIP exists elsewhere.
 
-- Plugin bootstrap
-- Activation hook
-- Automatic page generation
-- Shortcodes
-- Admin menu
-- Capabilities
-- Nonces
-- Input sanitization
-- Output escaping
-- README
-- Documentation
-- Branding assets
-- Changelog
-- Uninstall cleanup
+## Required product information
 
-## Handling Rule
+Every plugin must consistently identify:
 
-Source ZIPs should be retained as package artifacts. Extracted plugin source should remain under `/plugins/{plugin-slug}` for review, hardening, and release packaging.
+- Parent organization: Algonquian Real Estate LLC
+- Technology division: Algonquian Real Estate Technology Division (ARE Tech)
+- Author: Onegodian | Algonquian Real Estate
+- Primary market context: Connecticut
+- Product purpose and authoritative data responsibility
+- Dependencies and optional integrations
+- Stable semantic version
+- Minimum supported WordPress and PHP versions
+- Generated pages, shortcodes, capabilities, REST routes, scheduled jobs, and owned tables
+
+Descriptions must not overstate company revenue, acquisitions, portfolio ownership, investor returns, legal authority, fiduciary authority, or regulated professional services.
+
+## Universal WordPress release gate
+
+Each canonical package must pass:
+
+- valid WordPress plugin header;
+- stable `MAJOR.MINOR.PATCH` version;
+- direct-access protection;
+- controlled activation, upgrade, deactivation, and uninstall behavior;
+- dependency validation and nonfatal degraded mode;
+- database migration controls;
+- automatic idempotent page generation where applicable;
+- registered and documented shortcodes;
+- admin navigation and settings where applicable;
+- granular capabilities;
+- nonce validation;
+- server-side validation and sanitization;
+- prepared SQL;
+- context-appropriate escaping;
+- private-file and record-level authorization;
+- audit events for material operations;
+- centralized mail integration;
+- shared interface and accessibility standards;
+- `README.md`;
+- `CHANGELOG.md`;
+- `SECURITY.md`;
+- `uninstall.php`;
+- PHP 8.1, 8.2, and 8.3 syntax validation;
+- clean WordPress upload, installation, activation, reactivation, and uninstall testing;
+- end-to-end integration testing.
+
+The full requirements are defined in `docs/WORDPRESS-RELEASE-STANDARD.md`.
+
+## Packaging
+
+Run:
+
+```bash
+php build/validate-wordpress-plugins.php
+bash build/package-wordpress-plugins.sh
+```
+
+The packaging script creates one WordPress-installable ZIP per validated plugin and generates `releases/SHA256SUMS.txt`. GitHub Actions runs the same gate and exposes the release packages as a workflow artifact.
+
+## WPBakery rule
+
+All generated content must use:
+
+```text
+[vc_column_text]
+[plugin_shortcode]
+[/vc_column_text]
+```
+
+The malformed closing tag `</vc_column_text>` is prohibited and causes release validation to fail.
+
+## Release-status rule
+
+Until the validator and the complete manual WordPress test matrix pass, packages must be described as **production hardening** or **release candidate**, not final production releases.
