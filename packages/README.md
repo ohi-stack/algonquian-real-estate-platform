@@ -7,7 +7,7 @@ This directory is the repository archive for distributable WordPress plugin ZIP 
 1. Algonquian Real Estate Platform v1.0.0
 2. Algonquian Real Estate Plugin Suite
 3. Algonquian Real Estate Plugin Suite Updated
-4. Algonquian Deal Marketplace v1.0.0
+4. Algonquian Deal Marketplace v2.0.0 Production
 5. Algonquian PDF & Signature v1.0.0
 6. Algonquian Buyer Portal v1.0.0
 7. Algonquian Document Library v1.0.0
@@ -17,6 +17,22 @@ This directory is the repository archive for distributable WordPress plugin ZIP 
 11. Algonquian Pipeline CRM v1.0.0 Production
 12. Algonquian Deal Intake v1.0.2 RC2
 
+## Deal Marketplace 2.0.0
+
+Canonical source:
+
+```text
+plugins/algq-deal-marketplace/
+```
+
+Release validation:
+
+```text
+plugins/algq-deal-marketplace/docs/PRODUCTION-ACCEPTANCE.md
+```
+
+The source directory, not a ZIP archive, is the authoritative version-controlled record. Distributable ZIP files should be generated from the tagged source after the production acceptance gate passes.
+
 ## Deployment Note
 
-These ZIP files are intended as installable WordPress plugin packages or release artifacts. Source modules should remain maintained in their respective plugin source directories where applicable.
+ZIP files are installable WordPress release artifacts. Source modules must remain maintained in their canonical unpacked plugin directories and must not be replaced by binary-only archives.
