@@ -1,36 +1,27 @@
 # Security Policy
 
-## Scope
+## Supported version
 
-This policy applies to the Algonquian MAO Engine WordPress plugin.
+Security maintenance applies to the current `2.x` release line.
 
-## Security Controls
+## Controls
 
-The plugin must maintain the following controls:
+- Direct file access is blocked.
+- Public users may calculate but cannot persist underwriting.
+- Save and approval actions require separate granular capabilities and WordPress nonces.
+- Every REST route has an explicit permission callback.
+- Public calculation is rate limited and does not return saved records.
+- REST inputs are validated and constrained to non-negative numeric values and approved strategies.
+- Dynamic SQL uses prepared statements; static table-name queries use plugin-controlled identifiers.
+- Saved scenarios retain formula, assumption, input, result, creator, and approval evidence.
+- Existing records are preserved on deactivation and ordinary uninstall.
+- Only approved scenarios are supplied to offer-generation workflows.
+- The plugin does not store credentials, payment data, signatures, or full seller records.
 
-- No direct file access.
-- Capability checks on all admin pages and privileged actions.
-- Nonce validation on all form submissions.
-- Sanitized input for all request, shortcode, option, and REST data.
-- Escaped output for all admin and public rendering.
-- Prepared SQL statements for dynamic database queries.
-- REST permission callbacks on every route.
-- No plaintext storage of payment credentials, API secrets, or private keys.
-- Data preservation by default on deactivation and uninstall.
+## Reporting
 
-## Operational Hardening
+Report suspected vulnerabilities privately to the Algonquian Real Estate Technology Division. Do not include live seller, buyer, lender, property, or transaction data in a report.
 
-Before production deployment:
+## Deployment gate
 
-1. Install on staging first.
-2. Activate with `WP_DEBUG=true`.
-3. Confirm no PHP notices or warnings.
-4. Submit a test underwriting calculation.
-5. Confirm the underwriting record saves.
-6. Confirm auto-generated pages load.
-7. Confirm the admin dashboard loads.
-8. Confirm only authorized users can access admin screens.
-
-## Reporting Issues
-
-Security issues should be reviewed internally by Algonquian Real Estate before public disclosure or deployment changes.
+Before production deployment, verify capability isolation, nonce enforcement, REST authorization, rate limiting, database migration, approval immutability, audit events, output escaping, and cross-plugin record-level authorization.
