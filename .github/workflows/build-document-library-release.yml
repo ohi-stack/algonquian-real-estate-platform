@@ -1,0 +1,41 @@
+name: Build Document Library Release
+
+on:
+  push:
+    branches:
+      - agent/upgrade-document-library
+    paths:
+      - 'plugins/algq-document-library/**'
+      - '.github/workflows/build-document-library-release.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate PHP syntax
+        run: find plugins/algq-document-library -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Build installable plugin ZIP
+        run: |
+          rm -rf build
+          mkdir -p build/algq-document-library
+          cp -R plugins/algq-document-library/. build/algq-document-library/
+          cd build
+          zip -r algq-document-library-2.0.0.zip algq-document-library
+
+      - name: Verify archive root
+        run: unzip -l build/algq-document-library-2.0.0.zip
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: algq-document-library-2.0.0
+          path: build/algq-document-library-2.0.0.zip
+          if-no-files-found: error
+          retention-days: 30
