@@ -7,6 +7,12 @@ on:
     paths:
       - plugins/algq-deal-intake/**
       - .github/workflows/build-deal-intake-package.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - plugins/algq-deal-intake/**
+      - .github/workflows/build-deal-intake-package.yml
   workflow_dispatch:
 
 permissions:
