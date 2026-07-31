@@ -19,14 +19,14 @@ final class ALGQ_MAO_Admin {
 	}
 	public function settings() { register_setting( 'algq_mao_settings', ALGQ_MAO_Calculator::OPTION_KEY, array( 'type' => 'array', 'sanitize_callback' => array( $this->calculator, 'sanitize_assumptions' ), 'default' => ALGQ_MAO_Calculator::defaults() ) ); }
 	public function save() {
-		if ( ! current_user_can( 'manage_algq_underwriting' ) ) { wp_die( esc_html__( 'You are not authorized to save underwriting.', 'algq-mao-engine' ), 403 ); }
+		if ( ! current_user_can( 'manage_algq_underwriting' ) ) { wp_die( esc_html__( 'You are not authorized to save underwriting.', 'algq-mao-engine' ), '', array( 'response' => 403 ) ); }
 		check_admin_referer( 'algq_mao_save_underwriting', 'algq_mao_nonce' );
 		$result = $this->calculator->calculate( $this->request( $_POST ) );
 		$id = $this->engine->persist( isset( $_POST['deal_id'] ) ? absint( $_POST['deal_id'] ) : 0, isset( $_POST['scenario_name'] ) ? sanitize_text_field( wp_unslash( $_POST['scenario_name'] ) ) : '', $result, get_current_user_id() );
 		wp_safe_redirect( add_query_arg( $id ? 'algq_mao_saved' : 'algq_mao_error', '1', wp_get_referer() ?: admin_url( 'admin.php?page=algq-mao-underwriting' ) ) ); exit;
 	}
 	public function approve() {
-		if ( ! current_user_can( 'approve_algq_underwriting' ) ) { wp_die( esc_html__( 'You are not authorized to approve underwriting.', 'algq-mao-engine' ), 403 ); }
+		if ( ! current_user_can( 'approve_algq_underwriting' ) ) { wp_die( esc_html__( 'You are not authorized to approve underwriting.', 'algq-mao-engine' ), '', array( 'response' => 403 ) ); }
 		$id = isset( $_GET['underwriting_id'] ) ? absint( $_GET['underwriting_id'] ) : 0; check_admin_referer( 'algq_mao_approve_' . $id );
 		if ( ALGQ_MAO_Database::approve( $id, get_current_user_id() ) ) { $record = ALGQ_MAO_Database::get( $id ); $this->engine->audit( 'underwriting_approved', array( 'underwriting_id' => $id, 'deal_id' => $record ? (int) $record->deal_id : 0 ), true ); do_action( 'algq_mao_underwriting_approved', $id, $record ); }
 		wp_safe_redirect( admin_url( 'admin.php?page=algq-mao-underwriting' ) ); exit;
@@ -47,5 +47,5 @@ final class ALGQ_MAO_Admin {
 		?><div class="wrap"><h1>MAO Formula Settings</h1><p>Changes apply only to new calculations. Saved scenarios retain snapshots.</p><form method="post" action="options.php"><?php settings_fields( 'algq_mao_settings' ); ?><table class="form-table"><?php foreach ( $labels as $key ) : ?><tr><th><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( ucwords( str_replace( '_', ' ', $key ) ) ); ?></label></th><td><input id="<?php echo esc_attr( $key ); ?>" class="regular-text" name="algq_mao_assumptions[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $o[ $key ] ); ?>" /></td></tr><?php endforeach; ?><tr><th>Pipeline Integration</th><td><label><input type="checkbox" name="algq_mao_assumptions[auto_request_stage_change]" value="1" <?php checked( '1', $o['auto_request_stage_change'] ); ?> /> Request stage changes after save or approval.</label></td></tr></table><?php submit_button(); ?></form></div><?php
 	}
 	private function request( $source ) { $out = array(); foreach ( array( 'strategy','arv','repairs','purchase_costs','holding_costs','financing_costs','selling_costs','desired_profit','assignment_fee','annual_gross_income','other_annual_income','annual_operating_expenses','annual_debt_service','target_cap_rate' ) as $key ) { $out[ $key ] = isset( $source[ $key ] ) ? sanitize_text_field( wp_unslash( $source[ $key ] ) ) : ''; } return $out; }
-	private function cap( $cap ) { if ( ! current_user_can( $cap ) ) { wp_die( esc_html__( 'Insufficient permissions.', 'algq-mao-engine' ), 403 ); } }
+	private function cap( $cap ) { if ( ! current_user_can( $cap ) ) { wp_die( esc_html__( 'Insufficient permissions.', 'algq-mao-engine' ), '', array( 'response' => 403 ) ); } }
 }
