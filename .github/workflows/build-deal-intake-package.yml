@@ -1,0 +1,63 @@
+name: Build Algonquian Deal Intake Package
+
+on:
+  push:
+    branches:
+      - agent/upgrade-deal-intake-2-0-0
+    paths:
+      - plugins/algq-deal-intake/**
+      - .github/workflows/build-deal-intake-package.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Configure PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Validate PHP syntax
+        run: find plugins/algq-deal-intake -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Validate package rules
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f plugins/algq-deal-intake/algq-deal-intake.php
+          grep -q 'Version: 2.0.0' plugins/algq-deal-intake/algq-deal-intake.php
+          grep -q 'class ALGQ_Deal_Intake_About' plugins/algq-deal-intake/includes/class-about.php
+          ! grep -R --line-number --fixed-strings '</vc_column_text>' plugins/algq-deal-intake
+          ! grep -R --line-number -E 'var_dump\(|print_r\(|error_log\(' plugins/algq-deal-intake --include='*.php'
+
+      - name: Build WordPress plugin ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/package
+          cp -a plugins/algq-deal-intake build/package/algq-deal-intake
+          find build/package -name '.DS_Store' -delete
+          cd build/package
+          zip -rq ../../algq-deal-intake-2.0.0.zip algq-deal-intake
+          cd ../..
+          unzip -t algq-deal-intake-2.0.0.zip
+          test "$(unzip -Z1 algq-deal-intake-2.0.0.zip | head -n1)" = 'algq-deal-intake/'
+          sha256sum algq-deal-intake-2.0.0.zip > algq-deal-intake-2.0.0.zip.sha256
+
+      - name: Upload validated package
+        uses: actions/upload-artifact@v4
+        with:
+          name: algq-deal-intake-2.0.0-package
+          path: |
+            algq-deal-intake-2.0.0.zip
+            algq-deal-intake-2.0.0.zip.sha256
+          if-no-files-found: error
+          retention-days: 30
