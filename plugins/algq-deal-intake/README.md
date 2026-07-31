@@ -26,6 +26,7 @@ Deal Intake owns intake submissions. It does **not** own pipeline stages, tasks,
 [deal_quick_capture]
 [algq_homeowner_options]
 [algq_seller_portal]
+[algq_deal_intake_about]
 ```
 
 WPBakery placement:
@@ -35,6 +36,15 @@ WPBakery placement:
 [algq_deal_intake_form]
 [/vc_column_text]
 ```
+
+## About Plugin pages
+
+The plugin includes:
+
+- A WordPress administrator submenu at **Deal Intake → About Plugin**.
+- An **About** action link on the WordPress Plugins screen.
+- A generated public page at `/plugin/deal-intake/about/`.
+- Version, authorship, authority-boundary, security, shortcode, dependency, and integration-health information.
 
 ## Generated pages
 
@@ -46,6 +56,7 @@ The activation routine creates missing pages only and never overwrites administr
 - `/seller-portal/`
 - `/property-submission-received/`
 - `/plugin/deal-intake/`
+- `/plugin/deal-intake/about/`
 - `/plugin/deal-intake/start/`
 - `/plugin/deal-intake/docs/`
 
