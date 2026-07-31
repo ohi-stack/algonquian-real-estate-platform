@@ -26,6 +26,9 @@ final class ALGQ_Offer_Service {
             if ( empty( $data['property_address'] ) && ! empty( $deal['address'] ) ) {
                 $data['property_address'] = sanitize_text_field( $deal['address'] );
             }
+            if ( empty( $data['property_address'] ) && ! empty( $deal['title'] ) ) {
+                $data['property_address'] = sanitize_text_field( $deal['title'] );
+            }
         }
 
         $offer_id = wp_insert_post(
@@ -75,8 +78,21 @@ final class ALGQ_Offer_Service {
         }
 
         $current = self::get( $offer_id );
-        $data    = array_merge( $current, self::sanitize_input( $input ) );
-        $error   = self::validate( $data );
+        $merged  = array_merge( $current, $input );
+
+        if ( array_key_exists( 'offer_strategy', $input ) ) {
+            $merged['strategy'] = $input['offer_strategy'];
+        }
+        if ( array_key_exists( 'price', $input ) && ! array_key_exists( 'purchase_price', $input ) ) {
+            $merged['purchase_price'] = $input['price'];
+        }
+        if ( array_key_exists( 'offer_terms', $input ) ) {
+            $merged['terms'] = $input['offer_terms'];
+            $merged['notes'] = $input['offer_terms'];
+        }
+
+        $data  = self::sanitize_input( $merged );
+        $error = self::validate( $data );
         if ( is_wp_error( $error ) ) {
             return $error;
         }
