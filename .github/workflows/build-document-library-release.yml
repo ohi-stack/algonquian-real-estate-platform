@@ -7,6 +7,12 @@ on:
     paths:
       - 'plugins/algq-document-library/**'
       - '.github/workflows/build-document-library-release.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'plugins/algq-document-library/**'
+      - '.github/workflows/build-document-library-release.yml'
 
 permissions:
   contents: read
