@@ -1,0 +1,39 @@
+name: Build Funding Tracker Release
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/algq-funding-tracker/**'
+      - '.github/workflows/build-funding-tracker.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+
+      - name: Validate PHP syntax
+        run: find plugins/algq-funding-tracker -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Build installable plugin ZIP
+        run: |
+          mkdir -p build
+          cd plugins
+          zip -r ../build/algq-funding-tracker-1.0.0.zip algq-funding-tracker \
+            -x '*/.DS_Store' '*/.git*' '*/node_modules/*' '*/tests/*'
+
+      - name: Inspect release archive
+        run: unzip -l build/algq-funding-tracker-1.0.0.zip
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: algq-funding-tracker-1.0.0
+          path: build/algq-funding-tracker-1.0.0.zip
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
