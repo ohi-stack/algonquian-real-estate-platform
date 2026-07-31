@@ -1,43 +1,38 @@
 <?php
 /**
  * Plugin Name: Algonquian Deal Intake
- * Plugin URI: https://algonquianrealestate.com
- * Description: Captures seller leads, property submissions, and acquisition opportunities for Algonquian Real Estate.
- * Version: 1.0.0-rc.1
- * Author: Onegodian | Algonquian Real Estate
+ * Plugin URI: https://algonquianrealestate.com/
+ * Description: Authoritative seller-lead and property-submission intake, consent evidence, duplicate review, lead scoring, and controlled Pipeline CRM handoff for Algonquian Real Estate LLC.
+ * Version: 2.0.0
+ * Author: Onegodian | Algonquian Real Estate Technology Division
  * Text Domain: algq-deal-intake
  * Domain Path: /languages
- * Requires at least: 6.0
- * Requires PHP: 7.4
+ * Requires at least: 6.8
+ * Requires PHP: 8.2
+ * Requires Plugins: algonquian-real-estate-platform
+ * License: Proprietary / Internal Use
  *
  * @package Algonquian_Deal_Intake
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
-define( 'ALGQ_DEAL_INTAKE_VERSION', '1.0.0-rc.1' );
-define( 'ALGQ_DEAL_INTAKE_FILE', __FILE__ );
-define( 'ALGQ_DEAL_INTAKE_DIR', plugin_dir_path( __FILE__ ) );
-define( 'ALGQ_DEAL_INTAKE_URL', plugin_dir_url( __FILE__ ) );
+define( 'ALGQ_DI_VERSION', '2.0.0' );
+define( 'ALGQ_DI_SCHEMA_VERSION', '2.0.0' );
+define( 'ALGQ_DI_FILE', __FILE__ );
+define( 'ALGQ_DI_DIR', plugin_dir_path( __FILE__ ) );
+define( 'ALGQ_DI_URL', plugin_dir_url( __FILE__ ) );
 
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-security.php';
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-activator.php';
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-page-generator.php';
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-assets.php';
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-admin.php';
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-shortcodes.php';
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-submissions.php';
-require_once ALGQ_DEAL_INTAKE_DIR . 'includes/class-algq-deal-intake.php';
+require_once ALGQ_DI_DIR . 'includes/class-security.php';
+require_once ALGQ_DI_DIR . 'includes/class-intake.php';
+require_once ALGQ_DI_DIR . 'includes/class-admin-api.php';
 
-register_activation_hook( __FILE__, array( 'ALGQ_Deal_Intake_Activator', 'activate' ) );
-register_uninstall_hook( __FILE__, array( 'ALGQ_Deal_Intake_Activator', 'uninstall_cleanup' ) );
+register_activation_hook( ALGQ_DI_FILE, array( 'ALGQ_Deal_Intake_Plugin', 'activate' ) );
+register_deactivation_hook( ALGQ_DI_FILE, array( 'ALGQ_Deal_Intake_Plugin', 'deactivate' ) );
 
 add_action(
 	'plugins_loaded',
-	static function () {
-		$plugin = new ALGQ_Deal_Intake();
-		$plugin->run();
+	static function (): void {
+		ALGQ_Deal_Intake_Plugin::instance()->run();
 	}
 );
