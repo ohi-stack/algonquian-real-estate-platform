@@ -43,6 +43,7 @@ $options = array(
 	'algq_di_seller_portal_page_id',
 	'algq_di_thank_you_page_id',
 	'algq_di_plugin_page_id',
+	'algq_di_about_page_id',
 	'algq_di_start_page_id',
 	'algq_di_docs_page_id',
 );
