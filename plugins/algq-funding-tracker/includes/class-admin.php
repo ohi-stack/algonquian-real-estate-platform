@@ -92,16 +92,39 @@ final class ALGQ_Funding_Tracker_Admin {
 		if ( ! current_user_can( 'export_algq_funding' ) ) {
 			wp_die( esc_html__( 'You are not authorized to export funding records.', 'algq-funding-tracker' ), '', array( 'response' => 403 ) );
 		}
+
 		check_admin_referer( 'algq_funding_export' );
 		$rows = $this->repository->get_commitments( 500 );
+
 		nocache_headers();
 		header( 'Content-Type: text/csv; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=algq-funding-export-' . gmdate( 'Y-m-d' ) . '.csv' );
+
 		$output = fopen( 'php://output', 'w' );
 		fputcsv( $output, array( 'Record ID', 'Deal ID', 'Capital Source', 'Organization', 'Type', 'Status', 'Requested', 'Committed', 'Funded', 'Interest Rate', 'Term Months', 'Commitment Date', 'Funded Date', 'Updated At' ) );
+
 		foreach ( $rows as $row ) {
-			fputcsv( $output, array( $row['id'], $row['deal_id'], $row['source_name'], $row['source_organization'], $row['funding_type'], $row['status'], $row['requested_amount'], $row['committed_amount'], $row['funded_amount'], $row['interest_rate'], $row['term_months'], $row['commitment_date'], $row['funded_date'], $row['updated_at'] ) );
+			fputcsv(
+				$output,
+				array(
+					$this->csv_cell( $row['id'] ),
+					$this->csv_cell( $row['deal_id'] ),
+					$this->csv_cell( $row['source_name'] ),
+					$this->csv_cell( $row['source_organization'] ),
+					$this->csv_cell( $row['funding_type'] ),
+					$this->csv_cell( $row['status'] ),
+					$this->csv_cell( $row['requested_amount'] ),
+					$this->csv_cell( $row['committed_amount'] ),
+					$this->csv_cell( $row['funded_amount'] ),
+					$this->csv_cell( $row['interest_rate'] ),
+					$this->csv_cell( $row['term_months'] ),
+					$this->csv_cell( $row['commitment_date'] ),
+					$this->csv_cell( $row['funded_date'] ),
+					$this->csv_cell( $row['updated_at'] ),
+				)
+			);
 		}
+
 		fclose( $output );
 		exit;
 	}
@@ -262,6 +285,20 @@ final class ALGQ_Funding_Tracker_Admin {
 			printf( '<option value="%1$s" %2$s>%3$s</option>', esc_attr( $option ), selected( $selected, $option, false ), esc_html( $this->label( $option ) ) );
 		}
 		echo '</select>';
+	}
+
+	/**
+	 * Neutralize spreadsheet formula prefixes in exported cells.
+	 *
+	 * @param mixed $value Cell value.
+	 * @return string
+	 */
+	private function csv_cell( $value ) {
+		$value = (string) $value;
+		if ( preg_match( '/^[=+\-@]/', $value ) ) {
+			return "'" . $value;
+		}
+		return $value;
 	}
 
 	private function money( $amount ) {
