@@ -17,6 +17,7 @@
 - Added controlled Pipeline CRM handoff with idempotent canonical deal-ID storage.
 - Added Platform Mail Gateway and audit-service compatibility hooks.
 - Added secured CSV export with formula-injection protection.
+- Added a dedicated administrator About Plugin page, Plugins-screen About link, public About shortcode, generated `/plugin/deal-intake/about/` page, and integration-health summary.
 - Changed uninstall behavior to preserve operational records by default.
 
 ## 1.0.2-rc.2
