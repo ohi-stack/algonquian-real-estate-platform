@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "platform_service": "algq-stripe",
+  "owner": "algonquian-real-estate-platform",
+  "webhook_route": "/wp-json/algq/v1/stripe/webhook",
+  "capability": "manage_algq_stripe",
+  "plugins": {
+    "algq-digital-store": {
+      "required": true,
+      "features": ["checkout", "subscriptions", "digital_entitlements", "billing_portal"]
+    },
+    "algq-woocommerce-bridge": {
+      "required": true,
+      "features": ["order_sync", "customer_sync", "refund_sync", "entitlement_sync"]
+    },
+    "algq-property-stewardship": {
+      "required": true,
+      "features": ["recurring_plans", "service_invoices", "one_time_fees"]
+    },
+    "algq-automation-engine": {
+      "required": true,
+      "features": ["webhook_triggers", "payment_failure_workflows", "access_lifecycle"]
+    },
+    "algq-command-center": {
+      "required": true,
+      "features": ["revenue_widgets", "mrr", "subscription_health", "failed_payments", "refunds"]
+    },
+    "algq-buyer-portal": {
+      "required": false,
+      "features": ["memberships", "premium_deal_access", "billing_portal"]
+    },
+    "algq-investor-network": {
+      "required": false,
+      "features": ["membership_tiers", "event_registration", "premium_resources"]
+    },
+    "algq-document-library": {
+      "required": false,
+      "features": ["paid_packages", "premium_templates", "download_entitlements"]
+    },
+    "algq-deal-marketplace": {
+      "required": false,
+      "features": ["featured_listings", "marketplace_subscriptions", "deal_package_access"]
+    },
+    "algq-funding-tracker": {
+      "required": false,
+      "features": ["invoice_references", "payment_status_reconciliation"]
+    },
+    "algq-pdf-signature": {
+      "required": false,
+      "features": ["payment_gated_generation", "premium_signature_workflows"]
+    },
+    "algq-deal-intake": {
+      "required": false,
+      "features": ["paid_consultation_addons"],
+      "constraints": ["core_intake_must_remain_free"]
+    }
+  }
+}
