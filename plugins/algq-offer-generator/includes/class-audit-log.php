@@ -49,16 +49,15 @@ final class ALGQ_Offer_Audit_Log {
             array( '%s', '%d', '%d', '%s', '%s' )
         );
 
-        if ( function_exists( 'algq_log_event' ) ) {
-            algq_log_event(
-                'offer.' . sanitize_key( $event ),
-                array(
-                    'plugin'     => 'algq-offer-generator',
-                    'related_id' => absint( $object_id ),
-                    'details'    => $safe_details,
-                )
-            );
-        }
+        do_action(
+            'algq_audit_event',
+            array(
+                'event'      => 'offer.' . sanitize_key( $event ),
+                'plugin'     => 'algq-offer-generator',
+                'related_id' => absint( $object_id ),
+                'details'    => $safe_details,
+            )
+        );
     }
 
     public static function log_offer_created( int $offer_id, array $data, int $user_id ): void {
