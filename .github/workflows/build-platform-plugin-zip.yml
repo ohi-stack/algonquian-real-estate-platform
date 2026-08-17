@@ -1,0 +1,35 @@
+name: Build Platform Plugin ZIP
+
+on:
+  pull_request:
+    paths:
+      - 'plugin/**'
+      - '.github/workflows/build-platform-plugin-zip.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PHP syntax
+        run: find plugin -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Assemble installable package
+        run: |
+          mkdir -p build/algonquian-real-estate-platform
+          rsync -a --delete \
+            --exclude='.git*' \
+            --exclude='tests/' \
+            plugin/ build/algonquian-real-estate-platform/
+          cd build
+          zip -r algonquian-real-estate-platform-2.0.0.zip algonquian-real-estate-platform
+      - name: Upload plugin ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: algonquian-real-estate-platform-2.0.0
+          path: build/algonquian-real-estate-platform-2.0.0.zip
+          if-no-files-found: error
+          retention-days: 30
