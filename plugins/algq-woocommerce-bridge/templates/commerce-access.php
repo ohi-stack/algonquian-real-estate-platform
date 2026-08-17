@@ -1,0 +1,2 @@
+<?php defined( 'ABSPATH' ) || exit; ?>
+<div class="algq-commerce-access"><h2><?php echo esc_html__( 'Algonquian Commerce Access', 'algq-woocommerce-bridge' ); ?></h2><p><?php echo esc_html__( 'WooCommerce-backed access for purchased products, buyer entitlements, memberships, and approved digital services.', 'algq-woocommerce-bridge' ); ?></p><?php if ( is_user_logged_in() ) : ?><p><a href="<?php echo esc_url( home_url( '/algq-buyer-entitlements/' ) ); ?>"><?php echo esc_html__( 'View my entitlements', 'algq-woocommerce-bridge' ); ?></a></p><?php endif; ?></div>
