@@ -1,25 +1,2 @@
-<?php
-/**
- * Getting started template.
- *
- * @package Algonquian_Command_Center
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-?>
-<div class="algq-command-center" data-algq-dashboard>
-	<header class="algq-hero">
-		<div>
-			<p class="algq-eyebrow"><?php echo esc_html__( 'Getting Started', 'algq-command-center' ); ?></p>
-			<h1><?php echo esc_html__( 'Set Up the Command Center', 'algq-command-center' ); ?></h1>
-			<p><?php echo esc_html__( 'Connect active plugins, choose default widgets, verify generated pages, and confirm system health before relying on executive reports.', 'algq-command-center' ); ?></p>
-		</div>
-	</header>
-
-	<section class="algq-dashboard-grid">
-		<div class="algq-panel"><h3><?php echo esc_html__( 'Setup Steps', 'algq-command-center' ); ?></h3><ol><li><?php echo esc_html__( 'Activate required ARE plugins.', 'algq-command-center' ); ?></li><li><?php echo esc_html__( 'Confirm /dashboard and plugin pages were generated.', 'algq-command-center' ); ?></li><li><?php echo esc_html__( 'Open Command Center settings and choose widgets.', 'algq-command-center' ); ?></li><li><?php echo esc_html__( 'Review System Health warnings.', 'algq-command-center' ); ?></li><li><?php echo esc_html__( 'Begin production-hardening QA.', 'algq-command-center' ); ?></li></ol></div>
-		<div class="algq-panel"><h3><?php echo esc_html__( 'Required Shortcodes', 'algq-command-center' ); ?></h3><p><code>[algq_command_center]</code></p><p><code>[algq_command_center_overview]</code></p><p><code>[algq_command_center_start]</code></p><p><code>[algq_command_center_docs]</code></p></div>
-	</section>
-</div>
+<?php defined( 'ABSPATH' ) || exit; ?>
+<div class="algq-command-center algq-content-page"><span class="algq-eyebrow">Getting Started</span><h2>Algonquian Admin Command Center 1.2.0</h2><ol class="algq-steps"><li>Install and activate the plugin ZIP.</li><li>Allow activation to create the protected Command Center and plugin guide pages.</li><li>Confirm administrator capabilities under the System Health screen.</li><li>Review plugin health and resolve missing required modules.</li><li>Choose KPI widgets under Command Center → Settings.</li><li>Use Reports for secured CSV and print/PDF-ready output.</li><li>Use safe system commands only from authorized administrator accounts.</li></ol><p>The plugin does not take ownership of deal, underwriting, offer, funding, document, signature, or automation records. It reads those systems for executive oversight.</p></div>
