@@ -1,0 +1,1 @@
+(function(){'use strict';document.addEventListener('click',function(event){var button=event.target.closest('[data-algq-confirm-offer="1"]');if(!button){return;}if(!window.confirm('Submit this offer for review? This does not create a binding purchase agreement.')){event.preventDefault();}});})();
