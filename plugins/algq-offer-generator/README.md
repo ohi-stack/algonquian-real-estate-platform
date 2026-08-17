@@ -36,7 +36,7 @@ All operational shortcodes require authentication and an applicable Offer Genera
 - `/generate-offer/`
 - `/offer-history/`
 
-WPBakery content uses `[vc_column_text]...[/vc_column_text]` and never the malformed `</vc_column_text>` closing form.
+WPBakery content must use the native `[vc_column_text]` opening shortcode and its corresponding shortcode-style closing tag. HTML-style closing syntax is not permitted.
 
 ## Capabilities
 
