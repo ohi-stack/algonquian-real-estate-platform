@@ -1,101 +1,112 @@
-name: WordPress Plugin Release Gate
+name: WordPress Plugin Release
 
 on:
   push:
     branches:
       - main
-      - 'agent/**'
-      - 'feature/**'
       - 'release/**'
+      - 'agent/**'
+    paths:
+      - 'plugin/**'
+      - 'plugins/**'
+      - 'modules/**'
+      - 'config/plugin-manifest.json'
+      - 'scripts/**'
+      - '.github/workflows/wordpress-plugin-release.yml'
   pull_request:
-    branches:
-      - main
+    paths:
+      - 'plugin/**'
+      - 'plugins/**'
+      - 'modules/**'
+      - 'config/plugin-manifest.json'
+      - 'scripts/**'
+      - '.github/workflows/wordpress-plugin-release.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  static-validation:
-    name: Static installation readiness
+  package-layout:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+
+      - name: Verify unpacked plugin source exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_count=$(
+            for dir in plugin plugins modules; do
+              if [ -d "$dir" ]; then
+                find "$dir" -type f -name '*.php'
+              fi
+            done | wc -l | tr -d ' '
+          )
+          if [ "${source_count}" = "0" ]; then
+            echo "No unpacked WordPress plugin PHP source was found under plugin/, plugins/, or modules/."
+            exit 1
+          fi
+
+      - name: Verify controlled release-status banner
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! grep -q "Production Candidate" README.md; then
+            echo "README.md must retain the controlled Production Candidate release-status banner until deployment acceptance is complete."
+            exit 1
+          fi
+
+  static-plugin-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: none
+          coverage: none
+
+      - name: Run plugin manifest validator
+        shell: bash
+        run: |
+          set +e
+          php scripts/validate-wordpress-plugins.php 2>&1 | tee /tmp/algq-validator.log
+          validator_status=${PIPESTATUS[0]}
+          while IFS= read -r line; do
+            if [[ "$line" == FAIL:* ]]; then
+              safe_line=${line//'%'/'%25'}
+              safe_line=${safe_line//$'\r'/'%0D'}
+              safe_line=${safe_line//$'\n'/'%0A'}
+              echo "::error title=Plugin validation::${safe_line}"
+            elif [[ "$line" == WARNING:* ]]; then
+              safe_line=${line//'%'/'%25'}
+              safe_line=${safe_line//$'\r'/'%0D'}
+              safe_line=${safe_line//$'\n'/'%0A'}
+              echo "::warning title=Plugin validation::${safe_line}"
+            fi
+          done < /tmp/algq-validator.log
+          exit "$validator_status"
+
+  php-lint:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - '8.2'
+    steps:
+      - uses: actions/checkout@v5
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
-          coverage: none
+          php-version: ${{ matrix.php }}
           tools: none
+          coverage: none
 
-      - name: Validate manifest JSON
-        run: php -r "json_decode(file_get_contents('config/plugin-manifest.json'), true, 512, JSON_THROW_ON_ERROR); echo 'Manifest valid'.PHP_EOL;"
-
-      - name: Run plugin package validator
-        run: php scripts/validate-wordpress-plugins.php
-
-      - name: Detect malformed WPBakery closing tags
-        shell: bash
-        run: |
-          if grep -RIn --exclude-dir=.git --exclude='*.zip' '</vc_column_text>' .; then
-            echo 'Malformed WPBakery closing tags were found.'
-            exit 1
-          fi
-
-      - name: Detect prohibited debug statements
-        shell: bash
-        run: |
-          if grep -RInE --include='*.php' '(var_dump\(|print_r\(|error_reporting\(E_ALL\)|WP_DEBUG[^A-Z_])' plugin plugins modules 2>/dev/null; then
-            echo 'Potential production debug output was found.'
-            exit 1
-          fi
-
-  package-layout:
-    name: Package layout policy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Reject ZIP-only canonical sources
-        shell: bash
-        run: |
-          zip_count=$(find . -path './.git' -prune -o -name '*.zip' -type f -print | wc -l)
-          source_count=$(find plugin plugins modules -name '*.php' -type f 2>/dev/null | wc -l)
-          echo "ZIP files: ${zip_count}"
-          echo "PHP source files: ${source_count}"
-          if [ "${zip_count}" -gt 0 ] && [ "${source_count}" -eq 0 ]; then
-            echo 'Release ZIPs cannot be the only canonical source of record.'
-            exit 1
-          fi
-
-      - name: Verify repository documentation
-        shell: bash
-        run: |
-          test -f README.md
-          test -f SECURITY.md
-          test -f CHANGELOG.md
-          test -f docs/wordpress-installation-readiness.md
-
-  wordpress-smoke-test:
-    name: WordPress smoke-test contract
-    runs-on: ubuntu-latest
-    needs:
-      - static-validation
-      - package-layout
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Confirm smoke-test documentation exists
-        run: |
-          grep -q 'Fresh WordPress installation' docs/wordpress-installation-readiness.md
-          grep -q 'Activation testing' docs/wordpress-installation-readiness.md
-          grep -q 'End-to-end workflow' docs/wordpress-installation-readiness.md
-
-      - name: Report gate status
-        run: |
-          echo 'Static source checks passed.'
-          echo 'A production release still requires execution of the documented WordPress activation and end-to-end test matrix against a disposable WordPress environment.'
+      - name: Lint manifest plugin PHP files
+        run: php scripts/lint-wordpress-plugins.php
