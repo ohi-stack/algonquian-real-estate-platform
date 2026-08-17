@@ -107,9 +107,9 @@
       "required": true,
       "depends_on": ["algonquian-real-estate-platform"],
       "expected_entry_file": "algq-command-center.php",
-      "source_version": "1.0.0-rc.1",
+      "source_version": "1.2.0",
       "target_version": "1.2.0",
-      "release_state": "source_sync_required"
+      "release_state": "canonical_source_on_main"
     },
     {
       "slug": "algq-buyer-portal",
@@ -173,9 +173,9 @@
       "required": false,
       "depends_on": ["algonquian-real-estate-platform", "woocommerce"],
       "expected_entry_file": "algq-woocommerce-bridge.php",
-      "source_version": null,
+      "source_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "source_sync_required"
+      "release_state": "canonical_source_on_main"
     },
     {
       "slug": "algq-property-stewardship",
