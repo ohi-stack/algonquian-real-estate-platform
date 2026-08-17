@@ -1,0 +1,101 @@
+name: WordPress Plugin Release Gate
+
+on:
+  push:
+    branches:
+      - main
+      - 'agent/**'
+      - 'feature/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-validation:
+    name: Static installation readiness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+          tools: none
+
+      - name: Validate manifest JSON
+        run: php -r "json_decode(file_get_contents('config/plugin-manifest.json'), true, 512, JSON_THROW_ON_ERROR); echo 'Manifest valid'.PHP_EOL;"
+
+      - name: Run plugin package validator
+        run: php scripts/validate-wordpress-plugins.php
+
+      - name: Detect malformed WPBakery closing tags
+        shell: bash
+        run: |
+          if grep -RIn --exclude-dir=.git --exclude='*.zip' '</vc_column_text>' .; then
+            echo 'Malformed WPBakery closing tags were found.'
+            exit 1
+          fi
+
+      - name: Detect prohibited debug statements
+        shell: bash
+        run: |
+          if grep -RInE --include='*.php' '(var_dump\(|print_r\(|error_reporting\(E_ALL\)|WP_DEBUG[^A-Z_])' plugin plugins modules 2>/dev/null; then
+            echo 'Potential production debug output was found.'
+            exit 1
+          fi
+
+  package-layout:
+    name: Package layout policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Reject ZIP-only canonical sources
+        shell: bash
+        run: |
+          zip_count=$(find . -path './.git' -prune -o -name '*.zip' -type f -print | wc -l)
+          source_count=$(find plugin plugins modules -name '*.php' -type f 2>/dev/null | wc -l)
+          echo "ZIP files: ${zip_count}"
+          echo "PHP source files: ${source_count}"
+          if [ "${zip_count}" -gt 0 ] && [ "${source_count}" -eq 0 ]; then
+            echo 'Release ZIPs cannot be the only canonical source of record.'
+            exit 1
+          fi
+
+      - name: Verify repository documentation
+        shell: bash
+        run: |
+          test -f README.md
+          test -f SECURITY.md
+          test -f CHANGELOG.md
+          test -f docs/wordpress-installation-readiness.md
+
+  wordpress-smoke-test:
+    name: WordPress smoke-test contract
+    runs-on: ubuntu-latest
+    needs:
+      - static-validation
+      - package-layout
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Confirm smoke-test documentation exists
+        run: |
+          grep -q 'Fresh WordPress installation' docs/wordpress-installation-readiness.md
+          grep -q 'Activation testing' docs/wordpress-installation-readiness.md
+          grep -q 'End-to-end workflow' docs/wordpress-installation-readiness.md
+
+      - name: Report gate status
+        run: |
+          echo 'Static source checks passed.'
+          echo 'A production release still requires execution of the documented WordPress activation and end-to-end test matrix against a disposable WordPress environment.'
