@@ -1,34 +1,28 @@
 # Changelog
 
-All notable changes to the Algonquian Admin Command Center are documented in this file.
+## 1.2.0 — 2026-08-08
 
-The project follows Semantic Versioning.
+- Added granular Command Center capabilities for view, manage, export, audit, and system commands.
+- Added `[algq_admin_dashboard]` compatibility alias.
+- Added `[algq_command_center_health]` shortcode.
+- Expanded executive KPIs across acquisition, underwriting, offers, contracts, closings, buyers, funding, documents, signatures, and automation.
+- Expanded health checks to WordPress, PHP, database, scheduled processing, REST, mail, storage, protected foundation plugins, Marketplace, Digital Store, and WooCommerce Bridge.
+- Added safe administrator commands for health refresh, metrics refresh, page reconciliation, capability reconciliation, and Command Center cache clearing.
+- Added audit-provider bridge without creating a competing authoritative audit log.
+- Hardened CSV export against spreadsheet formula injection.
+- Added print/PDF-ready executive reporting.
+- Reworked generated routes to `/command-center/`, `/plugin-command-center/`, `/plugin-command-center-start/`, and `/plugin-command-center-docs/`.
+- Ensured generated WPBakery content closes with `[/vc_column_text]`.
+- Preserved existing page content by creating pages only when missing.
+- Updated responsive blue/gold/teal Command Center interface.
 
-## [1.0.0-rc.2] - 2026-07-26
+## 1.1.0
 
-### Added
-- Executive dashboard templates for system health, plugin library, overview, getting started, documentation, settings, and generic operational sections.
-- Command Center documentation sitemap covering setup, KPIs, reporting, system health, audit activity, integrations, permissions, troubleshooting, and developer references.
-- Release-hardening documentation for CSV export, PDF reports, audit logging, algq-core health integration, WooCommerce revenue, Stripe subscriptions, and role-based widget visibility.
-- Shared ARE interface requirements for consistent page headers, KPI cards, forms, tables, status badges, alerts, and responsive behavior.
+- Added normalized platform health checks.
+- Added secured CSV and print-ready reporting.
+- Expanded KPI collection and extension filters.
+- Raised baseline to WordPress 6.8 and PHP 8.2.
 
-### Changed
-- Expanded the Command Center from a dashboard shell into a release-candidate administrative interface.
-- Standardized plugin documentation routes and WPBakery-compatible generated page content.
+## 1.0.0
 
-### Security
-- Documented capability, nonce, sanitization, escaping, export authorization, and audit requirements.
-
-## [1.0.0-rc.1] - 2026-06-02
-
-### Added
-- Initial executive KPI dashboard.
-- Plugin health status panel.
-- Pipeline summary and activity feed.
-- Settings screen and automatic page generation.
-- Dark mode and dashboard layout controls.
-
-## [0.1.0] - 2026-05-31
-
-### Added
-- Initial plugin bootstrap and administrative menu scaffold.
+- Initial Command Center release.

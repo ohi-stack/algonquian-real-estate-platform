@@ -1,43 +1,5 @@
-<?php
-/**
- * Generic admin section template.
- *
- * @package Algonquian_Command_Center
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
-$section_label = isset( $section ) ? ucwords( str_replace( '-', ' ', sanitize_key( $section ) ) ) : 'Dashboard';
-?>
-<div class="wrap algq-admin-shell">
-	<div class="algq-command-center" data-algq-dashboard>
-		<header class="algq-hero">
-			<div>
-				<p class="algq-eyebrow"><?php echo esc_html__( 'Command Center Module', 'algq-command-center' ); ?></p>
-				<h1><?php echo esc_html( $section_label ); ?></h1>
-				<p><?php echo esc_html__( 'This operational section is connected to the Algonquian Real Estate executive dashboard and will surface data from companion ARE plugins as integrations are hardened.', 'algq-command-center' ); ?></p>
-			</div>
-			<div class="algq-admin-actions">
-				<button type="button" class="algq-btn algq-btn--ghost" data-algq-theme-toggle><?php echo esc_html__( 'Dark Mode', 'algq-command-center' ); ?></button>
-				<a class="algq-btn algq-btn--gold" href="<?php echo esc_url( admin_url( 'admin.php?page=algq-command-center' ) ); ?>"><?php echo esc_html__( 'Dashboard', 'algq-command-center' ); ?></a>
-			</div>
-		</header>
-
-		<section class="algq-dashboard-grid">
-			<div class="algq-panel">
-				<h3><?php echo esc_html__( 'Operational Status', 'algq-command-center' ); ?></h3>
-				<p><?php echo esc_html__( 'This section is available and ready for production data binding.', 'algq-command-center' ); ?></p>
-				<div class="algq-health-list">
-					<div><span><?php echo esc_html__( 'Section', 'algq-command-center' ); ?></span><strong><?php echo esc_html( $section_label ); ?></strong></div>
-					<div><span><?php echo esc_html__( 'Status', 'algq-command-center' ); ?></span><strong><?php echo esc_html__( 'Ready for Integration', 'algq-command-center' ); ?></strong></div>
-				</div>
-			</div>
-			<div class="algq-panel">
-				<h3><?php echo esc_html__( 'Next Hardening Step', 'algq-command-center' ); ?></h3>
-				<p><?php echo esc_html__( 'Connect this section to algq-core shared services for audit logs, health checks, exports, dependency checks, and role-based visibility.', 'algq-command-center' ); ?></p>
-			</div>
-		</section>
-	</div>
-</div>
+<?php defined( 'ABSPATH' ) || exit; $section = isset( $section ) ? sanitize_key( $section ) : 'dashboard'; $metrics = ALGQ_Command_Center_Data_Provider::metrics(); ?>
+<div class="wrap algq-command-center algq-admin-shell"><span class="algq-eyebrow">Algonquian Real Estate Platform</span><h1><?php echo esc_html( ucwords( str_replace( '-', ' ', $section ) ) ); ?></h1>
+<?php if ( 'reports' === $section ) : ?><section class="algq-panel"><h2><?php echo esc_html__( 'Secured Reports', 'algq-command-center' ); ?></h2><p><a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=algq_command_center_export_csv' ), 'algq_command_center_export_csv' ) ); ?>">Export CSV</a> <a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=algq_command_center_print_report' ), 'algq_command_center_print_report' ) ); ?>">Print / Save PDF</a></p></section>
+<?php elseif ( 'audit' === $section ) : $events = ALGQ_Command_Center_Audit_Provider::recent_events(); ?><section class="algq-panel"><h2><?php echo esc_html__( 'Audit Visibility', 'algq-command-center' ); ?></h2><?php if ( empty( $events ) ) : ?><p><?php echo esc_html__( 'No audit-provider events were returned. Connect the Platform audit service through the algq_command_center_audit_events filter.', 'algq-command-center' ); ?></p><?php else : ?><pre><?php echo esc_html( (string) wp_json_encode( $events, JSON_PRETTY_PRINT ) ); ?></pre><?php endif; ?></section>
+<?php else : ?><section class="algq-panel"><p><?php echo esc_html__( 'This executive section summarizes read-only information from the authoritative Algonquian operational plugins. Use the specialized plugin to modify underlying records.', 'algq-command-center' ); ?></p><div class="algq-metric-summary"><strong>Total deals: <?php echo esc_html( (string) ( $metrics['total_deals'] ?? 0 ) ); ?></strong><strong>Active deals: <?php echo esc_html( (string) ( $metrics['active_deals'] ?? 0 ) ); ?></strong><strong>Buyers: <?php echo esc_html( (string) ( $metrics['buyers_registered'] ?? 0 ) ); ?></strong><strong>Documents: <?php echo esc_html( (string) ( $metrics['documents_generated'] ?? 0 ) ); ?></strong></div></section><?php endif; ?></div>

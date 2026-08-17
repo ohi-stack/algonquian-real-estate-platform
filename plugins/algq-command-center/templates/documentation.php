@@ -1,27 +1,2 @@
-<?php
-/**
- * Documentation template.
- *
- * @package Algonquian_Command_Center
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-?>
-<div class="algq-command-center" data-algq-dashboard>
-	<header class="algq-hero">
-		<div>
-			<p class="algq-eyebrow"><?php echo esc_html__( 'Documentation', 'algq-command-center' ); ?></p>
-			<h1><?php echo esc_html__( 'Command Center Documentation', 'algq-command-center' ); ?></h1>
-			<p><?php echo esc_html__( 'Reference guide for widgets, data sources, KPI formulas, role visibility, exports, health checks, and production-hardening requirements.', 'algq-command-center' ); ?></p>
-		</div>
-	</header>
-
-	<section class="algq-dashboard-grid">
-		<div class="algq-panel"><h3><?php echo esc_html__( 'Widget Definitions', 'algq-command-center' ); ?></h3><p><?php echo esc_html__( 'KPI widgets summarize leads, deals, offers, contracts, funding, buyers, pipeline value, documents, revenue, and operational activity.', 'algq-command-center' ); ?></p></div>
-		<div class="algq-panel"><h3><?php echo esc_html__( 'Security Requirements', 'algq-command-center' ); ?></h3><p><?php echo esc_html__( 'All admin actions must use capability checks, nonces, sanitized inputs, escaped outputs, and graceful handling of inactive companion plugins.', 'algq-command-center' ); ?></p></div>
-		<div class="algq-panel"><h3><?php echo esc_html__( 'Generated Pages', 'algq-command-center' ); ?></h3><p><code>/dashboard</code></p><p><code>/plugin/command-center</code></p><p><code>/plugin/command-center/start</code></p><p><code>/plugin/command-center/docs</code></p></div>
-		<div class="algq-panel"><h3><?php echo esc_html__( 'Release Status', 'algq-command-center' ); ?></h3><p><?php echo esc_html__( 'Release Candidate / Production Hardening. Verify all integrations and exports before relying on final production reporting.', 'algq-command-center' ); ?></p></div>
-	</section>
-</div>
+<?php defined( 'ABSPATH' ) || exit; ?>
+<div class="algq-command-center algq-content-page"><span class="algq-eyebrow">Documentation</span><h2>Command Center Documentation</h2><div class="algq-doc-grid"><div><h3>Dashboard</h3><p>Executive KPIs, pipeline stages, activity, alerts, and platform health.</p></div><div><h3>Reports</h3><p>Capability-protected CSV exports and print/PDF-ready executive reports.</p></div><div><h3>Health</h3><p>WordPress, PHP, database, cron, REST, mail, storage, and Algonquian plugin checks.</p></div><div><h3>Commands</h3><p>Health refresh, metrics refresh, page reconciliation, capability reconciliation, and Command Center cache clearing.</p></div><div><h3>Audit</h3><p>Audit visibility is supplied by the platform audit provider through extension hooks; Command Center does not own authoritative audit records.</p></div><div><h3>Extensions</h3><p>Metrics, activity, funding, pipeline stages, health checks, plugin registry, widgets, and audit events expose documented filters.</p></div></div></div>

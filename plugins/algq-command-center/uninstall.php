@@ -1,47 +1,29 @@
 <?php
 /**
- * Algonquian Admin Command Center uninstall routine.
+ * Conservative uninstall handler.
  *
- * Operational records are preserved by default. Administrators must explicitly
- * enable complete cleanup before uninstalling the plugin.
+ * Operational records and generated pages are preserved by default.
  */
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-$cleanup_enabled = (bool) get_option( 'algq_command_center_delete_data_on_uninstall', false );
-
-if ( ! $cleanup_enabled ) {
+if ( ! defined( 'ALGQ_COMMAND_CENTER_PURGE_ON_UNINSTALL' ) || true !== ALGQ_COMMAND_CENTER_PURGE_ON_UNINSTALL ) {
     return;
 }
 
 $options = array(
-    'algq_command_center_settings',
-    'algq_command_center_widget_preferences',
-    'algq_command_center_dashboard_layout',
-    'algq_command_center_delete_data_on_uninstall',
+    'algq_command_center_version',
+    'algq_command_center_release_status',
+    'algq_command_center_enabled_widgets',
+    'algq_command_center_refresh_interval',
+    'algq_command_center_pipeline_value',
+    'algq_command_center_funding_committed',
+    'algq_command_center_funding_needed',
+    'algq_command_center_last_health_check',
+    'algq_command_center_last_metrics_refresh',
 );
-
-foreach ( $options as $option_name ) {
-    delete_option( $option_name );
-    delete_site_option( $option_name );
+foreach ( $options as $option ) {
+    delete_option( $option );
 }
-
-$roles = wp_roles();
-
-if ( $roles ) {
-    foreach ( $roles->roles as $role_name => $role_data ) {
-        $role = get_role( $role_name );
-
-        if ( ! $role ) {
-            continue;
-        }
-
-        $role->remove_cap( 'manage_algq_command_center' );
-        $role->remove_cap( 'view_algq_command_center' );
-        $role->remove_cap( 'export_algq_reports' );
-        $role->remove_cap( 'view_algq_audit_logs' );
-    }
-}
-
-// Do not delete shared platform tables, audit records, deal records, documents,
-// reports owned by other plugins, or any companion-plugin data.
+delete_transient( 'algq_cc_last_health_summary' );
+delete_transient( 'algq_cc_last_metrics' );
