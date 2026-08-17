@@ -1,26 +1,32 @@
 # Algonquian MAO Engine
 
-**Version:** 1.0.0  
-**Author:** Onegodian | Algonquian Real Estate  
-**Plugin Slug:** `algq-mao-engine`
+**Version:** 2.0.0  
+**Plugin slug:** `algq-mao-engine`  
+**Authority:** Underwriting scenarios only. Pipeline CRM remains authoritative for canonical deal records.
 
-## Purpose
+## Production upgrade
 
-The Algonquian MAO Engine calculates Maximum Allowable Offer and underwriting outputs for acquisition decisions. It supports wholesale, flip, and rental underwriting modes and is designed to connect Deal Intake, Pipeline CRM, Offer Generator, PDF Engine, Buyer Portal, and Command Center workflows.
+Version 2.0.0 replaces the original single-form calculator with a controlled underwriting subsystem:
 
-## Core Functions
+- Wholesale, fix-and-flip, rental, and multifamily formulas.
+- Versioned formula and assumption snapshots.
+- Deterministic conservative, base, and optimistic sensitivity cases.
+- Draft and approved scenario states with approval evidence.
+- Granular WordPress capabilities.
+- Public calculation without public persistence.
+- REST validation and an IP-scoped calculation rate limit.
+- Conditional asset loading.
+- Idempotent nested page generation using valid WPBakery closing shortcodes.
+- Platform health registration and audit events.
+- Pipeline CRM, Offer Generator, Automation Engine, and Command Center bridge contracts.
+- Approved underwriting only is exposed to offer-generation workflows.
 
-- ARV input
-- Repair estimate input
-- Holding cost input
-- Fee and closing-cost assumptions
-- Wholesale / Flip / Rental strategy mode
-- MAO result
-- Estimated spread
-- Risk flag
-- Saved underwriting records
-- Admin dashboard
-- Automatic page generation
+## Capabilities
+
+- `view_algq_underwriting`
+- `manage_algq_underwriting`
+- `approve_algq_underwriting`
+- `manage_algq_mao_settings`
 
 ## Shortcodes
 
@@ -31,145 +37,57 @@ The Algonquian MAO Engine calculates Maximum Allowable Offer and underwriting ou
 [algq_mao_plugin_page view="docs"]
 ```
 
-## Automatic Pages
-
-On activation, the plugin creates:
+## Generated pages
 
 ```text
-/plugin/mao-engine
-/plugin/mao-engine/start
-/plugin/mao-engine/docs
-/plugin/mao-engine/calculator
+/plugin/mao-engine/
+/plugin/mao-engine/start/
+/plugin/mao-engine/docs/
+/plugin/mao-engine/calculator/
 ```
 
-Each page is created with the appropriate shortcode already inserted.
-
-## Admin Dashboard
-
-The plugin registers a WordPress admin menu:
+The generator creates missing parent pages, does not overwrite existing content, and uses:
 
 ```text
-MAO Engine
-├── Dashboard
-├── Underwriting
-└── Settings
-```
-
-Dashboard metrics include:
-
-- Underwritten deals
-- Average MAO
-- High-risk underwriting count
-
-## Default Formula
-
-```text
-MAO = (ARV × ARV Multiplier) - Repairs - Holding Costs - Closing Costs - Desired Profit
-```
-
-For wholesale mode:
-
-```text
-MAO = MAO - Assignment Fee
-```
-
-## Default Assumptions
-
-```text
-ARV Multiplier: 0.70
-Closing Cost Rate: 0.03
-Default Holding Costs: 0
-Default Desired Profit: 20000
-Default Assignment Fee: 10000
-Auto Move to Underwriting: Enabled
-```
-
-## Risk Flags
-
-The engine returns one of:
-
-- Acceptable
-- Review
-- High Risk
-
-High Risk is triggered when MAO is non-positive or repairs exceed 35% of ARV. Review is triggered when estimated spread is below desired profit.
-
-## Workflow
-
-```text
-Seller Intake
-→ Deal Created
-→ MAO Calculated
-→ Underwriting Record Saved
-→ Pipeline Status Updated
-→ Offer Generator Receives Offer Range
-→ Command Center Metrics Update
+[vc_column_text]
+[algq_mao_calculator]
+[/vc_column_text]
 ```
 
 ## REST API
+
+Public, non-persistent calculation:
 
 ```text
 POST /wp-json/algq/v1/mao/calculate
 ```
 
-Request example:
-
-```json
-{
-  "arv": 250000,
-  "repairs": 40000,
-  "holding_costs": 3000,
-  "desired_profit": 25000,
-  "assignment_fee": 10000,
-  "strategy": "wholesale"
-}
-```
-
-Response example:
-
-```json
-{
-  "arv": 250000,
-  "repairs": 40000,
-  "holding_costs": 3000,
-  "closing_costs": 7500,
-  "desired_profit": 25000,
-  "assignment_fee": 10000,
-  "strategy": "wholesale",
-  "mao": 89500,
-  "estimated_spread": 120500,
-  "risk_flag": "Acceptable"
-}
-```
-
-## Installation
-
-1. Upload `algq-mao-engine.zip` in WordPress.
-2. Activate the plugin.
-3. Confirm the MAO pages were created.
-4. Open **MAO Engine → Settings**.
-5. Confirm formula assumptions.
-6. Open `/plugin/mao-engine/calculator`.
-7. Run a test underwriting calculation.
-
-## Production Checklist
-
-- Plugin activates without fatal error.
-- Admin dashboard loads.
-- Calculator shortcode renders.
-- Auto-created pages publish correctly.
-- Underwriting record saves.
-- Database tables exist.
-- No PHP notices with `WP_DEBUG=true`.
-- Shortcodes return buffered HTML.
-- Inputs are sanitized.
-- Outputs are escaped.
-
-## Data Tables
+Authorized scenario read:
 
 ```text
-wp_algq_deals
-wp_algq_underwriting
+GET /wp-json/algq/v1/mao/scenarios/{id}
 ```
 
-The plugin preserves data on deactivation. Destructive uninstall must be opt-in only.
+## Data ownership
+
+The plugin owns `wp_algq_underwriting`. It does not create, duplicate, or directly own `wp_algq_deals`. Deal-stage changes are requested through `algq_pipeline_stage_change_requested` so Pipeline CRM can enforce its own workflow rules.
+
+## Approval control
+
+Saving creates a draft. A user with `approve_algq_underwriting` may approve the scenario. Only approved scenarios are added to Offer Generator payloads or emitted as `algq_mao_offer_ready`.
+
+## Important limitation
+
+Outputs are analytical estimates based on supplied assumptions. They are not appraisals, lending decisions, legal advice, guaranteed returns, or binding offers. Each transaction requires independent due diligence and appropriate professional review.
+
+## Validation required before production deployment
+
+- Activate on a disposable WordPress 6.5+ / PHP 8.1+ environment.
+- Run database migration from version 1.0.0.
+- Verify legacy records remain readable.
+- Test all capabilities and approval transitions.
+- Test public rate limiting and REST validation.
+- Test each strategy against independently calculated fixtures.
+- Verify Pipeline CRM and Offer Generator contract compatibility.
+- Confirm generated pages are nested and existing administrator content is preserved.
+- Confirm no PHP notices with `WP_DEBUG` enabled.
