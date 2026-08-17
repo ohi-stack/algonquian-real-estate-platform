@@ -184,9 +184,9 @@
       "required": false,
       "depends_on": ["algonquian-real-estate-platform", "algq-document-library"],
       "expected_entry_file": "algq-property-stewardship.php",
-      "source_version": null,
-      "target_version": null,
-      "release_state": "production_hardening_required"
+      "source_version": "1.0.0",
+      "target_version": "1.0.0",
+      "release_state": "canonical_source_on_main"
     }
   ],
   "release_order": [
