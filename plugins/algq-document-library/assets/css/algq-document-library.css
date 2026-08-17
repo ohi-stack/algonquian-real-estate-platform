@@ -1,0 +1,69 @@
+:root{
+  --algq-doc-navy:#0b1f33;
+  --algq-doc-gold:#c7a44a;
+  --algq-doc-teal:#167c80;
+  --algq-doc-bg:#f5f7f9;
+  --algq-doc-border:#d9e0e6;
+  --algq-doc-text:#1c2733;
+  --algq-doc-muted:#667481;
+  --algq-doc-radius:14px;
+}
+.algq-doclib,.algq-admin{color:var(--algq-doc-text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.algq-doclib *,.algq-admin *{box-sizing:border-box}
+.algq-doclib-hero,.algq-admin-header{background:linear-gradient(135deg,var(--algq-doc-navy),#123d61);border-radius:var(--algq-doc-radius);color:#fff;padding:30px;margin:18px 0 24px;box-shadow:0 12px 28px rgba(11,31,51,.16)}
+.algq-doclib-hero h2,.algq-admin-header h1{color:#fff;font-size:clamp(28px,4vw,42px);line-height:1.1;margin:8px 0 10px}
+.algq-doclib-hero p,.algq-admin-header p{font-size:17px;max-width:850px;margin:0;color:rgba(255,255,255,.86)}
+.algq-eyebrow{display:inline-block;color:#f1d486;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.algq-doclib-toolbar{display:flex;justify-content:flex-end;margin:0 0 20px}
+.algq-doclib-toolbar input[type=search]{width:min(420px,100%);min-height:44px;padding:10px 14px;border:1px solid var(--algq-doc-border);border-radius:10px;background:#fff}
+.algq-doc-category{margin:30px 0}
+.algq-doc-category>h3{font-size:23px;border-bottom:2px solid var(--algq-doc-gold);padding-bottom:10px;margin-bottom:16px}
+.algq-doc-grid,.algq-doc-packages,.algq-kpi-grid,.algq-panel-grid{display:grid;gap:16px}
+.algq-doc-grid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.algq-doc-packages{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.algq-doc-card,.algq-package-card,.algq-panel,.algq-kpi{background:#fff;border:1px solid var(--algq-doc-border);border-radius:var(--algq-doc-radius);padding:18px;box-shadow:0 5px 18px rgba(11,31,51,.06)}
+.algq-doc-card[hidden],.algq-doc-category[hidden]{display:none!important}
+.algq-doc-card-head{display:flex;justify-content:space-between;gap:10px;color:var(--algq-doc-muted);font-size:12px;margin-bottom:10px}
+.algq-doc-card h4,.algq-package-card h3{font-size:18px;line-height:1.3;margin:0 0 10px}
+.algq-doc-card p{color:var(--algq-doc-muted);margin:0 0 14px}
+.algq-doc-access{font-size:13px;font-weight:600}
+.algq-btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--algq-doc-navy);border-radius:9px;color:var(--algq-doc-navy)!important;font-weight:700;min-height:40px;padding:8px 14px;text-decoration:none!important;transition:transform .15s ease,box-shadow .15s ease}
+.algq-btn:hover,.algq-btn:focus{box-shadow:0 5px 14px rgba(11,31,51,.14);transform:translateY(-1px)}
+.algq-btn-primary,.algq-doc-request button{background:var(--algq-doc-navy);color:#fff!important}
+.algq-status{display:inline-block;border-radius:999px;background:#e9eef3;color:#253748;font-size:11px;font-weight:700;letter-spacing:.03em;padding:4px 8px;text-transform:uppercase}
+.algq-status-public,.algq-status-approved{background:#e4f4eb;color:#1f6b3f}
+.algq-status-internal,.algq-status-pending{background:#fff2cc;color:#755800}
+.algq-status-confidential{background:#e7effb;color:#194e87}
+.algq-status-restricted,.algq-status-denied,.algq-status-expired{background:#fbe9e9;color:#8b2424}
+.algq-doc-request-wrap{margin-top:34px}
+.algq-doc-request{background:#fff;border:1px solid var(--algq-doc-border);border-radius:var(--algq-doc-radius);padding:24px;box-shadow:0 6px 22px rgba(11,31,51,.07)}
+.algq-doc-request h3{font-size:24px;margin-top:0}
+.algq-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.algq-doc-request label,.algq-admin-form label{display:block;margin-bottom:14px}
+.algq-doc-request label>span,.algq-admin-form label>span{display:block;font-weight:700;margin-bottom:6px}
+.algq-doc-request input,.algq-doc-request select,.algq-doc-request textarea,.algq-admin-form input,.algq-admin-form select{width:100%;max-width:none;min-height:42px;border:1px solid var(--algq-doc-border);border-radius:8px;padding:9px 11px}
+.algq-doc-request textarea{min-height:120px;resize:vertical}
+.algq-checkbox{display:flex!important;align-items:flex-start;gap:10px}
+.algq-checkbox input{width:auto!important;min-height:auto!important;margin-top:3px}
+.algq-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+.algq-alert{border-radius:10px;margin:0 0 15px;padding:12px 14px}
+.algq-alert-success{background:#e4f4eb;border:1px solid #acd5bd;color:#1f6b3f}
+.algq-alert-error{background:#fbe9e9;border:1px solid #e0b1b1;color:#8b2424}
+.algq-empty-state{background:var(--algq-doc-bg);border:1px dashed var(--algq-doc-border);border-radius:10px;padding:18px;color:var(--algq-doc-muted)}
+.algq-admin-header{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.algq-admin-actions{display:flex;flex-wrap:wrap;gap:8px}
+.algq-kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin:0 0 18px}
+.algq-kpi span{display:block;color:var(--algq-doc-muted);font-weight:600;margin-bottom:8px}
+.algq-kpi strong{font-size:30px;color:var(--algq-doc-navy)}
+.algq-panel-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin:16px 0}
+.algq-panel h2{margin-top:0}
+.algq-table-wrap{overflow:auto}
+.algq-table textarea,.algq-table select{display:block;margin-bottom:6px;max-width:260px;width:100%}
+.algq-package-selector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;max-height:420px;overflow:auto;padding:12px;border:1px solid var(--algq-doc-border)}
+.algq-hash{display:block;max-width:100%;overflow-wrap:anywhere;white-space:normal}
+.algq-page-hero{text-align:center;color:#fff;max-width:1000px;margin:0 auto}
+.algq-page-hero span{color:#f1d486;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.algq-page-hero h1{color:#fff;font-size:clamp(34px,5vw,58px);margin:10px 0}
+.algq-page-hero p{font-size:18px;opacity:.9}
+@media(max-width:900px){.algq-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.algq-admin-header{align-items:flex-start;flex-direction:column}.algq-panel-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.algq-form-grid,.algq-package-selector,.algq-kpi-grid{grid-template-columns:1fr}.algq-doclib-hero,.algq-admin-header{padding:22px}}
