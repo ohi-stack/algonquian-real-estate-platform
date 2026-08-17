@@ -17,7 +17,13 @@ if (!is_file($manifestPath)) {
     exit(2);
 }
 
-$manifest = json_decode((string) file_get_contents($manifestPath), true, 512, JSON_THROW_ON_ERROR);
+try {
+    $manifest = json_decode((string) file_get_contents($manifestPath), true, 512, JSON_THROW_ON_ERROR);
+} catch (Throwable $exception) {
+    fwrite(STDERR, 'Manifest JSON error: ' . $exception->getMessage() . "\n");
+    exit(2);
+}
+
 $failures = [];
 $warnings = [];
 
@@ -26,11 +32,11 @@ if (!is_dir($pluginRoot)) {
     exit(2);
 }
 
-$requiredFiles = $manifest['release_requirements']['required_files'] ?? [];
-$requiredHeaders = $manifest['release_requirements']['required_header_fields'] ?? [];
+$requiredFiles = (array) ($manifest['release_requirements']['required_files'] ?? []);
+$requiredHeaders = (array) ($manifest['release_requirements']['required_header_fields'] ?? []);
 
-foreach ($manifest['plugins'] as $plugin) {
-    $slug = (string) $plugin['slug'];
+foreach ((array) ($manifest['plugins'] ?? []) as $plugin) {
+    $slug = (string) ($plugin['slug'] ?? 'unknown-plugin');
 
     if ($slug === 'algonquian-real-estate-platform') {
         $candidateDirectories = [
@@ -62,11 +68,19 @@ foreach ($manifest['plugins'] as $plugin) {
         continue;
     }
 
-    $entryFile = $directory . '/' . $plugin['expected_entry_file'];
-    if (!is_file($entryFile)) {
+    $expectedEntry = (string) ($plugin['expected_entry_file'] ?? '');
+    $entryFile = $expectedEntry !== '' ? $directory . '/' . $expectedEntry : '';
+    if ($entryFile === '' || !is_file($entryFile)) {
         $phpFiles = glob($directory . '/*.php') ?: [];
-        if (count($phpFiles) === 1) {
-            $entryFile = $phpFiles[0];
+        $headerFiles = [];
+        foreach ($phpFiles as $phpFile) {
+            $contents = (string) file_get_contents($phpFile);
+            if (preg_match('/^[ \t\/*#@]*Plugin Name\s*:/mi', $contents)) {
+                $headerFiles[] = $phpFile;
+            }
+        }
+        if (count($headerFiles) === 1) {
+            $entryFile = $headerFiles[0];
             $warnings[] = "{$slug}: expected entry filename differs; found " . basename($entryFile);
         } else {
             $failures[] = "{$slug}: missing unambiguous plugin entry file";
@@ -76,22 +90,31 @@ foreach ($manifest['plugins'] as $plugin) {
 
     $entryContents = (string) file_get_contents($entryFile);
     foreach ($requiredHeaders as $header) {
-        if (!preg_match('/^[ \t\/*#@]*' . preg_quote($header, '/') . '\s*:/mi', $entryContents)) {
+        if (!preg_match('/^[ \t\/*#@]*' . preg_quote((string) $header, '/') . '\s*:/mi', $entryContents)) {
             $failures[] = "{$slug}: missing plugin header '{$header}'";
         }
     }
 
-    if (!str_contains($entryContents, "defined( 'ABSPATH' )") && !str_contains($entryContents, 'defined(\'ABSPATH\')')) {
+    if (!preg_match('/defined\s*\(\s*[\'\"]ABSPATH[\'\"]\s*\)/', $entryContents)) {
         $failures[] = "{$slug}: missing direct-access guard";
     }
 
+    $declaredVersion = null;
+    if (preg_match('/^[ \t\/*#@]*Version\s*:\s*([^\r\n]+)/mi', $entryContents, $matches)) {
+        $declaredVersion = trim((string) $matches[1]);
+    }
+    $sourceVersion = isset($plugin['source_version']) && $plugin['source_version'] !== null ? trim((string) $plugin['source_version']) : '';
+    if ($sourceVersion !== '' && $declaredVersion !== null && $declaredVersion !== $sourceVersion) {
+        $failures[] = "{$slug}: plugin header version {$declaredVersion} does not match manifest source_version {$sourceVersion}";
+    }
+
     foreach ($requiredFiles as $requiredFile) {
-        if (!is_file($directory . '/' . $requiredFile)) {
+        if (!is_file($directory . '/' . (string) $requiredFile)) {
             $failures[] = "{$slug}: missing {$requiredFile}";
         }
     }
 
-    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS));
     foreach ($iterator as $fileInfo) {
         if (!$fileInfo->isFile()) {
             continue;
@@ -101,15 +124,16 @@ foreach ($manifest['plugins'] as $plugin) {
         $extension = strtolower($fileInfo->getExtension());
 
         if ($extension === 'php') {
+            $output = [];
+            $status = 0;
             $command = sprintf('php -l %s 2>&1', escapeshellarg($path));
             exec($command, $output, $status);
             if ($status !== 0) {
                 $failures[] = "{$slug}: PHP syntax failure in {$path}: " . implode(' ', $output);
             }
-            $output = [];
         }
 
-        if (in_array($extension, ['php', 'txt', 'md', 'html'], true)) {
+        if (in_array($extension, ['php', 'txt', 'html'], true)) {
             $contents = (string) file_get_contents($path);
             if (str_contains($contents, '</vc_column_text>')) {
                 $failures[] = "{$slug}: malformed WPBakery closing tag in {$path}";

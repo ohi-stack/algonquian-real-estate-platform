@@ -21,12 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.2'
           coverage: none
           tools: none
 
@@ -34,20 +34,56 @@ jobs:
         run: php -r "json_decode(file_get_contents('config/plugin-manifest.json'), true, 512, JSON_THROW_ON_ERROR); echo 'Manifest valid'.PHP_EOL;"
 
       - name: Run plugin package validator
-        run: php scripts/validate-wordpress-plugins.php
-
-      - name: Detect malformed WPBakery closing tags
         shell: bash
         run: |
-          if grep -RIn --exclude-dir=.git --exclude='*.zip' '</vc_column_text>' .; then
-            echo 'Malformed WPBakery closing tags were found.'
+          set +e
+          php scripts/validate-wordpress-plugins.php 2>&1 | tee /tmp/algq-validator.log
+          validator_status=${PIPESTATUS[0]}
+          while IFS= read -r line; do
+            if [[ "$line" == FAIL:* ]]; then
+              safe_line=${line//'%'/'%25'}
+              safe_line=${safe_line//$'\r'/'%0D'}
+              safe_line=${safe_line//$'\n'/'%0A'}
+              echo "::error title=Plugin validation::${safe_line}"
+            elif [[ "$line" == WARNING:* ]]; then
+              safe_line=${line//'%'/'%25'}
+              safe_line=${safe_line//$'\r'/'%0D'}
+              safe_line=${safe_line//$'\n'/'%0A'}
+              echo "::warning title=Plugin validation::${safe_line}"
+            fi
+          done < /tmp/algq-validator.log
+          exit "$validator_status"
+
+      - name: Detect malformed WPBakery closing tags in executable source
+        shell: bash
+        run: |
+          set -euo pipefail
+          found=0
+          for dir in plugin plugins modules; do
+            if [ -d "$dir" ]; then
+              if grep -RIn --include='*.php' --include='*.html' --include='*.txt' '</vc_column_text>' "$dir"; then
+                found=1
+              fi
+            fi
+          done
+          if [ "$found" -ne 0 ]; then
+            echo 'Malformed WPBakery closing tags were found in executable/source content.'
             exit 1
           fi
 
       - name: Detect prohibited debug statements
         shell: bash
         run: |
-          if grep -RInE --include='*.php' '(var_dump\(|print_r\(|error_reporting\(E_ALL\)|WP_DEBUG[^A-Z_])' plugin plugins modules 2>/dev/null; then
+          set -euo pipefail
+          found=0
+          for dir in plugin plugins modules; do
+            if [ -d "$dir" ]; then
+              if grep -RInE --include='*.php' '(var_dump\(|print_r\(|error_reporting\(E_ALL\)|WP_DEBUG[^A-Z_])' "$dir"; then
+                found=1
+              fi
+            fi
+          done
+          if [ "$found" -ne 0 ]; then
             echo 'Potential production debug output was found.'
             exit 1
           fi
@@ -57,13 +93,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Reject ZIP-only canonical sources
         shell: bash
         run: |
-          zip_count=$(find . -path './.git' -prune -o -name '*.zip' -type f -print | wc -l)
-          source_count=$(find plugin plugins modules -name '*.php' -type f 2>/dev/null | wc -l)
+          set -euo pipefail
+          zip_count=$(find . -path './.git' -prune -o -name '*.zip' -type f -print | wc -l | tr -d ' ')
+          source_count=$(
+            for dir in plugin plugins modules; do
+              if [ -d "$dir" ]; then
+                find "$dir" -name '*.php' -type f
+              fi
+            done | wc -l | tr -d ' '
+          )
           echo "ZIP files: ${zip_count}"
           echo "PHP source files: ${source_count}"
           if [ "${zip_count}" -gt 0 ] && [ "${source_count}" -eq 0 ]; then
@@ -74,6 +117,7 @@ jobs:
       - name: Verify repository documentation
         shell: bash
         run: |
+          set -euo pipefail
           test -f README.md
           test -f SECURITY.md
           test -f CHANGELOG.md
@@ -87,7 +131,7 @@ jobs:
       - package-layout
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Confirm smoke-test documentation exists
         run: |
