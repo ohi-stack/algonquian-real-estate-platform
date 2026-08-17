@@ -144,7 +144,8 @@ foreach ((array) ($manifest['plugins'] ?? []) as $plugin) {
             }
         }
 
-        if (in_array($extension, ['php', 'txt', 'md', 'html'], true)) {
+        // Check executable/source content, not Markdown documentation that may intentionally cite invalid examples.
+        if (in_array($extension, ['php', 'txt', 'html'], true)) {
             $contents = (string) file_get_contents($path);
             if (str_contains($contents, '</vc_column_text>')) {
                 $failures[] = "{$slug}: malformed WPBakery closing tag in {$path}";
