@@ -28,7 +28,16 @@ final class ALGQ_Pipeline_REST {
         ) );
     }
 
-    public static function can_view(): bool { return current_user_can( 'view_algq_deals' ); }
+    public static function can_view(): bool {
+        if ( class_exists( 'ALGQ_Platform_Capabilities' ) ) {
+            return ALGQ_Platform_Capabilities::can_access_system( 'crm' );
+        }
+
+        return current_user_can( 'manage_algq_pipeline' )
+            || current_user_can( 'edit_algq_deals' )
+            || current_user_can( 'create_algq_deals' );
+    }
+
     public static function can_create(): bool { return current_user_can( 'create_algq_deals' ); }
     public static function can_edit(): bool { return current_user_can( 'edit_algq_deals' ); }
     public static function can_transition(): bool { return current_user_can( 'transition_algq_deals' ); }
