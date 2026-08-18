@@ -112,7 +112,7 @@ final class ALGQ_Buyer_Marketplace_Integration {
 
         if ( in_array( 'algq_buyer', (array) $user->roles, true ) || user_can( $user, 'view_algq_marketplace' ) ) {
             if ( shortcode_exists( 'algq_deal_marketplace' ) ) {
-                return home_url( '/marketplace/' );
+                return self::marketplace_url();
             }
             return home_url( '/buyer-dashboard/' );
         }
@@ -120,10 +120,35 @@ final class ALGQ_Buyer_Marketplace_Integration {
         return $redirect_to;
     }
 
+    /**
+     * Resolve the Marketplace permalink from the Marketplace plugin first, then
+     * support the legacy live route during migration, then use the v2 fallback.
+     */
+    private static function marketplace_url(): string {
+        $page_id = absint( get_option( 'algq_dm_marketplace_page_id', 0 ) );
+        if ( $page_id > 0 ) {
+            $permalink = get_permalink( $page_id );
+            if ( is_string( $permalink ) && '' !== $permalink ) {
+                return $permalink;
+            }
+        }
+
+        $legacy_page = get_page_by_path( 'deal-marketplace', OBJECT, 'page' );
+        if ( $legacy_page instanceof WP_Post ) {
+            $permalink = get_permalink( $legacy_page );
+            if ( is_string( $permalink ) && '' !== $permalink ) {
+                return $permalink;
+            }
+        }
+
+        return home_url( '/marketplace/' );
+    }
+
     public static function investors_shortcode(): string {
         $logged_in = is_user_logged_in();
         $is_buyer = $logged_in && ( current_user_can( 'algq_view_buyer_portal' ) || current_user_can( 'view_algq_buyer_portal' ) );
         $marketplace_ready = shortcode_exists( 'algq_deal_marketplace' );
+        $marketplace_url = self::marketplace_url();
 
         ob_start();
         ?>
@@ -147,7 +172,7 @@ final class ALGQ_Buyer_Marketplace_Integration {
                     <h3 style="margin:10px 0 12px;color:#fff;font-size:29px;">Your buyer access is available.</h3>
                     <p style="margin:0 0 24px;color:#cbd5dc;font-size:17px;line-height:1.7;">Open the Marketplace to review opportunities available to your account. Private or premium opportunities may still require a specific access grant and current NDA acceptance.</p>
                     <?php if ( $marketplace_ready ) : ?>
-                        <a href="<?php echo esc_url( home_url( '/marketplace/' ) ); ?>" style="display:inline-block;margin:4px;padding:14px 24px;border-radius:7px;background:#c7a44a;color:#071422;font-weight:800;text-decoration:none;">Open Marketplace</a>
+                        <a href="<?php echo esc_url( $marketplace_url ); ?>" style="display:inline-block;margin:4px;padding:14px 24px;border-radius:7px;background:#c7a44a;color:#071422;font-weight:800;text-decoration:none;">Open Marketplace</a>
                     <?php endif; ?>
                     <a href="<?php echo esc_url( home_url( '/buyer-dashboard/' ) ); ?>" style="display:inline-block;margin:4px;padding:13px 24px;border:1px solid rgba(255,255,255,.40);border-radius:7px;color:#fff;font-weight:700;text-decoration:none;">Buyer Dashboard</a>
                 </div>
@@ -165,7 +190,7 @@ final class ALGQ_Buyer_Marketplace_Integration {
                         <p style="color:#cbd5dc;line-height:1.7;">Already registered? Sign in and you will be routed to the Marketplace when the Marketplace plugin is active.</p>
                         <a href="<?php echo esc_url( home_url( '/buyers-login/' ) ); ?>" style="display:inline-block;margin-top:8px;padding:14px 24px;border-radius:7px;background:#c7a44a;color:#071422;font-weight:800;text-decoration:none;">Buyer Login</a>
                         <?php if ( $marketplace_ready ) : ?>
-                            <a href="<?php echo esc_url( home_url( '/marketplace/' ) ); ?>" style="display:inline-block;margin:8px 0 0 6px;padding:13px 24px;border:1px solid rgba(255,255,255,.40);border-radius:7px;color:#fff;font-weight:700;text-decoration:none;">View Marketplace</a>
+                            <a href="<?php echo esc_url( $marketplace_url ); ?>" style="display:inline-block;margin:8px 0 0 6px;padding:13px 24px;border:1px solid rgba(255,255,255,.40);border-radius:7px;color:#fff;font-weight:700;text-decoration:none;">View Marketplace</a>
                         <?php endif; ?>
                     </div>
                 </div>
