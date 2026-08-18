@@ -7,7 +7,8 @@
 - Production `/investors/` page managed by the Buyer Portal integration.
 - `[algq_investors_page]` shortcode for the Investors & Capital buyer-access experience.
 - Runtime reconciliation of the shared `algq_buyer` role with Buyer Portal and Deal Marketplace base capabilities.
-- Buyer login routing to `/marketplace/` when the Deal Marketplace is active.
+- Buyer login routing to the canonical Marketplace page when the Deal Marketplace is active.
+- Marketplace route resolution that supports the Marketplace page option, legacy `/deal-marketplace/`, and v2 `/marketplace/` fallback.
 
 ### Changed
 
