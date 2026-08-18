@@ -19,14 +19,16 @@ WordPress account creation
     ↓
 Buyer credential setup notice
     ↓
-/buyers-login/
+Buyer Login
     ↓
 Authenticated algq_buyer account
     ↓
-/marketplace/
+Canonical Marketplace page
     ↓
 Registered-tier deals or authorized private/premium deals
 ```
+
+The integration resolves the Marketplace page from the Deal Marketplace page option when available. During migration it supports the legacy `/deal-marketplace/` page, then falls back to the v2 `/marketplace/` route.
 
 The shared `algq_buyer` role is reconciled at runtime so Buyer Portal and Deal Marketplace base capabilities do not depend on plugin activation order.
 
@@ -126,7 +128,7 @@ Set the active NDA version through the `algq_buyer_nda_version` option. Changing
 - buyer registration and WordPress account-creation test
 - buyer credential-notification and password-setup test
 - Buyer Login test
-- login redirect to `/marketplace/` test
+- login redirect to the resolved Marketplace page
 - registered-tier Marketplace visibility test
 - private/premium denial without an access grant
 - private/premium visibility after an access grant
