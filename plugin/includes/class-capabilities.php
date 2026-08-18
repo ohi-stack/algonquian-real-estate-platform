@@ -8,6 +8,8 @@
 defined( 'ABSPATH' ) || exit;
 
 final class ALGQ_Platform_Capabilities {
+	private const ACCESS_CONTROL_VERSION = '1.0.0';
+
 	/** @var string[] */
 	private const PLATFORM_CAPABILITIES = array(
 		'manage_algq_platform',
@@ -113,7 +115,7 @@ final class ALGQ_Platform_Capabilities {
 	);
 
 	public static function init(): void {
-		add_action( 'admin_init', array( __CLASS__, 'reconcile' ) );
+		add_action( 'init', array( __CLASS__, 'reconcile' ), 1 );
 		add_action( 'template_redirect', array( __CLASS__, 'protect_current_request' ), 0 );
 		add_filter( 'pre_do_shortcode_tag', array( __CLASS__, 'protect_shortcode' ), 1, 4 );
 	}
@@ -160,12 +162,16 @@ final class ALGQ_Platform_Capabilities {
 	}
 
 	public static function reconcile(): void {
-		if ( get_option( 'algq_platform_capability_version' ) === ALGQ_PLATFORM_VERSION ) {
+		$capabilities_current = get_option( 'algq_platform_capability_version' ) === ALGQ_PLATFORM_VERSION;
+		$access_current       = get_option( 'algq_platform_access_control_version' ) === self::ACCESS_CONTROL_VERSION;
+
+		if ( $capabilities_current && $access_current ) {
 			return;
 		}
 
 		self::install();
 		update_option( 'algq_platform_capability_version', ALGQ_PLATFORM_VERSION );
+		update_option( 'algq_platform_access_control_version', self::ACCESS_CONTROL_VERSION );
 	}
 
 	/** @return string[] */
