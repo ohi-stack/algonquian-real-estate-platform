@@ -26,6 +26,7 @@ define( 'ALGQ_DI_URL', plugin_dir_url( __FILE__ ) );
 require_once ALGQ_DI_DIR . 'includes/class-security.php';
 require_once ALGQ_DI_DIR . 'includes/class-intake.php';
 require_once ALGQ_DI_DIR . 'includes/class-admin-api.php';
+require_once ALGQ_DI_DIR . 'includes/class-production.php';
 
 register_activation_hook( ALGQ_DI_FILE, array( 'ALGQ_Deal_Intake_Plugin', 'activate' ) );
 register_deactivation_hook( ALGQ_DI_FILE, array( 'ALGQ_Deal_Intake_Plugin', 'deactivate' ) );
@@ -34,5 +35,6 @@ add_action(
 	'plugins_loaded',
 	static function (): void {
 		ALGQ_Deal_Intake_Plugin::instance()->run();
+		ALGQ_Deal_Intake_Production::init();
 	}
 );
