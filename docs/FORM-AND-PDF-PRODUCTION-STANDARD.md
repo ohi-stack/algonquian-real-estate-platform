@@ -11,6 +11,8 @@ Operational notifications and generated-PDF copies default to:
 
 The deployment may override this with the WordPress option `algq_company_notification_email` or the `algq_company_notification_email` filter.
 
+The Platform Mail Gateway exposes `algq_send_mail()` as the shared operational-mail API. Messages sent through that API retain the intended recipient and, by default, also retain an Algonquian Real Estate operations copy. Plugins can explicitly set `company_copy=false` only for messages that must exclusively go to an external recipient.
+
 ## Form production requirements
 
 Every form that creates, changes, transmits, approves, or requests an operational record must have the controls applicable to its trust level.
@@ -59,7 +61,7 @@ Primary form interfaces:
 - `[deal_intake_form_internal]`
 - `[deal_quick_capture]`
 
-Deployment requirement: set `algq_di_notification_email` to the company operations mailbox if a different WordPress administrator email is configured.
+Production migration behavior moves the historical empty/default-WordPress-admin notification setting to the verified company operations mailbox while preserving an intentionally customized intake mailbox. Shared Platform mail delivery also retains the company copy.
 
 ### Algonquian Buyer Portal
 
@@ -77,20 +79,23 @@ Controls include:
 - Buyer qualification fields for acquisition strategy, purchase range, and proof-of-funds / financing status.
 - Company notification after account creation.
 - Audit event after account creation.
+- Canonical `/buyer-login/` post-registration routing.
 
 Buyer interest, NDA acceptance, and protected downloads additionally require authenticated buyer access, record-level deal authorization, nonce verification, and current NDA acceptance.
 
 ### Algonquian Deal Marketplace
 
-Marketplace offer submission requires authenticated capability access, deal-level authorization, current NDA acceptance when required, nonce verification, amount validation, financing-type allowlisting, terms-length limits, rate limiting, durable storage, audit evidence, and a company/admin notification.
+Marketplace offer submission requires authenticated capability access, deal-level authorization, current NDA acceptance when required, nonce verification, amount validation, financing-type allowlisting, terms-length limits, rate limiting, durable storage, audit evidence, and a company notification.
 
 ### Algonquian Document Library
 
-Document-access requests use nonce verification, a honeypot, required-field validation, package allowlisting, versioned consent, privacy hashes, rate limiting, durable persistence, audit evidence, and review before entitlement is granted.
+Document-access requests use nonce verification, a honeypot, required-field validation, package allowlisting, versioned consent, privacy hashes, rate limiting, durable persistence, audit evidence, and review before entitlement is granted. Its operational notification uses the shared Platform mail API and therefore retains the company operations copy.
 
 ### MAO Engine / Offer Generator / PDF & Signature Engine / Command Center
 
 These operational forms are protected interfaces. They must remain inaccessible to unauthorized public users and require their documented capabilities and WordPress nonces before state-changing actions are accepted.
+
+Offer Generator PDF requests are bridged into the authoritative PDF & Signature Engine. The bridge returns a protected PDF record rather than HTML masquerading as a PDF, so generated offers receive the same hashing, Media Library registration, protected download, and company-copy treatment.
 
 ### Digital Store / WooCommerce Bridge
 
@@ -116,8 +121,10 @@ Important security rule:
 
 - The Media Library record references the existing protected file.
 - The file is **not copied** into an ordinary public uploads location.
+- `_wp_attached_file` is linked to the protected file so WordPress Media Library can manage the attachment record correctly.
 - The attachment is marked as an Algonquian protected attachment.
 - Attachment URLs are replaced with the PDF Engine's nonce-protected download controller.
+- Anonymous users receive no direct attachment URL.
 - Deleting the Media Library entry is blocked so Media Library operations cannot delete the authoritative PDF file.
 
 Media Library registration can be disabled with:
@@ -140,7 +147,9 @@ Email delivery can be disabled with:
 
 or through the `algq_pdf_company_email_enabled` filter.
 
-Email delivery failure does not delete or invalidate the authoritative protected PDF. A delivery audit event records success or failure.
+The default attachment limit is 15 MB and may be changed with `algq_pdf_company_email_max_bytes`. A PDF above the limit remains safely archived in protected storage and Media Library even if email attachment delivery is skipped.
+
+Email delivery failure does not delete or invalidate the authoritative protected PDF. A delivery audit event records success, failure, or size-based skip.
 
 ## Production deployment gates
 
@@ -148,17 +157,17 @@ Canonical source is not the same as a production-certified installation. Before 
 
 1. Submit a fresh public Deal Intake form and confirm persistence, consent evidence, duplicate evaluation, notification email, and thank-you redirect.
 2. Submit invalid, bot-like, and rate-limited Deal Intake requests and confirm they fail safely.
-3. Create a fresh buyer account and confirm the Buyer Portal production guard, consent evidence, qualification metadata, notification email, login, authorized deal access, NDA acceptance, interest submission, and protected download.
+3. Create a fresh buyer account and confirm the Buyer Portal production guard, consent evidence, qualification metadata, notification email, canonical login redirect, authorized deal access, NDA acceptance, interest submission, and protected download.
 4. Submit a Marketplace offer from an authorized buyer and confirm an unauthorized buyer cannot submit the same offer.
 5. Submit a Document Library access request and confirm no document entitlement is granted before review.
-6. Generate a PDF and confirm:
+6. Generate a PDF directly and through Offer Generator and confirm:
    - database record created;
    - SHA-256 integrity check passes;
    - protected file exists;
-   - protected Media Library attachment exists;
+   - protected Media Library attachment exists and references the protected file;
    - direct uploads URL is not usable for anonymous access;
    - authorized PDF download works;
-   - company email receives the PDF attachment;
+   - company email receives the PDF attachment when within the configured size limit;
    - mail success/failure is visible in platform mail/audit evidence.
 7. Run the repository WordPress plugin release workflow and require all PHP/static validation gates to pass.
 8. Repeat the key workflows on the actual production hosting stack after deployment.
