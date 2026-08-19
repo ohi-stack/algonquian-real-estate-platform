@@ -37,12 +37,12 @@
     {
       "slug": "algq-deal-intake",
       "name": "Algonquian Deal Intake",
-      "authority": "Seller leads, property submissions, consent records, attachments, duplicate detection and controlled initial deal creation",
+      "authority": "Seller leads, property submissions, consent records, protected submission artifacts, duplicate detection and controlled initial deal creation",
       "required": true,
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm"],
       "expected_entry_file": "algq-deal-intake.php",
-      "source_version": "2.0.0",
-      "target_version": "2.0.0",
+      "source_version": "2.1.0",
+      "target_version": "2.1.0",
       "release_state": "canonical_source_on_main"
     },
     {
