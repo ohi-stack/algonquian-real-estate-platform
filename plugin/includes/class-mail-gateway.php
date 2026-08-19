@@ -76,6 +76,61 @@ final class ALGQ_Mail_Gateway {
 		update_option( self::OPTION_KEY, $settings, false );
 	}
 
+	/**
+	 * Send a transactional platform email through wp_mail().
+	 *
+	 * @param array<string,mixed> $args Message arguments.
+	 * @return true|WP_Error
+	 */
+	public static function send( array $args ) {
+		$to      = sanitize_email( (string) ( $args['to'] ?? '' ) );
+		$subject = sanitize_text_field( (string) ( $args['subject'] ?? '' ) );
+		$message = (string) ( $args['message'] ?? '' );
+
+		if ( ! is_email( $to ) || '' === $subject || '' === trim( wp_strip_all_tags( $message ) ) ) {
+			return new WP_Error( 'algq_mail_invalid_message', __( 'A valid recipient, subject, and message are required.', 'algonquian-real-estate-platform' ) );
+		}
+
+		$headers = array();
+		foreach ( (array) ( $args['headers'] ?? array() ) as $header ) {
+			$header = trim( str_replace( array( "\r", "\n" ), '', (string) $header ) );
+			if ( '' !== $header ) {
+				$headers[] = $header;
+			}
+		}
+
+		$reply_to = sanitize_email( (string) ( $args['reply_to'] ?? '' ) );
+		if ( is_email( $reply_to ) ) {
+			$headers[] = 'Reply-To: ' . $reply_to;
+		}
+
+		$attachments = array();
+		foreach ( (array) ( $args['attachments'] ?? array() ) as $attachment ) {
+			$path = wp_normalize_path( (string) $attachment );
+			if ( is_file( $path ) && is_readable( $path ) ) {
+				$attachments[] = $path;
+			}
+		}
+
+		$sent = wp_mail( $to, $subject, $message, $headers, $attachments );
+		$context = array(
+			'module'           => sanitize_key( (string) ( $args['module'] ?? 'platform' ) ),
+			'event'            => sanitize_key( (string) ( $args['event'] ?? 'transactional_email' ) ),
+			'related_id'       => absint( $args['related_id'] ?? 0 ),
+			'success'          => (bool) $sent,
+			'recipient_domain' => self::email_domain( $to ),
+			'attachment_count' => count( $attachments ),
+		);
+
+		if ( class_exists( 'ALGQ_Platform_Audit_Log' ) ) {
+			ALGQ_Platform_Audit_Log::log( 'mail.transactional', $context );
+		} else {
+			do_action( 'algq_audit_event', 'mail.transactional', $context );
+		}
+
+		return $sent ? true : new WP_Error( 'algq_mail_send_failed', __( 'The message could not be sent.', 'algonquian-real-estate-platform' ) );
+	}
+
 	/** @param PHPMailer\PHPMailer\PHPMailer $phpmailer */
 	public static function configure_phpmailer( $phpmailer ): void {
 		$settings = self::settings();
@@ -140,6 +195,11 @@ final class ALGQ_Mail_Gateway {
 		return $wpdb->prefix . 'algq_mail_log';
 	}
 
+	private static function email_domain( string $email ): string {
+		$parts = explode( '@', $email );
+		return 2 === count( $parts ) ? sanitize_text_field( strtolower( $parts[1] ) ) : '';
+	}
+
 	/**
 	 * @param array<string,mixed> $mail_data Mail data.
 	 */
@@ -169,5 +229,17 @@ final class ALGQ_Mail_Gateway {
 			),
 			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s' )
 		);
+	}
+}
+
+if ( ! function_exists( 'algq_send_mail' ) ) {
+	/**
+	 * Shared companion-plugin mail contract.
+	 *
+	 * @param array<string,mixed> $args Mail arguments.
+	 * @return true|WP_Error
+	 */
+	function algq_send_mail( array $args ) {
+		return ALGQ_Mail_Gateway::send( $args );
 	}
 }
