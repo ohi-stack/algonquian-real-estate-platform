@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.1.0
+
+- Reconciled the public `/submit-a-property/` and `/sell-your-property/` conversion routes to the canonical `[algq_deal_intake_form]` interface without overwriting administrator-authored page content.
+- Added transitional `[algq_seller_intake_entry]` compatibility rendering and a permanent redirect from the older generated `/submit-property/` route.
+- Added multipart support and optional supporting-document uploads to the public, internal, and quick-capture intake forms.
+- Added server-side file-count, file-size, extension, and MIME validation for PDF, JPEG, PNG, WEBP, and DOCX supporting documents.
+- Added UUID-based private filenames, SHA-256 integrity hashes, protected Deal Intake storage, and durable attachment-table records.
+- Added optional Cloudflare Turnstile rendering and server-side verification when deployment credentials are configured.
+- Added automatic PDF generation for each successfully committed intake submission.
+- Added protected WordPress Media Library registration for generated intake PDFs, including submission linkage and SHA-256 metadata.
+- Added a capability-gated private PDF download controller instead of exposing generated PDFs through ordinary public media URLs.
+- Added PDF archival delivery to the configured business mailbox, defaulting to `algonquianre@gmail.com`.
+- Added artifact, attachment-rejection, Turnstile-failure, PDF archival, and archive-email audit events.
+- Preserved the 2.0.0 database schema; no schema migration is required for this feature release.
+
 ## 2.0.0
 
 - Replaced the incomplete release-candidate scaffold with a self-contained production-candidate bootstrap.
