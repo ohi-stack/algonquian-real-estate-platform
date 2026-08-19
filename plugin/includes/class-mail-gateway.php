@@ -243,3 +243,58 @@ if ( ! function_exists( 'algq_send_mail' ) ) {
 		return ALGQ_Mail_Gateway::send( $args );
 	}
 }
+
+/**
+ * Platform-level baseline throttle for unauthenticated Algonquian POST actions.
+ * Companion plugins may apply stricter action-specific controls.
+ */
+final class ALGQ_Public_Form_Throttle {
+	private const DEFAULT_RATE_LIMIT = 20;
+
+	public static function init(): void {
+		add_action( 'admin_init', array( __CLASS__, 'enforce_rate_limit' ), 1 );
+	}
+
+	public static function enforce_rate_limit(): void {
+		if ( is_user_logged_in() || 'POST' !== strtoupper( (string) ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) {
+			return;
+		}
+
+		$action = isset( $_REQUEST['action'] ) ? sanitize_key( wp_unslash( $_REQUEST['action'] ) ) : '';
+		if ( '' === $action || ! str_starts_with( $action, 'algq_' ) ) {
+			return;
+		}
+
+		$limit = max( 1, absint( apply_filters( 'algq_public_form_rate_limit_per_hour', self::DEFAULT_RATE_LIMIT, $action ) ) );
+		$key   = self::rate_limit_key( $action );
+		$count = absint( get_transient( $key ) );
+
+		if ( $count >= $limit ) {
+			$context = array(
+				'action' => $action,
+				'limit'  => $limit,
+			);
+			if ( class_exists( 'ALGQ_Platform_Audit_Log' ) ) {
+				ALGQ_Platform_Audit_Log::log( 'security.public_form_rate_limited', $context );
+			} else {
+				do_action( 'algq_audit_event', 'security.public_form_rate_limited', $context );
+			}
+			status_header( 429 );
+			wp_die(
+				esc_html__( 'Too many requests. Please wait before submitting this form again.', 'algonquian-real-estate-platform' ),
+				esc_html__( 'Request limit reached', 'algonquian-real-estate-platform' ),
+				array( 'response' => 429 )
+			);
+		}
+
+		set_transient( $key, $count + 1, HOUR_IN_SECONDS );
+	}
+
+	private static function rate_limit_key( string $action ): string {
+		$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+		$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+		return 'algq_public_form_rate_' . hash_hmac( 'sha256', $action . '|' . $ip . '|' . substr( $ua, 0, 300 ), wp_salt( 'nonce' ) );
+	}
+}
+
+ALGQ_Public_Form_Throttle::init();
