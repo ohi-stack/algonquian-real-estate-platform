@@ -3,7 +3,7 @@
  * Plugin Name: Algonquian PDF & Signature Engine
  * Plugin URI: https://algonquianrealestate.com/technology/plugins/pdf-signature-engine/
  * Description: Generates protected transaction PDFs, maintains immutable document versions, and coordinates provider-neutral signature workflows for the Algonquian Real Estate platform.
- * Version: 2.0.1
+ * Version: 2.0.0
  * Author: Onegodian | Algonquian Real Estate Technology Division
  * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-pdf-signature
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ALGQ_PDF_SIGNATURE_VERSION', '2.0.1' );
+define( 'ALGQ_PDF_SIGNATURE_VERSION', '2.0.0' );
 define( 'ALGQ_PDF_SIGNATURE_SCHEMA_VERSION', '2.0.0' );
 define( 'ALGQ_PDF_SIGNATURE_FILE', __FILE__ );
 define( 'ALGQ_PDF_SIGNATURE_DIR', plugin_dir_path( __FILE__ ) );
