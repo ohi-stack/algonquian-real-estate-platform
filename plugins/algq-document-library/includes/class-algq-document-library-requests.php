@@ -2,7 +2,6 @@
 /**
  * Durable access request workflow.
  */
-
 defined( 'ABSPATH' ) || exit;
 
 final class ALGQ_Document_Library_Requests {
@@ -281,9 +280,17 @@ final class ALGQ_Document_Library_Requests {
     }
 
     private static function send_notifications( string $uuid, string $name, string $email, string $company, string $package, int $document_id ): void {
-        $admin_email = (string) get_option( 'admin_email' );
-        $subject     = sprintf( __( 'Document access request %s', 'algq-document-library' ), $uuid );
-        $message     = sprintf(
+        $company_email = sanitize_email(
+            (string) apply_filters(
+                'algq_company_notification_email',
+                get_option( 'algq_company_notification_email', 'algonquianre@gmail.com' )
+            )
+        );
+        if ( ! is_email( $company_email ) ) {
+            $company_email = 'algonquianre@gmail.com';
+        }
+        $subject = sprintf( __( 'Document access request %s', 'algq-document-library' ), $uuid );
+        $message = sprintf(
             "Name: %s\nEmail: %s\nCompany: %s\nPackage: %s\nDocument ID: %d\nRequest UUID: %s",
             $name,
             $email,
@@ -296,7 +303,7 @@ final class ALGQ_Document_Library_Requests {
         if ( function_exists( 'algq_send_mail' ) ) {
             algq_send_mail(
                 array(
-                    'to'         => $admin_email,
+                    'to'         => $company_email,
                     'subject'    => $subject,
                     'message'    => $message,
                     'module'     => 'document-library',
@@ -307,7 +314,7 @@ final class ALGQ_Document_Library_Requests {
             return;
         }
 
-        wp_mail( $admin_email, $subject, $message );
+        wp_mail( $company_email, $subject, $message );
     }
 
     private static function redirect( string $url, string $status ): void {
