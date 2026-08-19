@@ -14,6 +14,7 @@ final class ALGQ_Buyer_Portal_Production {
 
     public static function init(): void {
         add_filter( 'do_shortcode_tag', array( __CLASS__, 'decorate_registration_form' ), 10, 4 );
+        add_filter( 'wp_redirect', array( __CLASS__, 'normalize_registration_redirect' ), 20, 2 );
         add_action( 'admin_post_nopriv_algq_buyer_register', array( __CLASS__, 'guard_registration' ), 1 );
         add_action( 'user_register', array( __CLASS__, 'capture_registration_evidence' ), 20, 2 );
         add_action( 'algq_buyer_interest_submitted', array( __CLASS__, 'notify_interest' ), 20, 2 );
@@ -54,6 +55,27 @@ final class ALGQ_Buyer_Portal_Production {
         }
 
         return $output;
+    }
+
+    /**
+     * Keep the legacy registration handler compatible while normalizing its
+     * obsolete /buyers-login/ redirect to the canonical /buyer-login/ route.
+     */
+    public static function normalize_registration_redirect( string $location, int $status ): string {
+        unset( $status );
+
+        if ( 'algq_buyer_register' !== sanitize_key( wp_unslash( $_POST['action'] ?? '' ) ) ) {
+            return $location;
+        }
+
+        $legacy = trailingslashit( home_url( '/buyers-login/' ) );
+        if ( str_starts_with( trailingslashit( strtok( $location, '?' ) ?: '' ), $legacy ) ) {
+            $query = wp_parse_url( $location, PHP_URL_QUERY );
+            $canonical = home_url( '/buyer-login/' );
+            return $query ? $canonical . '?' . $query : $canonical;
+        }
+
+        return $location;
     }
 
     /**
