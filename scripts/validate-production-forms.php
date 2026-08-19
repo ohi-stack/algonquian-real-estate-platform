@@ -98,7 +98,7 @@ foreach ($scanRoots as $scanRoot) {
         }
 
         if ($hasPublicMutation) {
-            $hasAbuseControl = (bool) preg_match('/\b(rate[_-]?limit|throttl|honeypot|captcha|turnstile|recaptcha|started_at|minimum[_-]?submit|transient)\b/i', $source);
+            $hasAbuseControl = (bool) preg_match('/(rate[_-]?limit|throttl|honeypot|captcha|turnstile|recaptcha|started_at|minimum[_-]?submit|transient)/i', $source);
             if (!$hasAbuseControl) {
                 $failures[] = "{$package}: public unauthenticated mutation must include rate limiting, bot controls, or equivalent abuse protection";
             }
