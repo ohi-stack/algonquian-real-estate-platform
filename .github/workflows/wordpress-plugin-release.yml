@@ -90,6 +90,27 @@ jobs:
           done < /tmp/algq-validator.log
           exit "$validator_status"
 
+      - name: Run production form validator
+        shell: bash
+        run: |
+          set +e
+          php scripts/validate-production-forms.php 2>&1 | tee /tmp/algq-form-validator.log
+          validator_status=${PIPESTATUS[0]}
+          while IFS= read -r line; do
+            if [[ "$line" == FAIL:* ]]; then
+              safe_line=${line//'%'/'%25'}
+              safe_line=${safe_line//$'\r'/'%0D'}
+              safe_line=${safe_line//$'\n'/'%0A'}
+              echo "::error title=Production form validation::${safe_line}"
+            elif [[ "$line" == WARNING:* ]]; then
+              safe_line=${line//'%'/'%25'}
+              safe_line=${safe_line//$'\r'/'%0D'}
+              safe_line=${safe_line//$'\n'/'%0A'}
+              echo "::warning title=Production form validation::${safe_line}"
+            fi
+          done < /tmp/algq-form-validator.log
+          exit "$validator_status"
+
   php-lint:
     name: PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
@@ -104,7 +125,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: '8.2'
           tools: none
           coverage: none
 
