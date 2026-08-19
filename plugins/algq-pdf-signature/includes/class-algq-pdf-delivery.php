@@ -112,6 +112,19 @@ final class ALGQ_PDF_Delivery {
         }
 
         $attachment_id = (int) $attachment_id;
+        $file_meta_saved = update_attached_file( $attachment_id, $path );
+        if ( false === $file_meta_saved ) {
+            wp_delete_post( $attachment_id, true );
+            self::audit(
+                'pdf.media_registration_failed',
+                array(
+                    'document_id' => $document_id,
+                    'error'       => 'attached_file_meta_failed',
+                )
+            );
+            return 0;
+        }
+
         update_post_meta( $attachment_id, '_algq_pdf_document_id', $document_id );
         update_post_meta( $attachment_id, '_algq_pdf_document_uuid', sanitize_text_field( (string) $record->uuid ) );
         update_post_meta( $attachment_id, '_algq_pdf_file_hash', sanitize_text_field( (string) $record->file_hash ) );
