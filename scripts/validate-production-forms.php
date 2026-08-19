@@ -75,7 +75,7 @@ foreach ($scanRoots as $scanRoot) {
         $hasSanitization = (bool) preg_match('/\b(sanitize_[a-z0-9_]+|absint|intval|floatval|wp_kses|wp_unslash)\s*\(/i', $source);
         $hasEscaping = (bool) preg_match('/\b(esc_html|esc_attr|esc_url|esc_textarea|wp_kses_post)\s*\(/', $source);
         $hasCapabilityOrAuth = (bool) preg_match('/\b(current_user_can|is_user_logged_in|permission_callback|wc_get_checkout_url)\b/', $source);
-        $hasAudit = (bool) preg_match('/\b(algq_log_event|ALGQ_Platform_Audit_Log::log|algq_audit_event|do_action\s*\(\s*[\'\"]algq_[^\'\"]*(created|submitted|updated|failed|completed))/', $source);
+        $hasAudit = (bool) preg_match('/\b(algq_log_event|algq_audit_event|[A-Za-z0-9_]*Audit_Log::(?:log|record)|do_action\s*\(\s*[\'\"]algq_[^\'\"]*(created|submitted|updated|failed|completed))/', $source);
         $hasErrorHandling = (bool) preg_match('/\b(WP_Error|is_wp_error|wp_die|redirect_error|wc_add_notice|throw\s+new)\b/', $source);
 
         if ($hasPostForm && (!$hasNonceOutput || !$hasNonceCheck)) {
@@ -94,13 +94,13 @@ foreach ($scanRoots as $scanRoot) {
             $failures[] = "{$package}: mutating form/API package does not show explicit error handling";
         }
         if (($hasAdminPostMutation || $hasRestMutation) && !$hasAudit) {
-            $warnings[] = "{$package}: verify that every successful and failed material form mutation emits a durable audit event";
+            $failures[] = "{$package}: material form/API mutations must emit a durable audit event";
         }
 
         if ($hasPublicMutation) {
             $hasAbuseControl = (bool) preg_match('/\b(rate[_-]?limit|throttl|honeypot|captcha|turnstile|recaptcha|started_at|minimum[_-]?submit|transient)\b/i', $source);
             if (!$hasAbuseControl) {
-                $warnings[] = "{$package}: public unauthenticated mutation should include rate limiting, bot controls, or equivalent abuse protection";
+                $failures[] = "{$package}: public unauthenticated mutation must include rate limiting, bot controls, or equivalent abuse protection";
             }
         }
 
@@ -127,5 +127,5 @@ if ($failures !== []) {
     exit(1);
 }
 
-echo "All discovered form-owning packages passed the static production-form gate.\n";
+echo "All discovered form-owning packages passed the static production-form gate with no unresolved security warnings.\n";
 exit(0);
