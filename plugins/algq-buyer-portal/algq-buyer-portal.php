@@ -20,6 +20,7 @@ define( 'ALGQ_BUYER_PORTAL_URL', plugin_dir_url( __FILE__ ) );
 
 require_once ALGQ_BUYER_PORTAL_DIR . 'includes/class-algq-buyer-portal-activator.php';
 require_once ALGQ_BUYER_PORTAL_DIR . 'includes/class-algq-buyer-portal.php';
+require_once ALGQ_BUYER_PORTAL_DIR . 'includes/class-algq-buyer-portal-production.php';
 
 register_activation_hook( __FILE__, array( 'ALGQ_Buyer_Portal_Activator', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'ALGQ_Buyer_Portal_Activator', 'deactivate' ) );
@@ -28,5 +29,6 @@ add_action(
     'plugins_loaded',
     static function (): void {
         ALGQ_Buyer_Portal::instance()->init();
+        ALGQ_Buyer_Portal_Production::init();
     }
 );
