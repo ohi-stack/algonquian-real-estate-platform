@@ -122,9 +122,15 @@ trait ALGQ_Deal_Intake_Submissions_Workflow {
 	}
 
 	private static function notify( array $record ): void {
-		$email = sanitize_email( (string) get_option( 'algq_di_notification_email', get_option( 'admin_email' ) ) );
+		$email = sanitize_email(
+			(string) get_option(
+				'algq_di_notification_email',
+				get_option( 'algq_company_notification_email', 'algonquianre@gmail.com' )
+			)
+		);
+		$email = sanitize_email( (string) apply_filters( 'algq_company_notification_email', $email ) );
 		if ( ! is_email( $email ) ) {
-			return;
+			$email = 'algonquianre@gmail.com';
 		}
 		$subject = sprintf( 'New property submission: %s', $record['uuid'] ?? '' );
 		$message = sprintf(
