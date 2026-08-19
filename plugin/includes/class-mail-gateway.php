@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 final class ALGQ_Mail_Gateway {
 	private const OPTION_KEY = 'algq_mail_settings';
+	private const COMPANY_EMAIL = 'algonquianre@gmail.com';
 
 	public static function init(): void {
 		add_action( 'phpmailer_init', array( __CLASS__, 'configure_phpmailer' ) );
@@ -41,6 +42,10 @@ final class ALGQ_Mail_Gateway {
 			KEY created_at (created_at)
 		) {$charset_collate};";
 		dbDelta( $sql );
+
+		if ( false === get_option( 'algq_company_notification_email', false ) ) {
+			add_option( 'algq_company_notification_email', self::COMPANY_EMAIL, '', false );
+		}
 	}
 
 	/** @return array<string,mixed> */
@@ -120,6 +125,76 @@ final class ALGQ_Mail_Gateway {
 		return $from ?: $name;
 	}
 
+	public static function company_email(): string {
+		$email = sanitize_email(
+			(string) apply_filters(
+				'algq_company_notification_email',
+				get_option( 'algq_company_notification_email', self::COMPANY_EMAIL )
+			)
+		);
+		return is_email( $email ) ? $email : self::COMPANY_EMAIL;
+	}
+
+	/**
+	 * Send an operational platform message and, by default, retain a company
+	 * operations copy. Plugins may set company_copy=false only for mail that
+	 * should exclusively go to an external recipient.
+	 *
+	 * @param array<string,mixed> $args Mail arguments.
+	 */
+	public static function send( array $args ): bool {
+		$to = $args['to'] ?? array();
+		$recipients = is_array( $to ) ? $to : array( $to );
+		$recipients = array_values(
+			array_unique(
+				array_filter(
+					array_map(
+						static fn( $recipient ): string => sanitize_email( (string) $recipient ),
+						$recipients
+					),
+					'is_email'
+				)
+			)
+		);
+
+		$company_copy = ! array_key_exists( 'company_copy', $args ) || (bool) $args['company_copy'];
+		if ( $company_copy ) {
+			$company = self::company_email();
+			if ( is_email( $company ) && ! in_array( strtolower( $company ), array_map( 'strtolower', $recipients ), true ) ) {
+				$recipients[] = $company;
+			}
+		}
+
+		if ( empty( $recipients ) ) {
+			return false;
+		}
+
+		$subject = sanitize_text_field( (string) ( $args['subject'] ?? '' ) );
+		$message = (string) ( $args['message'] ?? '' );
+		$headers = $args['headers'] ?? array();
+		$attachments = $args['attachments'] ?? array();
+		$headers = is_array( $headers ) || is_string( $headers ) ? $headers : array();
+		$attachments = is_array( $attachments ) ? $attachments : array( $attachments );
+		$attachments = array_values( array_filter( array_map( 'strval', $attachments ), 'is_readable' ) );
+
+		$sent = (bool) wp_mail( $recipients, $subject, $message, $headers, $attachments );
+
+		$context = array(
+			'plugin'     => 'algonquian-real-estate-platform',
+			'module'     => sanitize_key( (string) ( $args['module'] ?? 'platform' ) ),
+			'event'      => sanitize_key( (string) ( $args['event'] ?? 'notification' ) ),
+			'related_id' => sanitize_text_field( (string) ( $args['related_id'] ?? '' ) ),
+			'sent'       => $sent,
+		);
+		if ( function_exists( 'algq_log_event' ) ) {
+			algq_log_event( 'mail.operational_notification', $context );
+		} else {
+			do_action( 'algq_audit_event', 'mail.operational_notification', $context );
+		}
+
+		return $sent;
+	}
+
 	/** @param array<string,mixed> $mail_data */
 	public static function log_success( array $mail_data ): void {
 		self::write_log( 'success', $mail_data );
@@ -169,5 +244,18 @@ final class ALGQ_Mail_Gateway {
 			),
 			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s' )
 		);
+	}
+}
+
+if ( ! function_exists( 'algq_company_notification_email' ) ) {
+	function algq_company_notification_email(): string {
+		return ALGQ_Mail_Gateway::company_email();
+	}
+}
+
+if ( ! function_exists( 'algq_send_mail' ) ) {
+	/** @param array<string,mixed> $args */
+	function algq_send_mail( array $args ): bool {
+		return ALGQ_Mail_Gateway::send( $args );
 	}
 }
