@@ -17,6 +17,7 @@ final class ALGQ_PDF_Delivery {
 
     public static function init(): void {
         add_action( 'algq_pdf_document_generated', array( __CLASS__, 'handle_generated_document' ), 20, 2 );
+        add_filter( 'algq_pdf_signature_render_offer', array( __CLASS__, 'render_offer_pdf' ), 20, 4 );
         add_filter( 'wp_get_attachment_url', array( __CLASS__, 'protect_attachment_url' ), 20, 2 );
         add_filter( 'pre_delete_attachment', array( __CLASS__, 'prevent_authoritative_file_delete' ), 20, 3 );
     }
@@ -68,20 +69,69 @@ final class ALGQ_PDF_Delivery {
         );
     }
 
-    private static function register_media_attachment( int $document_id, object $record, string $path ): int {
-        $existing = get_posts(
+    /**
+     * Bridge Offer Generator requests into the authoritative PDF Engine. This
+     * prevents HTML from ever being mislabeled as a PDF and ensures offer PDFs
+     * receive protected storage, Media Library, hashing, and company delivery.
+     *
+     * @param mixed               $result Existing integration result.
+     * @param int                 $offer_id Offer post ID.
+     * @param string              $html Approved offer HTML.
+     * @param array<string,mixed> $args Integration arguments.
+     * @return array<string,mixed>
+     */
+    public static function render_offer_pdf( $result, int $offer_id, string $html, array $args ): array {
+        unset( $result );
+
+        if ( ! class_exists( 'ALGQ_PDF_Signature' ) || ! method_exists( 'ALGQ_PDF_Signature', 'generate' ) || $offer_id <= 0 ) {
+            return array();
+        }
+
+        $title = sanitize_text_field( get_the_title( $offer_id ) );
+        if ( '' === $title && ! empty( $args['filename'] ) ) {
+            $title = sanitize_text_field( pathinfo( sanitize_file_name( (string) $args['filename'] ), PATHINFO_FILENAME ) );
+        }
+        if ( '' === $title ) {
+            $title = sprintf( __( 'Offer %d', 'algq-pdf-signature' ), $offer_id );
+        }
+
+        $document_id = ALGQ_PDF_Signature::generate(
             array(
-                'post_type'      => 'attachment',
-                'post_status'    => 'inherit',
-                'posts_per_page' => 1,
-                'fields'         => 'ids',
-                'meta_key'       => '_algq_pdf_document_id',
-                'meta_value'     => $document_id,
+                'document_title'   => $title,
+                'document_type'    => 'offer',
+                'document_content' => wp_kses_post( $html ),
+                'deal_id'          => absint( get_post_meta( $offer_id, '_algq_offer_deal_id', true ) ?: get_post_meta( $offer_id, '_algq_deal_id', true ) ),
+                'source_plugin'     => 'algq-offer-generator',
+                'source_record_id'  => (string) $offer_id,
             )
         );
 
-        if ( $existing ) {
-            return (int) $existing[0];
+        if ( is_wp_error( $document_id ) ) {
+            self::audit(
+                'pdf.offer_generation_failed',
+                array(
+                    'offer_id' => $offer_id,
+                    'error'    => $document_id->get_error_code(),
+                )
+            );
+            return array();
+        }
+
+        $attachment_id = self::attachment_id_for_document( (int) $document_id );
+        self::audit( 'pdf.offer_generated', array( 'offer_id' => $offer_id, 'document_id' => (int) $document_id, 'attachment_id' => $attachment_id ) );
+
+        return array(
+            'document_id'   => (int) $document_id,
+            'attachment_id' => $attachment_id,
+            'status'        => 'generated',
+            'private'       => true,
+        );
+    }
+
+    private static function register_media_attachment( int $document_id, object $record, string $path ): int {
+        $existing_id = self::attachment_id_for_document( $document_id );
+        if ( $existing_id ) {
+            return $existing_id;
         }
 
         $title = sanitize_text_field( (string) $record->document_title );
@@ -112,24 +162,18 @@ final class ALGQ_PDF_Delivery {
         }
 
         $attachment_id = (int) $attachment_id;
-        $file_meta_saved = update_attached_file( $attachment_id, $path );
-        if ( false === $file_meta_saved ) {
-            wp_delete_post( $attachment_id, true );
-            self::audit(
-                'pdf.media_registration_failed',
-                array(
-                    'document_id' => $document_id,
-                    'error'       => 'attached_file_meta_failed',
-                )
-            );
-            return 0;
-        }
-
+        update_attached_file( $attachment_id, $path );
         update_post_meta( $attachment_id, '_algq_pdf_document_id', $document_id );
         update_post_meta( $attachment_id, '_algq_pdf_document_uuid', sanitize_text_field( (string) $record->uuid ) );
         update_post_meta( $attachment_id, '_algq_pdf_file_hash', sanitize_text_field( (string) $record->file_hash ) );
         update_post_meta( $attachment_id, '_algq_protected_attachment', '1' );
         update_post_meta( $attachment_id, '_algq_media_authority', 'algq-pdf-signature' );
+
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+        $metadata = wp_generate_attachment_metadata( $attachment_id, $path );
+        if ( is_array( $metadata ) && ! empty( $metadata ) ) {
+            wp_update_attachment_metadata( $attachment_id, $metadata );
+        }
 
         self::audit(
             'pdf.media_registered',
@@ -140,6 +184,20 @@ final class ALGQ_PDF_Delivery {
         );
 
         return $attachment_id;
+    }
+
+    private static function attachment_id_for_document( int $document_id ): int {
+        $existing = get_posts(
+            array(
+                'post_type'      => 'attachment',
+                'post_status'    => 'inherit',
+                'posts_per_page' => 1,
+                'fields'         => 'ids',
+                'meta_key'       => '_algq_pdf_document_id',
+                'meta_value'     => $document_id,
+            )
+        );
+        return $existing ? (int) $existing[0] : 0;
     }
 
     /**
@@ -196,6 +254,13 @@ final class ALGQ_PDF_Delivery {
             return false;
         }
 
+        $size = is_file( $path ) ? (int) filesize( $path ) : 0;
+        $max_bytes = max( 0, (int) apply_filters( 'algq_pdf_company_email_max_bytes', 15 * MB_IN_BYTES ) );
+        if ( $max_bytes > 0 && $size > $max_bytes ) {
+            self::audit( 'pdf.company_email_skipped_size', array( 'document_id' => $document_id, 'file_size' => $size, 'max_bytes' => $max_bytes ) );
+            return false;
+        }
+
         $subject = sprintf(
             '[ARE PDF] %s — v%d',
             sanitize_text_field( (string) $record->document_title ),
@@ -213,13 +278,29 @@ final class ALGQ_PDF_Delivery {
             sanitize_text_field( (string) $record->file_hash )
         );
 
-        $sent = (bool) wp_mail(
-            $email,
-            $subject,
-            $message,
-            array( 'Content-Type: text/plain; charset=UTF-8' ),
-            array( $path )
-        );
+        if ( function_exists( 'algq_send_mail' ) ) {
+            $sent = (bool) algq_send_mail(
+                array(
+                    'to'           => $email,
+                    'subject'      => $subject,
+                    'message'      => $message,
+                    'headers'      => array( 'Content-Type: text/plain; charset=UTF-8' ),
+                    'attachments'  => array( $path ),
+                    'module'       => 'pdf-signature',
+                    'event'        => 'pdf_company_copy',
+                    'related_id'   => $document_id,
+                    'company_copy' => true,
+                )
+            );
+        } else {
+            $sent = (bool) wp_mail(
+                $email,
+                $subject,
+                $message,
+                array( 'Content-Type: text/plain; charset=UTF-8' ),
+                array( $path )
+            );
+        }
 
         self::audit(
             $sent ? 'pdf.company_email_sent' : 'pdf.company_email_failed',
@@ -243,6 +324,10 @@ final class ALGQ_PDF_Delivery {
     }
 
     private static function company_email(): string {
+        if ( function_exists( 'algq_company_notification_email' ) ) {
+            return algq_company_notification_email();
+        }
+
         $email = sanitize_email(
             (string) apply_filters(
                 'algq_company_notification_email',
