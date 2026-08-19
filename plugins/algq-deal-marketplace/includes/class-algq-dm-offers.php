@@ -68,9 +68,17 @@ final class ALGQ_DM_Offers {
 		ALGQ_DM_Support::audit( 'offer_submitted', $deal_id, array( 'financing_type' => $financing_type ), $offer_id );
 		do_action( 'algq_dm_offer_submitted', $offer_id, $deal_id, $user_id );
 
-		$admin_email = get_option( 'admin_email' );
+		$company_email = sanitize_email(
+			(string) apply_filters(
+				'algq_company_notification_email',
+				get_option( 'algq_company_notification_email', 'algonquianre@gmail.com' )
+			)
+		);
+		if ( ! is_email( $company_email ) ) {
+			$company_email = 'algonquianre@gmail.com';
+		}
 		ALGQ_DM_Support::send_mail(
-			$admin_email,
+			$company_email,
 			sprintf( __( 'Marketplace offer submitted: %s', 'algq-deal-marketplace' ), get_the_title( $deal_id ) ),
 			sprintf( __( 'Offer #%1$d was submitted for deal #%2$d. Review it in the Deal Marketplace administration area.', 'algq-deal-marketplace' ), $offer_id, $deal_id ),
 			array( 'event' => 'buyer_offer_submitted', 'deal_id' => $deal_id )
@@ -113,7 +121,7 @@ final class ALGQ_DM_Offers {
 		}
 		$offer_id = isset( $_POST['offer_id'] ) ? absint( $_POST['offer_id'] ) : 0;
 		check_admin_referer( 'algq_dm_update_offer_' . $offer_id );
-		$status = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : '';
+		$status = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ?? '' ) ) : '';
 		if ( ! in_array( $status, self::STATUSES, true ) ) {
 			ALGQ_DM_Support::abort( __( 'Invalid offer status.', 'algq-deal-marketplace' ), 400 );
 		}
