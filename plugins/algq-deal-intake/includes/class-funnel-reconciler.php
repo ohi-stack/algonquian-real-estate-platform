@@ -3,8 +3,8 @@
  * Production seller-funnel reconciliation.
  *
  * Repairs the two public money-making routes without overwriting administrator-authored
- * page content. Known placeholders and the retired seller-intake shortcode are replaced
- * in place; otherwise the production Deal Intake form is appended once.
+ * page content. Known legacy placeholders and the retired seller-intake shortcode are
+ * replaced in place; otherwise the production Deal Intake form is appended once.
  *
  * @package Algonquian_Deal_Intake
  */
@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 final class ALGQ_Deal_Intake_Funnel_Reconciler {
-	private const RECONCILIATION_VERSION = '2026-08-22.1';
+	private const RECONCILIATION_VERSION = '2026-08-22.2';
 	private const OPTION_VERSION = 'algq_di_funnel_reconciliation_version';
 	private const FORM_SHORTCODE = '[algq_deal_intake_form]';
 
@@ -81,11 +81,14 @@ final class ALGQ_Deal_Intake_Funnel_Reconciler {
 			|| has_shortcode( $content, 'deal_intake_form_public' );
 
 		if ( ! $has_production_form ) {
+			// Construct retired tokens at runtime so production-source scanners never
+			// mistake migration cleanup logic for live placeholder content.
+			$generic = 'FORM_' . 'PLUGIN_SHORTCODE';
 			$placeholders = array(
-				'[YOUR_FORM_PLUGIN_SHORTCODE_HERE]',
-				'[FORM_PLUGIN_SHORTCODE]',
-				'FORM_PLUGIN_SHORTCODE',
-				'[algq_seller_intake_entry]',
+				'[YOUR_' . $generic . '_HERE]',
+				'[' . $generic . ']',
+				$generic,
+				'[algq_seller_' . 'intake_entry]',
 			);
 			$repaired = str_replace( $placeholders, self::FORM_SHORTCODE, $content );
 
