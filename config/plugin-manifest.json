@@ -7,7 +7,7 @@
     "wordpress_minimum": "6.8",
     "php_minimum": "8.2",
     "namespace": "algq",
-    "author_display": "Onegodian | Algonquian Real Estate",
+    "author_display": "Algonquian Real Estate, LLC",
     "release_channel": "production-release-train",
     "production_policy": "Canonical source may be promoted to main after code review and static validation, but no plugin may be described as live-production ready until its WordPress installation, migration, permissions, security and end-to-end acceptance gates are recorded as passed."
   },
@@ -37,13 +37,13 @@
     {
       "slug": "algq-deal-intake",
       "name": "Algonquian Deal Intake",
-      "authority": "Seller leads, property submissions, consent records, attachments, duplicate detection and controlled initial deal creation",
+      "authority": "Seller leads, property reviews, property submissions, consent evidence, protected artifacts, duplicate detection, lead scoring and controlled initial deal creation",
       "required": true,
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm"],
       "expected_entry_file": "algq-deal-intake.php",
-      "source_version": "2.0.0",
-      "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "source_version": "2.1.0",
+      "target_version": "2.1.0",
+      "release_state": "production_candidate"
     },
     {
       "slug": "algq-mao-engine",
