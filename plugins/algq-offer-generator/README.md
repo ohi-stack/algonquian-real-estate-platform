@@ -1,26 +1,121 @@
 # Algonquian Offer Generator
 
-**Version:** 2.0.0  
-**Author:** Onegodian | Algonquian Real Estate  
+**Version:** 2.1.0  
+**Author:** Onegodian | Algonquian Real Estate Technology Division  
 **Status:** Production candidate; WordPress acceptance testing required
 
 ## Authority
 
-The Offer Generator is the authoritative owner of offer records, approved offer terms, templates, merge-field values, offer versions, review and approval evidence, and delivery status. It does not own canonical deals, underwriting scenarios, document-library records, PDF files, or signature requests.
+The Offer Generator is the authoritative owner of proposal and offer records, seller-facing business terms, templates, merge-field values, versions, review and approval evidence, document composition, and offer workflow status.
 
-## Version 2.0 capabilities
+It does **not** own:
 
-- Real offer creation from the builder shortcode.
-- Deal linkage and normalized offer metadata.
-- Cash, seller-financing, subject-to, letter-of-intent, and purchase-proposal strategies.
+- canonical deal records — Pipeline CRM owns them;
+- underwriting calculations — MAO Engine owns them;
+- funding/debt ledgers — Funding Tracker owns them;
+- controlled document-library records — Document Library owns them;
+- PDF files/signature requests — PDF & Signature Engine owns execution workflows.
+
+## Version 2.1 seller-financing proposal system
+
+Seller financing is now a first-class proposal workflow rather than only a strategy label.
+
+Offer Generator supports four seller-facing document types:
+
+- Seller Financing Proposal
+- Seller Financing Term Sheet
+- Letter of Intent — Seller Financing
+- Seller Financing Offer
+
+The preferred workflow is:
+
+`Pipeline CRM deal → approved MAO seller-financing scenario → Offer Generator proposal → human review/approval → Document Library / PDF & Signature → Funding Tracker / closing`
+
+### Approved-underwriting import
+
+The Seller Financing workspace accepts a canonical Pipeline CRM Deal ID and retrieves the latest **approved** MAO underwriting payload through the documented `algq_offer_generator_deal_payload` contract.
+
+The following economics are imported and locked to the approved underwriting record:
+
+- purchase price
+- down payment
+- seller-financed principal
+- interest rate
+- amortization term
+- balloon term
+- monthly payment
+- modeled balloon balance
+- annual debt service
+- total debt service
+- DSCR
+- cash flow
+- refinance capacity and refinance gap
+- conventional-financing payment comparison
+- MAO underwriting ID, UUID, formula version, and approval timestamp
+
+Offer Generator does not recalculate those values. Narrative business terms, contingencies, proposed closing date, servicing language, escrow concepts, and other seller-facing provisions may be added without silently changing approved MAO economics.
+
+A seller-financing record cannot be moved to Offer Generator's approved state unless it is linked to an approved MAO underwriting scenario.
+
+## Proposal language controls
+
+The seller-financing document composer provides structured sections for:
+
+- transaction summary
+- payment terms
+- maturity / balloon terms
+- third-party servicing concept
+- tax and insurance escrow concept
+- security-document concept
+- transaction-specific professional-review disclosure
+
+The generated proposal is a business-terms document. It does not represent that Offer Generator itself creates the final promissory note, mortgage, deed, legal opinion, tax advice, or closing instrument.
+
+## General capabilities
+
+- Cash, seller-financing, subject-to, LOI, and purchase-proposal strategies.
 - Granular WordPress capabilities and protected history views.
-- Immutable version snapshots for material edits and approvals.
-- Offer approval workflow.
-- Consistent document HTML, SHA-256 document hashes, and Document Library handoff.
-- Honest PDF delegation to the PDF & Signature Engine; HTML is never mislabeled as PDF.
-- Protected `algq/v1` REST endpoints for list, create, read, update, approve, and document actions.
-- Idempotent page generation that does not overwrite existing administrator content.
-- Conservative uninstall behavior that preserves offer and audit records unless explicit deletion is enabled.
+- Version snapshots for material edits and approvals.
+- Human approval workflow.
+- Consistent document HTML and SHA-256 document hashes.
+- Document Library handoff.
+- PDF & Signature Engine delegation.
+- Protected `algq/v1` REST endpoints.
+- Pipeline CRM latest-offer summary integration.
+- Automation hooks and audit events.
+- Idempotent page generation and conservative uninstall behavior.
+
+## Seller Financing admin workspace
+
+WordPress Admin:
+
+`ARE Offers → Seller Financing`
+
+The workspace requires an approved MAO seller-financing scenario and creates a draft proposal record for review.
+
+## REST API
+
+Base namespace: `algq/v1`
+
+- `GET /offers`
+- `POST /offers`
+- `POST /offers/seller-financing/from-underwriting`
+- `GET /offers/{id}`
+- `PATCH /offers/{id}`
+- `POST /offers/{id}/approve`
+- `POST /offers/{id}/document`
+
+Example seller-financing request body:
+
+```json
+{
+  "deal_id": 123,
+  "proposal_type": "term_sheet",
+  "closing_date": "2026-09-30",
+  "contingencies": "Subject to satisfactory title, inspection, insurance, and attorney review.",
+  "terms": "Payments to be administered through an agreed third-party servicing arrangement."
+}
+```
 
 ## Shortcodes
 
@@ -36,7 +131,13 @@ All operational shortcodes require authentication and an applicable Offer Genera
 - `/generate-offer/`
 - `/offer-history/`
 
-WPBakery content must use the native `[vc_column_text]` opening shortcode and its corresponding shortcode-style closing tag. HTML-style closing syntax is not permitted.
+WPBakery content must use:
+
+```text
+[vc_column_text]
+...
+[/vc_column_text]
+```
 
 ## Capabilities
 
@@ -49,31 +150,18 @@ WPBakery content must use the native `[vc_column_text]` opening shortcode and it
 - `manage_algq_offer_templates`
 - WordPress mapped offer-record capabilities
 
-## Integrations
-
-- Algonquian Real Estate Platform Plugin
-- Pipeline CRM
-- MAO Engine
-- Document Library
-- PDF & Signature Engine
-- Automation Engine
-- Admin Command Center
-
-Missing integrations place the plugin in limited mode and do not generate a public fatal error.
-
-## REST API
-
-Base namespace: `algq/v1`
-
-- `GET /offers`
-- `POST /offers`
-- `GET /offers/{id}`
-- `PATCH /offers/{id}`
-- `POST /offers/{id}/approve`
-- `POST /offers/{id}/document`
-
-Every endpoint has a permission callback and returns only authorized offer data.
-
 ## Production acceptance
 
-Before release, test installation, activation, upgrade from 1.0.0, page preservation, role capabilities, builder submission, version increments, approval authorization, REST authorization, document hashes, Document Library handoff, PDF delegation, deactivation, and conservative uninstall in a disposable WordPress environment.
+Before promotion from draft:
+
+- test upgrade from Offer Generator 2.0.0;
+- test against MAO Engine 2.1.0 seller-financing output;
+- verify approved-underwriting-only imports;
+- verify locked economics cannot be silently changed in Offer Generator;
+- verify proposal, term-sheet, LOI, and offer rendering;
+- verify Pipeline CRM deal linkage and latest-offer metadata;
+- verify approval authorization and version snapshots;
+- verify Document Library and PDF & Signature handoffs;
+- exercise REST permissions and error states;
+- run PHP syntax/static checks and WordPress activation tests;
+- verify conservative uninstall behavior.
