@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: Algonquian Document Library
- * Plugin URI: https://algonquianrealestate.com/technology/plugins/document-library/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-document-library/
  * Description: Secure institutional document repository, version control, access requests, protected downloads, and transaction package assembly for the Algonquian Real Estate platform.
  * Version: 2.0.0
  * Requires at least: 6.8
  * Requires PHP: 8.2
- * Author: Algonquian Real Estate Technology Division
+ * Author: Algonquian Real Estate, LLC
  * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-document-library
  * Domain Path: /languages
