@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian MAO Engine
- * Plugin URI: https://algonquianrealestate.com/plugin/mao-engine/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-mao-engine/
  * Description: Versioned acquisition underwriting, Maximum Allowable Offer calculations, sensitivity analysis, approval controls, and platform integration.
  * Version: 2.0.0
- * Author: Onegodian | Algonquian Real Estate Technology Division
- * Author URI: https://algonquianrealestate.com/
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-mao-engine
  * Domain Path: /languages
  * Requires at least: 6.5

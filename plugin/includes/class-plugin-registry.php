@@ -13,7 +13,52 @@ final class ALGQ_Platform_Registry {
 
 	public static function init(): void {
 		self::$plugins = self::defaults();
+		add_filter( 'all_plugins', array( __CLASS__, 'standardize_plugin_metadata' ) );
 		do_action( 'algq_platform_registry_ready' );
+	}
+
+	/**
+	 * Normalize the developer identity and public plugin URL shown on the
+	 * WordPress Plugins screen for every Algonquian Real Estate plugin.
+	 *
+	 * @param array<string,array<string,mixed>> $plugins Installed plugin data.
+	 * @return array<string,array<string,mixed>>
+	 */
+	public static function standardize_plugin_metadata( array $plugins ): array {
+		$developer     = 'Algonquian Real Estate, LLC';
+		$developer_url = 'https://algonquianrealestate.com/technology/';
+		$plugin_urls   = array(
+			'algonquian-real-estate-platform/algonquian-real-estate-platform.php' => 'https://algonquianrealestate.com/algonquian-real-estate-platform/',
+			'algq-command-center/algq-command-center.php'                         => 'https://algonquianrealestate.com/algonquian-admin-command-center/',
+			'algq-automation-engine/algq-automation-engine.php'                   => 'https://algonquianrealestate.com/algonquian-automation-engine/',
+			'algq-buyer-portal/algq-buyer-portal.php'                             => 'https://algonquianrealestate.com/algonquian-buyer-portal/',
+			'algq-deal-intake/algq-deal-intake.php'                               => 'https://algonquianrealestate.com/algonquian-deal-intake/',
+			'algq-deal-marketplace/algq-deal-marketplace.php'                     => 'https://algonquianrealestate.com/algonquian-deal-marketplace/',
+			'algq-digital-products/algq-digital-products.php'                     => 'https://algonquianrealestate.com/algonquian-digital-products/',
+			'algq-digital-store/algq-digital-store.php'                           => 'https://algonquianrealestate.com/algonquian-digital-store/',
+			'algq-document-library/algq-document-library.php'                     => 'https://algonquianrealestate.com/algonquian-document-library/',
+			'algq-funding-tracker/algq-funding-tracker.php'                       => 'https://algonquianrealestate.com/algonquian-funding-tracker/',
+			'algq-mao-engine/algq-mao-engine.php'                                 => 'https://algonquianrealestate.com/algonquian-mao-engine/',
+			'algonquian-navigation/algonquian-navigation.php'                     => 'https://algonquianrealestate.com/algonquian-navigation/',
+			'algq-offer-generator/algq-offer-generator.php'                       => 'https://algonquianrealestate.com/algonquian-offer-generator/',
+			'algq-pdf-signature/algq-pdf-signature.php'                           => 'https://algonquianrealestate.com/algonquian-pdf-signature-engine/',
+			'algq-pipeline-crm/algq-pipeline-crm.php'                             => 'https://algonquianrealestate.com/algonquian-pipeline-crm/',
+			'algq-property-stewardship/algq-property-stewardship.php'             => 'https://algonquianrealestate.com/algonquian-property-stewardship-services/',
+			'algq-woocommerce-bridge/algq-woocommerce-bridge.php'                 => 'https://algonquianrealestate.com/algq-woocommerce-bridge/',
+		);
+
+		foreach ( $plugin_urls as $file => $plugin_url ) {
+			if ( ! isset( $plugins[ $file ] ) ) {
+				continue;
+			}
+
+			$plugins[ $file ]['Author']     = $developer;
+			$plugins[ $file ]['AuthorName'] = $developer;
+			$plugins[ $file ]['AuthorURI']  = $developer_url;
+			$plugins[ $file ]['PluginURI']  = $plugin_url;
+		}
+
+		return $plugins;
 	}
 
 	/**

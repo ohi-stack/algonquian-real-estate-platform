@@ -1,12 +1,13 @@
 <?php
 /**
  * Plugin Name: Algonquian Buyer Portal
- * Plugin URI: https://algonquianrealestate.com/technology/plugin-suite/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-buyer-portal/
  * Description: Secure buyer registration, deal authorization, NDA evidence, buyer interest, and protected deal-package delivery for Algonquian Real Estate.
  * Version: 1.1.0
  * Requires at least: 6.5
  * Requires PHP: 8.2
- * Author: Onegodian | Algonquian Real Estate Technology Division
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-buyer-portal
  * License: GPL-2.0-or-later
  */

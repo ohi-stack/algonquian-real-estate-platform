@@ -1,12 +1,13 @@
 <?php
 /**
  * Plugin Name: Algonquian Digital Store
- * Plugin URI: https://algonquianrealestate.com/technology/digital-store/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-digital-store/
  * Description: Secure WooCommerce-backed catalog, checkout bridge, customer product vault, and entitlement events for Algonquian Real Estate digital products.
  * Version: 1.1.0
  * Requires at least: 6.5
  * Requires PHP: 8.1
- * Author: Onegodian | Algonquian Real Estate Technology Division
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-digital-store
  * License: GPL-2.0-or-later
  */

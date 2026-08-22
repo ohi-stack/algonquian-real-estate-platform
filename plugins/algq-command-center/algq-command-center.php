@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian Admin Command Center
- * Plugin URI: https://algonquianrealestate.com
+ * Plugin URI: https://algonquianrealestate.com/algonquian-admin-command-center/
  * Description: Executive KPI dashboard, cross-plugin operational intelligence, platform health monitoring, audit visibility, secured reporting, administrative alerts, and system command controls for the Algonquian Real Estate Platform.
  * Version: 1.2.0
- * Author: Onegodian
- * Author URI: https://algonquianrealestate.com
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-command-center
  * Domain Path: /languages
  * Requires at least: 6.8
