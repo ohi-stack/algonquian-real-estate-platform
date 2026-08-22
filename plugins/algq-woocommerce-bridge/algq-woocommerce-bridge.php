@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian WooCommerce Bridge
- * Plugin URI: https://algonquianrealestate.com
+ * Plugin URI: https://algonquianrealestate.com/algq-woocommerce-bridge/
  * Description: Connects WooCommerce orders, subscriptions, refunds, and product access to controlled Algonquian Real Estate platform entitlements.
  * Version: 2.0.0
- * Author: Onegodian | Algonquian Real Estate
- * Author URI: https://algonquianrealestate.com
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-woocommerce-bridge
  * Requires at least: 6.8
  * Requires PHP: 8.2
@@ -37,8 +37,8 @@ register_deactivation_hook( __FILE__, array( 'ALGQ_WCB_Activator', 'deactivate' 
 add_action(
     'before_woocommerce_init',
     static function (): void {
-        if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+        if ( class_exists( '\\Automattic\\WooCommerce\\Utilities\\FeaturesUtil' ) ) {
+            \\Automattic\\WooCommerce\\Utilities\\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
         }
     }
 );
