@@ -4,6 +4,8 @@
 
 This document defines the mandatory release gate for every Algonquian Real Estate WordPress plugin package. A ZIP filename, semantic version, or successful static scan does not by itself establish production readiness.
 
+Current blockers, ten-layer acceptance status, the release sequence, and the required evidence ledger are maintained in `docs/PRODUCTION-READINESS-STATUS.md`.
+
 ## Canonical Source Rule
 
 Every plugin must be maintained as unpacked source in version control. Generated ZIP archives are release artifacts only and must not be the sole source of record.
@@ -194,7 +196,7 @@ Verify:
 
 ### Optional Modules
 
-Buyer Portal, Marketplace, Digital Store, WooCommerce Bridge, and Property Stewardship must each enforce their own record-level authorization, secure downloads, dependency controls, and service-specific boundaries.
+Navigation, Buyer Portal, Marketplace, Funding Tracker, Digital Products, Digital Store, WooCommerce Bridge, and Property Stewardship must each enforce their applicable record-level authorization, secure downloads, dependency controls, responsive behavior, data ownership, and service-specific boundaries.
 
 ## End-to-End Workflow
 
