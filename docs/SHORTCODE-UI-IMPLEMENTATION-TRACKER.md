@@ -8,16 +8,18 @@ A page-facing shortcode is not complete merely because it is registered. It must
 
 ## Current implementation work
 
-- Deal Intake: PR #57 — full property-review UI, public/internal/quick-capture workspaces, homeowner options, seller portal states, seller funnel reconciliation, current ARE styling.
+- Deal Intake: PR #74 — full property-review UI, public/internal/quick-capture workspaces, homeowner options, seller portal states, seller funnel reconciliation, current ARE styling.
 - Admin Command Center: PR #69 — transaction-control dashboard and operational shortcodes.
 - Buyer Marketplace Dashboard: PR #71 — production Buyer Marketplace Dashboard UI.
-- Platform navigation: PR #60 — 6×6 enterprise navigation, four-column footer, mobile first-tap behavior, responsive utilities.
+- Platform navigation: PR #63 — 6×6 enterprise navigation, four-column footer, mobile first-tap behavior, responsive utilities.
 - Investors/Buyer flow: PR #58 — Investors page, buyer registration/login/Marketplace route and capability reconciliation.
 - Protected systems: PR #59 — route and shortcode capability gates for internal operational interfaces.
 - MAO Engine: PR #61 — seller-financing underwriting UI/data model.
 - Offer Generator: PR #62 — seller-financing proposal/term-sheet/LOI/offer workflow.
 
 ## Remaining canonical plugin audit
+
+The live route and duplicate-page inventory is maintained in `docs/PUBLIC-PLUGIN-PAGE-CONTENT-STATUS.md`.
 
 Audit and update, as needed:
 
