@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Algonquian Digital Products
- * Plugin URI: https://algonquianrealestate.com/technology/digital-products/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-digital-products/
  * Description: Authoritative digital-product catalog, metadata, presentation, and WooCommerce product-linking module for the Algonquian Real Estate platform.
  * Version: 1.0.0
  * Requires at least: 6.8
  * Requires PHP: 8.2
- * Author: Onegodian | Algonquian Real Estate Technology Division
- * Author URI: https://algonquianrealestate.com/
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-digital-products
  * Domain Path: /languages
  * License: Proprietary
