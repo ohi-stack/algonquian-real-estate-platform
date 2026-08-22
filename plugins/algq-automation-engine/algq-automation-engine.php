@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian Automation Engine
- * Plugin URI: https://algonquianrealestate.com/technology/plugin-suite/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-automation-engine/
  * Description: Executes auditable trigger, condition, and action workflows across the Algonquian Real Estate platform.
  * Version: 2.0.0
- * Author: Onegodian
- * Author URI: https://algonquianrealestate.com
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-automation-engine
  * Domain Path: /languages
  * Requires at least: 6.8
