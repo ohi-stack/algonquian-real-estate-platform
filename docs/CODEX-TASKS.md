@@ -1,164 +1,159 @@
-# Codex Tasks — Algonquian Real Estate Platform v1.0
+# Codex Tasks — Algonquian Real Estate Production Synchronization
 
-Use these tasks as implementation prompts for Codex. Each task should be completed on its own branch and submitted by pull request.
+This file tracks implementation work that must remain synchronized with the canonical plugin source, the production manifest, and `docs/SHORTCODE-UI-CONTRACT.md`.
 
-## Task 1 — Build WordPress Plugin Bootstrap
+Historical Version 1 scaffolding instructions are obsolete and must not be used to reintroduce legacy shortcode names or monolithic duplicate business records.
 
-Create the production plugin bootstrap under `plugin/`.
+## Task 1 — Runtime shortcode inventory
 
-Deliverables:
-- `plugin/algonquian-real-estate-platform.php`
-- plugin constants for version, path, URL, database version
-- activation and deactivation hooks
-- autoload or safe manual includes
-- admin menu registration
-- public shortcode registration
+For every canonical plugin in `config/plugin-manifest.json`:
 
-Acceptance Criteria:
-- Plugin activates without fatal errors.
-- WordPress admin menu appears as `Algonquian RE`.
-- Version constant is `1.0.0`.
+- enumerate runtime `add_shortcode()` registrations;
+- classify each tag as preferred, compatibility, legacy-supported or internal/documentation-only;
+- verify the registered callback is reachable from the plugin boot sequence;
+- remove documentation claims for classes that exist but are never initialized;
+- update package README and plugin documentation from source truth.
 
-## Task 2 — Build Database Installer
+Acceptance criteria:
 
-Create the database installer for Version 1.0 tables.
+- no documented production shortcode is unregistered;
+- no registered page-facing shortcode is missing from package documentation;
+- compatibility tags are not presented as preferred interfaces.
 
-Deliverables:
-- deals table
-- buyers table
-- deal notes table
-- activity log table
-- settings option for database version
+## Task 2 — Meaningful shortcode rendering
 
-Acceptance Criteria:
-- Tables are created on activation using `dbDelta`.
-- Table names use the WordPress table prefix.
-- Installer is idempotent and safe to rerun.
+Render every page-facing shortcode through WordPress in an appropriate test role.
 
-## Task 3 — Seller Intake Module
+Acceptance criteria:
 
-Build the seller intake public form and handler.
+- output is not empty;
+- output does not contain the literal shortcode tag;
+- output contains no unresolved placeholder/scaffold/TODO language;
+- zero-record conditions render an intentional empty state;
+- unauthorized roles receive an intentional restricted/login state;
+- assets are enqueued only when needed.
 
-Deliverables:
-- shortcode `[algq_seller_intake]`
-- nonce validation
-- sanitized fields
-- deal ID generation
-- admin notification email
-- confirmation message
+## Task 3 — ARE UI synchronization
 
-Acceptance Criteria:
-- Form submission creates a CRM deal record.
-- New deals default to `Lead Captured`.
-- Submission does not expose raw database errors.
+Apply `docs/SHORTCODE-UI-CONTRACT.md` and `docs/ARE-PLUGIN-UI-STANDARD.md` to every plugin-facing workspace and public form.
 
-## Task 4 — Deal CRM Admin Module
+Acceptance criteria:
 
-Build the internal deal management screen.
+- shared navy/gold/teal/white design tokens;
+- responsive desktop/tablet/mobile layout;
+- accessible labels and focus behavior;
+- no horizontal viewport overflow;
+- operational dashboards use coherent KPI/panel/card components;
+- public forms visually belong to the same Algonquian Real Estate website.
 
-Deliverables:
-- admin deals list
-- deal detail view
-- status update controls
-- notes field
-- activity log entries
+## Task 4 — Deal Intake conversion routes
 
-Acceptance Criteria:
-- Admin can view, search, and update deals.
-- Status changes are logged.
-- Output is escaped and permissions are enforced.
+Ensure the production Deal Intake renderer powers seller/property submission routes.
 
-## Task 5 — MAO Calculator Module
+Required interfaces:
 
-Build the MAO calculator.
+- `[algq_deal_intake_form]`
+- `[algq_property_submission]`
+- `[algq_homeowner_options]`
+- `[algq_seller_portal]`
 
-Deliverables:
-- shortcode `[algq_mao_calculator]`
-- admin and/or public calculator UI
-- ARV, repairs, holding costs, closing costs, profit inputs
-- MAO output
-- optional save-to-deal capability
+Legacy-supported interfaces may remain for compatibility, but new pages must prefer the canonical `algq_*` family.
 
-Formula:
-`MAO = (ARV * 0.70) - repairs - holding_costs - closing_costs - desired_profit`
+Acceptance criteria:
 
-Acceptance Criteria:
-- Calculator works client-side and validates server-side if saved.
-- Saved underwriting updates the deal record.
+- `/submit-a-property/` and `/sell-your-property/` do not expose placeholder or raw shortcode text;
+- submissions create/associate the canonical deal according to the current integration contract;
+- production form security gate passes.
 
-## Task 6 — Buyer Registration Module
+## Task 5 — Pipeline CRM interfaces
 
-Build buyer registration and buyer database workflow.
+Required preferred interfaces:
 
-Deliverables:
-- shortcode `[algq_buyer_registration]`
-- buyer profile fields
-- buyer status: pending, approved, rejected
-- admin buyer list
+- `[algq_pipeline_dashboard]`
+- `[algq_pipeline_board]`
+- `[algq_pipeline_activity]`
 
-Acceptance Criteria:
-- Registration creates a buyer record.
-- Admin can approve or reject buyers.
-- Fields are sanitized and escaped.
+Acceptance criteria:
 
-## Task 7 — Admin Dashboard
+- dashboard renders live canonical deal KPIs;
+- board renders stages, counts, deal cards and valid empty states;
+- stage transitions remain server-authorized and conflict-aware;
+- activity renders durable event history;
+- `[algq_pipeline_crm]` remains compatibility-only if provided by the Platform layer.
 
-Build the Version 1.0 command dashboard.
+## Task 6 — Seller financing cross-plugin workflow
 
-Deliverables:
-- KPI cards
-- lead count
-- buyer count
-- pipeline count by status
-- recent deals table
-- recent activity table
+Preserve ownership boundaries:
 
-Acceptance Criteria:
-- Dashboard loads under WordPress admin.
-- KPIs query live plugin tables.
-- UI uses Algonquian navy, gold, white, and institutional styling.
+- MAO Engine owns seller-financing underwriting calculations and approved scenarios;
+- Offer Generator owns seller-facing proposal/term-sheet/LOI generation;
+- Pipeline CRM owns deal status and negotiation lifecycle;
+- Document Library owns controlled document records;
+- PDF & Signature owns PDF/signature execution support;
+- Funding Tracker owns operational capital/debt records after terms become real;
+- Automation Engine owns reminders/events.
 
-## Task 8 — Branding Integration
+Acceptance criteria:
 
-Add Algonquian branding assets and design tokens.
+- Offer Generator imports approved MAO values instead of silently recalculating them;
+- underwriting/proposal/debt records retain canonical Deal ID links;
+- human approval boundaries remain enforced.
 
-Deliverables:
-- `branding/brand-guidelines.md`
-- CSS variables for navy, gold, white, charcoal
-- dashboard header branding
-- plugin card styling
+## Task 7 — Buyer and investor access flow
 
-Acceptance Criteria:
-- Admin dashboard and public forms share a consistent brand system.
-- CSS is scoped to avoid breaking the WordPress admin.
+Implement and test:
 
-## Task 9 — Security Hardening
+`Investors & Capital → Buyer Registration → Account → Buyer Login → Buyer Dashboard → Authorized Marketplace`
 
-Review the plugin for WordPress security standards.
+Acceptance criteria:
 
-Deliverables:
-- nonce checks
-- capability checks
-- sanitization
-- escaping
-- prepared SQL statements
-- upload restrictions if file upload is enabled
+- `[algq_buyer_login]` renders a real login interface;
+- Buyer Portal and Marketplace share the intended buyer role/capability contract;
+- registered-tier access works for eligible authenticated buyers;
+- private/premium/NDA/download/offer controls remain deal-specific;
+- legacy `/deal-marketplace/` and current marketplace routing are handled intentionally during migration.
 
-Acceptance Criteria:
-- No direct access to PHP files.
-- No unsafe SQL interpolation.
-- Public forms cannot modify admin-only data.
+## Task 8 — Document and PDF archive behavior
 
-## Task 10 — Release Packaging
+Acceptance criteria:
 
-Create release packaging for installable ZIP.
+- generated PDFs remain in protected storage;
+- archive metadata includes Deal ID, document UUID/version, source plugin/source record and hash where applicable;
+- Media Library indexing does not bypass private authorization;
+- configured archive email delivery uses the Platform Mail Gateway and avoids duplicate sends;
+- large-file failure does not invalidate successful document generation.
 
-Deliverables:
-- build script or documented ZIP process
-- `CHANGELOG.md`
-- install instructions
-- version bump checklist
+## Task 9 — Platform forms and security
 
-Acceptance Criteria:
-- ZIP installs through WordPress plugin upload.
-- Plugin activates cleanly on a staging WordPress site.
+All form-owning plugins must pass the production-form gate.
+
+Acceptance criteria:
+
+- nonce/CSRF controls;
+- server-side sanitization and validation;
+- contextual escaping;
+- capability/record authorization;
+- explicit safe error states;
+- durable audit events for material actions;
+- public abuse/rate limiting;
+- upload MIME/size/authorization validation.
+
+## Task 10 — Navigation and page-generation behavior
+
+Acceptance criteria:
+
+- mobile hamburger opens the primary menu content in one step;
+- no second "Menu" click is required merely to reveal navigation;
+- desktop utility controls compact before primary navigation overflows;
+- generated WPBakery pages use `[vc_column_text]...[/vc_column_text]`;
+- page generation is idempotent and preserves administrator-edited content when required interface metadata remains present.
+
+## Task 11 — WordPress installation and end-to-end test
+
+Build installable ZIPs only from canonical unpacked source.
+
+Run the documented release gate and then execute the complete workflow in a disposable WordPress environment:
+
+`Seller submission → Deal → Pipeline → MAO underwriting → Offer → PDF/document → Signature → Funding/Buyer workflow → Closing status → Automation → Command Center → Audit verification`
+
+A package may be described as production-ready only after applicable tests pass and evidence is recorded.
