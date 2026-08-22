@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian Deal Marketplace
- * Plugin URI: https://algonquianrealestate.com/plugin/deal-marketplace/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-deal-marketplace/
  * Description: Controlled buyer marketplace for curated real estate opportunities, versioned NDA acceptance, record-level access, secure package delivery, buyer offers, and platform automation events.
  * Version: 2.0.0
- * Author: Onegodian | Algonquian Real Estate
- * Author URI: https://algonquianrealestate.com/
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-deal-marketplace
  * Domain Path: /languages
  * Requires at least: 6.8
