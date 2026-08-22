@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.0 — 2026-08-18
+
+### Added
+
+- Production `/investors/` page managed by the Buyer Portal integration.
+- `[algq_investors_page]` shortcode for the Investors & Capital buyer-access experience.
+- Runtime reconciliation of the shared `algq_buyer` role with Buyer Portal and Deal Marketplace base capabilities.
+- Buyer login routing to the canonical Marketplace page when the Deal Marketplace is active.
+- Marketplace route resolution that supports the Marketplace page option, legacy `/deal-marketplace/`, and v2 `/marketplace/` fallback.
+
+### Changed
+
+- Buyer registration now feeds a deterministic path: account creation → Buyer Login → Marketplace.
+- Registered buyers receive base Marketplace capabilities without depending on plugin activation order.
+- Registered-tier marketplace access remains subject to deal publication, expiration, NDA, and record-level restrictions.
+- Private and premium deal access continues to require Marketplace access grants.
+
 ## 1.1.0 — 2026-07-31
 
 ### Security
