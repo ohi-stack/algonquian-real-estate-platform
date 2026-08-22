@@ -1,10 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian Deal Intake
- * Plugin URI: https://algonquianrealestate.com/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-deal-intake/
  * Description: Authoritative seller-lead and property-submission intake, consent evidence, duplicate review, lead scoring, and controlled Pipeline CRM handoff for Algonquian Real Estate LLC.
  * Version: 2.0.0
- * Author: Onegodian | Algonquian Real Estate Technology Division
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-deal-intake
  * Domain Path: /languages
  * Requires at least: 6.8
@@ -33,6 +34,7 @@ register_deactivation_hook( ALGQ_DI_FILE, array( 'ALGQ_Deal_Intake_Plugin', 'dea
 add_action(
 	'plugins_loaded',
 	static function (): void {
-		ALGQ_Deal_Intake_Plugin::instance()->run();
-	}
+		ALGQ_Deal_Intake_Plugin::instance()->init();
+	},
+	20
 );
