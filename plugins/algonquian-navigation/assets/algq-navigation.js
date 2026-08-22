@@ -46,6 +46,19 @@
 			return;
 		}
 
+		function syncMobileA11y() {
+			var open = nav.classList.contains( 'is-mobile-open' );
+
+			if ( isMobile() && ! open ) {
+				menu.setAttribute( 'aria-hidden', 'true' );
+				menu.setAttribute( 'inert', '' );
+				return;
+			}
+
+			menu.removeAttribute( 'aria-hidden' );
+			menu.removeAttribute( 'inert' );
+		}
+
 		function openMobileMenu() {
 			if ( ! isMobile() ) {
 				return;
@@ -55,6 +68,7 @@
 			document.body.classList.add( 'algq-navigation-open' );
 			mobileToggle.setAttribute( 'aria-expanded', 'true' );
 			mobileToggle.setAttribute( 'aria-label', 'Close navigation' );
+			syncMobileA11y();
 
 			// The six primary sections are visible immediately. No second Menu action is required.
 			var firstPrimaryLink = menu.querySelector( '.algq-navigation__section-link' );
@@ -71,6 +85,7 @@
 			mobileToggle.setAttribute( 'aria-expanded', 'false' );
 			mobileToggle.setAttribute( 'aria-label', 'Open navigation' );
 			closeSections( nav );
+			syncMobileA11y();
 
 			if ( restoreFocus ) {
 				mobileToggle.focus();
@@ -153,7 +168,10 @@
 			if ( ! isMobile() && nav.classList.contains( 'is-mobile-open' ) ) {
 				closeMobileMenu( false );
 			}
+			syncMobileA11y();
 		} );
+
+		syncMobileA11y();
 	}
 
 	function boot() {
