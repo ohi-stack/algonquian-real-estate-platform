@@ -1,0 +1,66 @@
+name: Build Deal Intake Release
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/algq-deal-intake/**'
+      - 'config/plugin-manifest.json'
+      - 'scripts/validate-wordpress-plugins.php'
+      - 'scripts/validate-production-forms.php'
+      - '.github/workflows/build-deal-intake-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-deal-intake:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v5
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: none
+          ini-file: production
+
+      - name: Validate plugin suite manifest
+        run: php scripts/validate-wordpress-plugins.php
+
+      - name: Validate production forms
+        run: php scripts/validate-production-forms.php
+
+      - name: Lint Deal Intake PHP
+        run: find plugins/algq-deal-intake -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Verify required release files
+        run: |
+          test -f plugins/algq-deal-intake/README.md
+          test -f plugins/algq-deal-intake/CHANGELOG.md
+          test -f plugins/algq-deal-intake/SECURITY.md
+          test -f plugins/algq-deal-intake/uninstall.php
+
+      - name: Build WordPress ZIP and checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION=$(php -r '$s=file_get_contents("plugins/algq-deal-intake/algq-deal-intake.php"); if (!preg_match("/^[[:space:]]*\\*[[:space:]]*Version:[[:space:]]*([0-9.]+)/m", $s, $m)) { fwrite(STDERR, "Version not found\n"); exit(1); } echo $m[1];')
+          mkdir -p dist
+          (cd plugins && zip -qr "../dist/algq-deal-intake-${VERSION}-production.zip" algq-deal-intake)
+          (cd dist && sha256sum "algq-deal-intake-${VERSION}-production.zip" > "algq-deal-intake-${VERSION}-production.zip.sha256")
+          unzip -t "dist/algq-deal-intake-${VERSION}-production.zip"
+          echo "release_version=${VERSION}" >> "$GITHUB_ENV"
+
+      - name: Upload installable release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: algq-deal-intake-${{ env.release_version }}-production
+          path: |
+            dist/algq-deal-intake-${{ env.release_version }}-production.zip
+            dist/algq-deal-intake-${{ env.release_version }}-production.zip.sha256
+          if-no-files-found: error
+          retention-days: 30
