@@ -24,6 +24,17 @@
       "release_state": "canonical_source_on_main"
     },
     {
+      "slug": "algonquian-navigation",
+      "name": "Algonquian Navigation",
+      "authority": "Public enterprise header and footer navigation, responsive menu presentation, utility actions and routing schema without operational record authority",
+      "required": false,
+      "depends_on": [],
+      "expected_entry_file": "algonquian-navigation.php",
+      "source_version": "0.2.0",
+      "target_version": "0.2.0",
+      "release_state": "candidate_source"
+    },
+    {
       "slug": "algq-pipeline-crm",
       "name": "Algonquian Pipeline CRM",
       "authority": "Canonical deal records, acquisition stages, Kanban board, notes, tasks, assignments, activity history and closing status",
@@ -191,6 +202,7 @@
   ],
   "release_order": [
     "algonquian-real-estate-platform",
+    "algonquian-navigation",
     "algq-pipeline-crm",
     "algq-deal-intake",
     "algq-mao-engine",
