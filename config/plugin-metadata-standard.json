@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "effective_date": "2026-08-22",
+  "developer": {
+    "display_name": "Algonquian Real Estate, LLC",
+    "url": "https://algonquianrealestate.com/technology/"
+  },
+  "version_policy": {
+    "rule": "Every future release must compare greater than the version currently installed on the production site. A repository, package, or draft version may never be released if it would downgrade the live installation.",
+    "comparison": "semantic_version_greater_than_live_baseline"
+  },
+  "plugins": [
+    {"slug":"algq-command-center","name":"Algonquian Admin Command Center","live_version":"1.1.0","plugin_uri":"https://algonquianrealestate.com/algonquian-admin-command-center/"},
+    {"slug":"algq-automation-engine","name":"Algonquian Automation Engine","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-automation-engine/"},
+    {"slug":"algq-buyer-portal","name":"Algonquian Buyer Portal","live_version":"1.1.0","plugin_uri":"https://algonquianrealestate.com/algonquian-buyer-portal/"},
+    {"slug":"algq-deal-intake","name":"Algonquian Deal Intake","live_version":"1.0.2-rc.2","plugin_uri":"https://algonquianrealestate.com/algonquian-deal-intake/"},
+    {"slug":"algq-deal-marketplace","name":"Algonquian Deal Marketplace","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-deal-marketplace/"},
+    {"slug":"algq-digital-products","name":"Algonquian Digital Products","live_version":"1.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-digital-products/"},
+    {"slug":"algq-digital-store","name":"Algonquian Digital Store","live_version":"1.1.0","plugin_uri":"https://algonquianrealestate.com/algonquian-digital-store/"},
+    {"slug":"algq-document-library","name":"Algonquian Document Library","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-document-library/"},
+    {"slug":"algq-funding-tracker","name":"Algonquian Funding Tracker","live_version":"1.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-funding-tracker/"},
+    {"slug":"algq-mao-engine","name":"Algonquian MAO Engine","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-mao-engine/"},
+    {"slug":"algonquian-navigation","name":"Algonquian Navigation","live_version":"0.1.0","plugin_uri":"https://algonquianrealestate.com/algonquian-navigation/"},
+    {"slug":"algq-offer-generator","name":"Algonquian Offer Generator","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-offer-generator/"},
+    {"slug":"algq-pdf-signature","name":"Algonquian PDF & Signature Engine","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-pdf-signature-engine/"},
+    {"slug":"algq-pipeline-crm","name":"Algonquian Pipeline CRM","live_version":"2.1.0","plugin_uri":"https://algonquianrealestate.com/algonquian-pipeline-crm/"},
+    {"slug":"algq-property-stewardship","name":"Algonquian Property Stewardship Services","live_version":"1.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-property-stewardship-services/"},
+    {"slug":"algonquian-real-estate-platform","name":"Algonquian Real Estate Platform","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algonquian-real-estate-platform/"},
+    {"slug":"algq-woocommerce-bridge","name":"ALGQ WooCommerce Bridge","live_version":"2.0.0","plugin_uri":"https://algonquianrealestate.com/algq-woocommerce-bridge/"}
+  ]
+}
