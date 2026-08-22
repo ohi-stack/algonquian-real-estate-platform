@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian Funding Tracker
- * Plugin URI: https://algonquianrealestate.com/technology/plugins/funding-tracker/
+ * Plugin URI: https://algonquianrealestate.com/algonquian-funding-tracker/
  * Description: Tracks capital sources, lender and investor relationships, deal-level funding requests, commitments, funding progress, and activity for Algonquian Real Estate.
  * Version: 1.0.0
- * Author: Onegodian | Algonquian Real Estate
- * Author URI: https://algonquianrealestate.com
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-funding-tracker
  * Domain Path: /languages
  * Requires at least: 6.0
