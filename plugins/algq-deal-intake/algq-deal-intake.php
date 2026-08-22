@@ -29,6 +29,7 @@ require_once ALGQ_DI_DIR . 'includes/class-admin-api.php';
 require_once ALGQ_DI_DIR . 'includes/class-funnel-reconciler.php';
 require_once ALGQ_DI_DIR . 'includes/class-artifacts.php';
 require_once ALGQ_DI_DIR . 'includes/class-conversation-ui.php';
+require_once ALGQ_DI_DIR . 'includes/class-ui-assets.php';
 
 register_activation_hook( ALGQ_DI_FILE, array( 'ALGQ_Deal_Intake_Plugin', 'activate' ) );
 register_deactivation_hook( ALGQ_DI_FILE, array( 'ALGQ_Deal_Intake_Plugin', 'deactivate' ) );
@@ -40,5 +41,6 @@ add_action(
 		ALGQ_Deal_Intake_Funnel_Reconciler::register_hooks();
 		ALGQ_Deal_Intake_Artifacts::register_hooks();
 		ALGQ_Deal_Intake_Conversation_UI::register_hooks();
+		ALGQ_Deal_Intake_UI_Assets::register_hooks();
 	}
 );
