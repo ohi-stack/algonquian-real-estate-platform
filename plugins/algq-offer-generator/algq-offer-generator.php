@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian Offer Generator
- * Plugin URI: https://algonquianrealestate.com/plugin/offer-generator
+ * Plugin URI: https://algonquianrealestate.com/algonquian-offer-generator/
  * Description: Creates versioned acquisition offers from approved deal and underwriting data, manages review and approval, and delegates document and PDF execution to the Algonquian platform services.
  * Version: 2.0.0
- * Author: Onegodian | Algonquian Real Estate
- * Author URI: https://algonquianrealestate.com
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-offer-generator
  * Requires at least: 6.4
  * Requires PHP: 8.1
