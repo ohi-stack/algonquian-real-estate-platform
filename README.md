@@ -71,6 +71,10 @@ Every independently installable plugin must include:
 - No plaintext credentials or uncontrolled debug output.
 - Accessible and responsive administration screens using the common Algonquian interface system.
 
+### Shortcode UI standard
+
+Registered shortcode tags must render useful production interfaces rather than blank shells, placeholders, or generic cards. The canonical 16-plugin shortcode registry, current Deal Intake correction, compatibility-bridge rules, transaction-control UI requirements, Property Stewardship portal requirements, ARE visual language, and page acceptance rules are maintained in `docs/canonical-shortcode-ui-standard.md`.
+
 ## WPBakery Rule
 
 Generated WPBakery content must use:
@@ -116,10 +120,11 @@ Static validation does not replace activation and end-to-end testing in a dispos
 ## Documentation
 
 - `docs/wordpress-installation-readiness.md` — mandatory installation and production acceptance matrix.
+- `docs/canonical-shortcode-ui-standard.md` — canonical page-facing shortcode registry, UI/content contract and compatibility rules.
 - `SECURITY.md` — vulnerability handling and platform security baseline.
 - `CHANGELOG.md` — release history and outstanding production requirements.
 - `config/plugin-manifest.json` — authoritative plugin inventory, dependency graph, and release contract.
 
 ## Current Objective
 
-Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, and publish only packages supported by recorded test evidence.
+Reconcile every plugin package with the canonical manifest, complete the page-facing shortcode UI/content implementation, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, and publish only packages supported by recorded test evidence.
