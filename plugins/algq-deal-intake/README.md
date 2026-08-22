@@ -4,7 +4,7 @@
 **Status:** Production candidate  
 **Author:** Onegodian | Algonquian Real Estate Technology Division
 
-Algonquian Deal Intake is the authoritative entry point for seller leads and property submissions entering the Algonquian Real Estate Platform. It records seller and property information, versioned consent evidence, lead source, lead score, duplicate review, and a controlled handoff request to Pipeline CRM.
+Algonquian Deal Intake is the authoritative entry point for seller leads, property-owner reviews, and property submissions entering the Algonquian Real Estate Platform. It records seller and property information, versioned consent evidence, lead source, lead score, duplicate review, and a controlled handoff request to Pipeline CRM.
 
 ## Authority boundary
 
@@ -21,30 +21,40 @@ Deal Intake owns intake submissions. It does **not** own pipeline stages, tasks,
 
 ```text
 [algq_deal_intake_form]
+[algq_property_submission]
 [deal_intake_form_public]
 [deal_intake_form_internal]
 [deal_quick_capture]
 [algq_homeowner_options]
+[algq_property_review]
 [algq_seller_portal]
-[algq_deal_intake_about]
 ```
+
+Preferred public interfaces are `[algq_deal_intake_form]`, `[algq_property_submission]`, `[algq_homeowner_options]`, `[algq_property_review]`, and `[algq_seller_portal]`. The `deal_*` names remain compatibility interfaces.
 
 WPBakery placement:
 
 ```text
 [vc_column_text]
-[algq_deal_intake_form]
+[algq_property_review]
 [/vc_column_text]
 ```
 
+## Property-owner decision path
+
+```text
+What Are My Options?
+→ Request a Property Review
+→ Submit available property information
+→ Review / qualification
+→ Appropriate next workflow
+```
+
+`[algq_property_review]` renders the Property Owners / Property Review interface, explains what is reviewed, preserves the no-commitment boundary, and includes the secure public intake form. A property review is informational intake and is not a certified inspection, appraisal, legal or tax opinion, brokerage engagement, or commitment to purchase.
+
 ## About Plugin pages
 
-The plugin includes:
-
-- A WordPress administrator submenu at **Deal Intake → About Plugin**.
-- An **About** action link on the WordPress Plugins screen.
-- A generated public page at `/plugin/deal-intake/about/`.
-- Version, authorship, authority-boundary, security, shortcode, dependency, and integration-health information.
+The plugin includes a WordPress administrator About Plugin interface and generated public plugin documentation pages containing version, authorship, authority-boundary, security, shortcode, dependency, and integration-health information.
 
 ## Generated pages
 
@@ -53,10 +63,10 @@ The activation routine creates missing pages only and never overwrites administr
 - `/submit-property/`
 - `/sell-your-property/`
 - `/homeowner-options/`
+- `/request-property-review/`
 - `/seller-portal/`
 - `/property-submission-received/`
 - `/plugin/deal-intake/`
-- `/plugin/deal-intake/about/`
 - `/plugin/deal-intake/start/`
 - `/plugin/deal-intake/docs/`
 
@@ -76,13 +86,13 @@ The activation routine creates missing pages only and never overwrites administr
 
 ## Pipeline CRM contract
 
-Deal Intake attempts the function below when available:
+Deal Intake attempts:
 
 ```php
 algq_pipeline_create_deal( $payload );
 ```
 
-It also applies this compatibility filter:
+It also applies:
 
 ```php
 apply_filters( 'algq_pipeline_create_deal', $deal_id, $payload, $submission_id );
@@ -92,4 +102,4 @@ Pipeline CRM must return a stable integer deal ID. If it does not, the intake re
 
 ## Production gate
 
-This source has been PHP-linted, but deployment still requires WordPress integration testing, database migration testing, capability testing, duplicate-resolution testing, Platform Mail Gateway testing, and an authenticated end-to-end handoff to the deployed Pipeline CRM.
+Repository source changes are not equivalent to live-site certification. Deployment still requires WordPress integration testing, page/shortcode rendering verification, database migration testing, capability testing, duplicate-resolution testing, Platform Mail Gateway testing, and an authenticated end-to-end handoff to the deployed Pipeline CRM.
