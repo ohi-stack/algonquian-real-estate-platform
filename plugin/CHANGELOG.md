@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased — 2026-08-18
+
+### Added
+
+- Platform-owned 6 × 6 enterprise navigation schema for Property Owners, Acquisitions, Investors & Capital, Services, Technology, and Company.
+- Four-column enterprise footer navigation schema.
+- Public shortcodes `[algq_mega_menu]` and `[algq_footer_links]`.
+- Accessible desktop and mobile menu behavior with first-tap mobile expansion, accordion section controls, Escape-key closing, focus states, and click-outside dismissal.
+- Responsive utility navigation for Search, Buyer Login, Client Portal, and the primary Submit a Property conversion action.
+- `algq_navigation_schema` and `algq_footer_navigation_schema` filters so themes and companion plugins can extend URLs or labels without duplicating the navigation engine.
+- WordPress navigation locations `algq_primary` and `algq_footer` for theme interoperability.
+
+### Changed
+
+- Platform page descriptions now identify enterprise navigation as a shared platform service.
+- Public navigation remains a presentation and routing concern; canonical deal, buyer, underwriting, funding, document, signature, automation, and commerce records remain owned by their designated companion plugins.
+
 ## 2.0.0 — 2026-07-31
 
 ### Added
