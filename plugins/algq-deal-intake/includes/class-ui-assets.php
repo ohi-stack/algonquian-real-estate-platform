@@ -4,7 +4,14 @@ defined( 'ABSPATH' ) || exit;
 
 final class ALGQ_Deal_Intake_UI_Assets {
 	public static function register_hooks(): void {
+		add_action( 'init', array( __CLASS__, 'register_compatibility_ui' ), 40 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue' ), 20 );
+	}
+
+	public static function register_compatibility_ui(): void {
+		if ( shortcode_exists( 'algq_seller_intake_entry' ) ) {
+			add_shortcode( 'algq_seller_intake_entry', array( 'ALGQ_Deal_Intake_Conversation_UI', 'public_intake' ) );
+		}
 	}
 
 	public static function enqueue(): void {
