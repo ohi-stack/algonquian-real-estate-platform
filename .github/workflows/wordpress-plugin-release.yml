@@ -90,6 +90,9 @@ jobs:
           done < /tmp/algq-validator.log
           exit "$validator_status"
 
+      - name: Validate Platform Service Interface contract
+        run: php scripts/validate-platform-service-interface.php
+
       - name: Run production form validator
         shell: bash
         run: |
