@@ -140,15 +140,19 @@ final class ARE_Platform_Service_Registry {
 			);
 		}
 
+		$request_id = sanitize_text_field(
+			(string) ( $context['request_id'] ?? ( function_exists( 'wp_generate_uuid4' ) ? wp_generate_uuid4() : uniqid( 'algq_', true ) ) )
+		);
+		$caller_plugin = sanitize_key( (string) ( $context['caller_plugin'] ?? '' ) );
 		$context = array_merge(
+			$context,
 			array(
-				'service_id'       => $id,
-				'operation'        => $operation,
-				'request_id'       => function_exists( 'wp_generate_uuid4' ) ? wp_generate_uuid4() : uniqid( 'algq_', true ),
-				'caller_plugin'    => '',
-				'actor_user_id'    => function_exists( 'get_current_user_id' ) ? get_current_user_id() : 0,
-			),
-			$context
+				'service_id'    => $id,
+				'operation'     => $operation,
+				'request_id'    => $request_id,
+				'caller_plugin' => $caller_plugin,
+				'actor_user_id' => function_exists( 'get_current_user_id' ) ? get_current_user_id() : 0,
+			)
 		);
 
 		$result = $service->call( $operation, $payload, $context );
@@ -158,8 +162,8 @@ final class ARE_Platform_Service_Registry {
 			$id,
 			$operation,
 			array(
-				'request_id'    => (string) $context['request_id'],
-				'caller_plugin' => sanitize_key( (string) $context['caller_plugin'] ),
+				'request_id'    => $request_id,
+				'caller_plugin' => $caller_plugin,
 				'success'       => ! is_wp_error( $result ),
 				'error_code'    => is_wp_error( $result ) ? $result->get_error_code() : '',
 			)
