@@ -36,6 +36,29 @@ register_deactivation_hook( __FILE__, array( 'ALGQ_Pipeline_Plugin', 'deactivate
 
 add_action( 'plugins_loaded', array( 'ALGQ_Pipeline_Plugin', 'boot' ), 20 );
 
+add_action(
+    'plugins_loaded',
+    static function (): void {
+        if ( ! interface_exists( 'ARE_Platform_Service_Interface' ) || ! function_exists( 'algq_platform_register_service' ) ) {
+            return;
+        }
+
+        require_once ALGQ_PIPELINE_DIR . 'includes/class-platform-service.php';
+        $result = algq_platform_register_service( new ALGQ_Pipeline_Platform_Service() );
+        if ( is_wp_error( $result ) ) {
+            do_action(
+                'algq_audit_event',
+                'pipeline.service_registration_failed',
+                array(
+                    'plugin'     => 'algq-pipeline-crm',
+                    'error_code' => $result->get_error_code(),
+                )
+            );
+        }
+    },
+    25
+);
+
 /**
  * Return one canonical deal record.
  *
