@@ -7,12 +7,15 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require_once __DIR__ . '/class-service-interface.php';
+
 final class ALGQ_Platform_Registry {
 	/** @var array<string,array<string,mixed>> */
 	private static array $plugins = array();
 
 	public static function init(): void {
 		self::$plugins = self::defaults();
+		ARE_Platform_Service_Registry::init();
 		do_action( 'algq_platform_registry_ready' );
 	}
 
