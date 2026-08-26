@@ -1,0 +1,16 @@
+{
+  "name": "@algonquian/real-estate-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Algonquian Real Estate platform monorepo with WordPress plugin suite and API gateway runtime.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch api/server.js",
+    "build": "node api/scripts/validate.mjs",
+    "start": "node api/server.js",
+    "lint": "node api/scripts/validate.mjs"
+  }
+}
