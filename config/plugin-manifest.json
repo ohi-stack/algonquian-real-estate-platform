@@ -173,8 +173,8 @@
       "required": false,
       "depends_on": ["algonquian-real-estate-platform", "woocommerce"],
       "expected_entry_file": "algq-digital-store.php",
-      "source_version": "1.1.0",
-      "target_version": "1.1.0",
+      "source_version": "1.2.0",
+      "target_version": "1.2.0",
       "release_state": "canonical_source_on_main"
     },
     {
