@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.0 — 2026-08-25
+
+### Added
+
+- Fully branded Algonquian Digital Store administrative dashboard.
+- ARE Tech navy, gold, teal, and white visual system aligned with the Algonquian Agent Engine administrative interface.
+- Live WooCommerce-backed revenue, paid-order, customer, product, and recent-order summaries.
+- Branded store-status, digital-delivery, quick-action, and platform-health panels.
+- Dedicated responsive admin stylesheet loaded only on the Digital Store dashboard.
+- Direct operational links to the storefront, products, and orders.
+
+### Changed
+
+- Replaced the generic WordPress status table with an executive commerce workspace.
+- Updated plugin identity to Algonquian Real Estate, LLC and version 1.2.0.
+- Preserved WooCommerce as catalog/order/download authority and the Platform Plugin as shared Stripe authority.
+
 ## 1.1.0 — 2026-07-31
 
 ### Added
