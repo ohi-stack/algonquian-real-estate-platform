@@ -161,15 +161,24 @@ final class ALGQ_Pipeline_Platform_Service implements ARE_Platform_Service_Inter
 			$transition_context = array_merge(
 				$context,
 				is_array( $payload['context'] ?? null ) ? $payload['context'] : array(),
-				array(
-					'reason'         => sanitize_text_field( (string) ( $payload['reason'] ?? '' ) ),
-					'record_version' => absint( $payload['expected_version'] ?? $payload['record_version'] ?? 0 ),
-				)
+				array( 'reason' => sanitize_text_field( (string) ( $payload['reason'] ?? '' ) ) )
 			);
+			$expected = absint( $payload['expected_version'] ?? $payload['record_version'] ?? 0 );
+			if ( $expected ) {
+				$transition_context['record_version'] = $expected;
+			}
 			return ALGQ_Pipeline_Service::instance()->transition( $deal_id, $target, $transition_context );
 		}
 
 		if ( class_exists( 'ALGQ_Pipeline_Deal_Repository' ) ) {
+			$current = ALGQ_Pipeline_Deal_Repository::get( $deal_id );
+			if ( ! $current ) {
+				return new WP_Error( 'algq_pipeline_not_found', 'Deal not found.' );
+			}
+			$expected = absint( $payload['expected_version'] ?? $payload['record_version'] ?? 0 );
+			if ( $expected && (int) $current['record_version'] !== $expected ) {
+				return new WP_Error( 'algq_pipeline_conflict', 'This deal was changed by another request.', array( 'status' => 409 ) );
+			}
 			$changes = array(
 				'stage_key'   => $target,
 				'stage_reason' => sanitize_text_field( (string) ( $payload['reason'] ?? '' ) ),
@@ -222,8 +231,13 @@ final class ALGQ_Pipeline_Platform_Service implements ARE_Platform_Service_Inter
 			$stage = 'new_intake';
 		}
 
+		$title = sanitize_text_field( (string) ( $payload['title'] ?? '' ) );
+		if ( '' === $title ) {
+			$title = $street ?: $full_address;
+		}
+
 		return array(
-			'title'                 => sanitize_text_field( (string) ( $payload['title'] ?? $street ?: $full_address ) ),
+			'title'                 => $title,
 			'property_address'      => $full_address ?: $street,
 			'municipality'          => $city,
 			'state'                 => $state,
