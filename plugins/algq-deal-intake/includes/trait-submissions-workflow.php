@@ -45,41 +45,86 @@ trait ALGQ_Deal_Intake_Submissions_Workflow {
 			return new WP_Error( 'duplicate_review_required', __( 'Resolve the duplicate review before creating a Pipeline CRM deal.', 'algq-deal-intake' ) );
 		}
 
-		$payload = array(
-			'intake_submission_id' => $submission_id,
-			'intake_uuid' => $record['uuid'],
-			'seller' => array(
-				'name' => $record['seller_name'],
-				'email' => $record['seller_email'],
-				'phone' => $record['seller_phone'],
-			),
-			'property' => array(
-				'address' => $record['address'],
-				'city' => $record['city'],
-				'state' => $record['state'],
-				'postal_code' => $record['postal_code'],
-				'property_type' => $record['property_type'],
-			),
-			'lead_source' => $record['lead_source'],
-			'asking_price' => $record['asking_price'],
-			'lead_score' => $record['lead_score'],
-			'initial_stage' => 'lead_captured',
+		$property_address = trim(
+			implode(
+				', ',
+				array_filter(
+					array(
+						sanitize_text_field( (string) $record['address'] ),
+						sanitize_text_field( (string) $record['city'] ),
+						trim( sanitize_text_field( (string) $record['state'] ) . ' ' . sanitize_text_field( (string) $record['postal_code'] ) ),
+					)
+				)
+			)
 		);
 
-		$deal_id = 0;
-		if ( function_exists( 'algq_pipeline_create_deal' ) ) {
-			$deal_id = absint( algq_pipeline_create_deal( $payload ) );
+		$payload = array(
+			'title' => sanitize_text_field( (string) ( $record['address'] ?: $record['uuid'] ) ),
+			'property_address' => $property_address,
+			'municipality' => sanitize_text_field( (string) $record['city'] ),
+			'state' => sanitize_text_field( (string) $record['state'] ),
+			'postal_code' => sanitize_text_field( (string) $record['postal_code'] ),
+			'primary_contact' => sanitize_text_field( (string) $record['seller_name'] ),
+			'primary_contact_name' => sanitize_text_field( (string) $record['seller_name'] ),
+			'primary_contact_email' => sanitize_email( (string) $record['seller_email'] ),
+			'primary_contact_phone' => sanitize_text_field( (string) $record['seller_phone'] ),
+			'intake_submission_id' => $submission_id,
+			'intake_uuid' => sanitize_text_field( (string) $record['uuid'] ),
+			'source_system' => 'algq-deal-intake',
+			'source_record_id' => (string) $submission_id,
+			'source' => sanitize_text_field( (string) $record['lead_source'] ),
+			'asking_price' => (float) $record['asking_price'],
+			'lead_score' => (int) $record['lead_score'],
+			'stage' => 'new_intake',
+			'property' => array(
+				'address' => sanitize_text_field( (string) $record['address'] ),
+				'city' => sanitize_text_field( (string) $record['city'] ),
+				'state' => sanitize_text_field( (string) $record['state'] ),
+				'postal_code' => sanitize_text_field( (string) $record['postal_code'] ),
+				'property_type' => sanitize_text_field( (string) $record['property_type'] ),
+			),
+			'seller' => array(
+				'name' => sanitize_text_field( (string) $record['seller_name'] ),
+				'email' => sanitize_email( (string) $record['seller_email'] ),
+				'phone' => sanitize_text_field( (string) $record['seller_phone'] ),
+			),
+		);
+
+		$pipeline_result = null;
+		$service_missing = false;
+
+		if ( function_exists( 'algq_platform_service_call' ) ) {
+			$pipeline_result = algq_platform_service_call(
+				'pipeline.deals',
+				'create',
+				$payload,
+				array(
+					'caller_plugin' => 'algq-deal-intake',
+					'intake_submission_id' => $submission_id,
+				)
+			);
+			$service_missing = is_wp_error( $pipeline_result ) && 'algq_service_not_found' === $pipeline_result->get_error_code();
 		}
+
+		if ( null === $pipeline_result || $service_missing ) {
+			if ( function_exists( 'algq_pipeline_create_deal' ) ) {
+				$pipeline_result = algq_pipeline_create_deal( $payload );
+			} else {
+				$pipeline_result = new WP_Error( 'pipeline_unavailable', __( 'Pipeline CRM is not available.', 'algq-deal-intake' ) );
+			}
+		}
+
+		if ( is_wp_error( $pipeline_result ) ) {
+			self::mark_pipeline_handoff_pending( $submission_id );
+			do_action( 'algq_deal_intake_pipeline_handoff_requested', $submission_id, $payload, $pipeline_result );
+			return $pipeline_result;
+		}
+
+		$deal_id = self::pipeline_deal_id_from_result( $pipeline_result );
 		$deal_id = absint( apply_filters( 'algq_pipeline_create_deal', $deal_id, $payload, $submission_id ) );
 
 		if ( ! $deal_id ) {
-			$wpdb->update(
-				ALGQ_Deal_Intake_Database::table( 'submissions' ),
-				array( 'status' => 'awaiting_pipeline', 'updated_at' => current_time( 'mysql', true ) ),
-				array( 'id' => $submission_id ),
-				array( '%s', '%s' ),
-				array( '%d' )
-			);
+			self::mark_pipeline_handoff_pending( $submission_id );
 			do_action( 'algq_deal_intake_pipeline_handoff_requested', $submission_id, $payload );
 			return new WP_Error( 'pipeline_unavailable', __( 'The submission was approved, but Pipeline CRM did not return a canonical deal ID.', 'algq-deal-intake' ) );
 		}
@@ -99,6 +144,30 @@ trait ALGQ_Deal_Intake_Submissions_Workflow {
 		do_action( 'algq_deal_intake_deal_created', $submission_id, $deal_id, $payload );
 		do_action( 'algq_audit_event', 'deal_intake.deal_created', array( 'submission_id' => $submission_id, 'deal_id' => $deal_id ) );
 		return $deal_id;
+	}
+
+	private static function pipeline_deal_id_from_result( $result ): int {
+		if ( is_numeric( $result ) ) {
+			return absint( $result );
+		}
+		if ( is_array( $result ) ) {
+			return absint( $result['id'] ?? $result['deal_id'] ?? 0 );
+		}
+		if ( is_object( $result ) ) {
+			return absint( $result->id ?? $result->deal_id ?? 0 );
+		}
+		return 0;
+	}
+
+	private static function mark_pipeline_handoff_pending( int $submission_id ): void {
+		global $wpdb;
+		$wpdb->update(
+			ALGQ_Deal_Intake_Database::table( 'submissions' ),
+			array( 'status' => 'awaiting_pipeline', 'updated_at' => current_time( 'mysql', true ) ),
+			array( 'id' => $submission_id ),
+			array( '%s', '%s' ),
+			array( '%d' )
+		);
 	}
 
 	public static function handle_archive(): void {
