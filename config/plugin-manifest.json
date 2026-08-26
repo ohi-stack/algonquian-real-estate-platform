@@ -52,9 +52,9 @@
       "required": true,
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm"],
       "expected_entry_file": "algq-deal-intake.php",
-      "source_version": "2.0.0",
-      "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "source_version": "2.1.0",
+      "target_version": "2.1.0",
+      "release_state": "candidate_source"
     },
     {
       "slug": "algq-mao-engine",
@@ -173,8 +173,8 @@
       "required": false,
       "depends_on": ["algonquian-real-estate-platform", "woocommerce"],
       "expected_entry_file": "algq-digital-store.php",
-      "source_version": "1.1.0",
-      "target_version": "1.1.0",
+      "source_version": "1.2.0",
+      "target_version": "1.2.0",
       "release_state": "canonical_source_on_main"
     },
     {
