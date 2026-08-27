@@ -3,7 +3,7 @@
  * Plugin Name: Algonquian Real Estate Core
  * Plugin URI: https://algonquianrealestate.com
  * Description: Platform core for Algonquian Real Estate modules. Provides roles, permissions, database services, REST framework, settings, activity logging, notifications, licensing, shared UI, and integration registry.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Algonquian Real Estate, LLC
  * Text Domain: algq-core
  * Requires at least: 6.0
@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ALGQ_CORE_VERSION', '1.0.0');
+define('ALGQ_CORE_VERSION', '1.0.1');
 define('ALGQ_CORE_FILE', __FILE__);
 define('ALGQ_CORE_PATH', plugin_dir_path(__FILE__));
 define('ALGQ_CORE_URL', plugin_dir_url(__FILE__));
@@ -38,5 +38,32 @@ register_deactivation_hook(__FILE__, ['ALGQ_Activator', 'deactivate']);
 function algq_core(): ALGQ_Core {
     return ALGQ_Core::instance();
 }
+
+/**
+ * Load the shared ARE visual system on Algonquian-owned WordPress admin screens.
+ * Individual plugins may retain layout CSS; this stylesheet normalizes branding,
+ * controls, cards, tables and restrained motion without changing business logic.
+ */
+function algq_core_enqueue_are_admin_ui(): void {
+    if (!is_admin()) {
+        return;
+    }
+
+    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+    $screen_id = $screen && isset($screen->id) ? (string) $screen->id : '';
+    $page = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
+
+    if (strpos($screen_id, 'algq') === false && strpos($screen_id, 'algonquian') === false && strpos($page, 'algq') === false && strpos($page, 'algonquian') === false) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'algq-are-admin-ui',
+        ALGQ_CORE_URL . 'assets/css/are-admin-ui.css',
+        [],
+        ALGQ_CORE_VERSION
+    );
+}
+add_action('admin_enqueue_scripts', 'algq_core_enqueue_are_admin_ui', 100);
 
 add_action('plugins_loaded', 'algq_core');
