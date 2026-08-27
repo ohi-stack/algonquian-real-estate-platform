@@ -10,9 +10,7 @@
  * Requires PHP: 7.4
  */
 
-if (!defined('ABSPATH')) {
-    exit;
-}
+if (!defined('ABSPATH')) { exit; }
 
 define('ALGQ_CORE_VERSION', '1.0.0');
 define('ALGQ_CORE_FILE', __FILE__);
@@ -35,8 +33,30 @@ require_once ALGQ_CORE_PATH . 'includes/class-algq-core.php';
 register_activation_hook(__FILE__, ['ALGQ_Activator', 'activate']);
 register_deactivation_hook(__FILE__, ['ALGQ_Activator', 'deactivate']);
 
-function algq_core(): ALGQ_Core {
-    return ALGQ_Core::instance();
+function algq_core(): ALGQ_Core { return ALGQ_Core::instance(); }
+add_action('plugins_loaded', 'algq_core');
+
+/**
+ * Shared ARE admin presentation layer.
+ * Loads only on Algonquian/ARE plugin screens so third-party WordPress admin UI is untouched.
+ */
+function algq_core_is_are_admin_screen(): bool {
+    if (!is_admin()) { return false; }
+    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+    $id = $screen && isset($screen->id) ? strtolower((string) $screen->id) : '';
+    $page = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
+    $haystack = $id . ' ' . $page;
+    return strpos($haystack, 'algq') !== false || strpos($haystack, 'algonquian') !== false || strpos($haystack, 'are-') !== false;
 }
 
-add_action('plugins_loaded', 'algq_core');
+function algq_core_enqueue_are_admin_ui(): void {
+    if (!algq_core_is_are_admin_screen()) { return; }
+    wp_enqueue_style('algq-are-admin-ui', ALGQ_CORE_URL . 'assets/css/are-admin-ui.css', [], ALGQ_CORE_VERSION);
+    wp_enqueue_script('algq-are-admin-ui', ALGQ_CORE_URL . 'assets/js/are-admin-ui.js', [], ALGQ_CORE_VERSION, true);
+}
+add_action('admin_enqueue_scripts', 'algq_core_enqueue_are_admin_ui', 100);
+
+function algq_core_are_admin_body_class(string $classes): string {
+    return algq_core_is_are_admin_screen() ? trim($classes . ' algq-are-admin') : $classes;
+}
+add_filter('admin_body_class', 'algq_core_are_admin_body_class');
