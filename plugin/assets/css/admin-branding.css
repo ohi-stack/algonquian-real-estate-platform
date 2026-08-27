@@ -1,0 +1,29 @@
+body.algq-admin-branded{--are-navy:#071422;--are-navy-2:#0b1f33;--are-blue:#0b3d91;--are-teal:#167c80;--are-gold:#c7a44a;--are-gold-light:#e8c86d;--are-bg:#f4f6f8;--are-surface:#fff;--are-text:#0b1f33;--are-muted:#65737f;--are-border:#dce3e8;--are-shadow:0 14px 40px rgba(7,20,34,.10);background:linear-gradient(180deg,#f8fafc 0,#f4f6f8 100%)}
+body.algq-admin-branded #wpcontent{background:transparent}
+body.algq-admin-branded .wrap{max-width:1440px;margin:22px 28px 40px 18px;color:var(--are-text)}
+body.algq-admin-branded .wrap>h1:first-child,body.algq-admin-branded .wrap>.wp-heading-inline:first-child{position:relative;margin:0 0 22px;padding:30px 34px;box-sizing:border-box;width:100%;border-radius:20px;color:#fff!important;background:radial-gradient(circle at 86% 20%,rgba(199,164,74,.24),transparent 28%),linear-gradient(135deg,var(--are-navy) 0%,var(--are-navy-2) 60%,#123957 100%);box-shadow:0 18px 48px rgba(7,20,34,.20);font-size:32px!important;font-weight:800!important;letter-spacing:-.025em;overflow:hidden}
+body.algq-admin-branded .wrap>h1:first-child:after,body.algq-admin-branded .wrap>.wp-heading-inline:first-child:after{content:"ALGONQUIAN REAL ESTATE • TECHNOLOGY DIVISION";display:block;margin-top:9px;color:var(--are-gold-light);font-size:11px;font-weight:800;letter-spacing:.14em}
+body.algq-admin-branded .postbox,body.algq-admin-branded .card,body.algq-admin-branded .algq-admin-card,body.algq-admin-branded .algq-admin-panel,body.algq-admin-branded [class*="card"],body.algq-admin-branded [class*="panel"]{border:1px solid var(--are-border);border-radius:16px;background:var(--are-surface);box-shadow:var(--are-shadow)}
+body.algq-admin-branded .postbox .hndle,body.algq-admin-branded .postbox-header,body.algq-admin-branded [class*="panel"] h2{color:var(--are-navy-2);font-weight:800}
+body.algq-admin-branded .button-primary,body.algq-admin-branded .page-title-action,body.algq-admin-branded input[type=submit].button-primary{border-color:var(--are-gold)!important;background:var(--are-gold)!important;color:var(--are-navy)!important;font-weight:800;box-shadow:0 7px 18px rgba(199,164,74,.20)}
+body.algq-admin-branded .button-primary:hover,body.algq-admin-branded .page-title-action:hover{border-color:var(--are-gold-light)!important;background:var(--are-gold-light)!important;transform:translateY(-1px)}
+body.algq-admin-branded .button:not(.button-primary){border-color:#b9c6d1;color:var(--are-navy-2);font-weight:700}
+body.algq-admin-branded .button:not(.button-primary):hover{border-color:var(--are-teal);color:var(--are-teal)}
+body.algq-admin-branded .widefat{border:1px solid var(--are-border);border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(7,20,34,.06)}
+body.algq-admin-branded .widefat thead th,body.algq-admin-branded .widefat tfoot th{background:var(--are-navy-2);color:#fff;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+body.algq-admin-branded .widefat tbody tr{transition:background-color .18s ease,transform .18s ease}
+body.algq-admin-branded .widefat tbody tr:hover{background:#f7fbfc}
+body.algq-admin-branded input[type=text],body.algq-admin-branded input[type=email],body.algq-admin-branded input[type=number],body.algq-admin-branded input[type=url],body.algq-admin-branded input[type=password],body.algq-admin-branded select,body.algq-admin-branded textarea{border:1px solid #cbd5df;border-radius:9px;box-shadow:none;transition:border-color .18s ease,box-shadow .18s ease}
+body.algq-admin-branded input:focus,body.algq-admin-branded select:focus,body.algq-admin-branded textarea:focus{border-color:var(--are-teal);box-shadow:0 0 0 3px rgba(22,124,128,.12)}
+body.algq-admin-branded .notice{border-radius:10px;box-shadow:0 6px 20px rgba(7,20,34,.06)}
+body.algq-admin-branded .nav-tab-wrapper{border-bottom-color:var(--are-border)}
+body.algq-admin-branded .nav-tab{border-radius:9px 9px 0 0;font-weight:700}
+body.algq-admin-branded .nav-tab-active{border-bottom-color:#fff;color:var(--are-teal)}
+body.algq-admin-branded .algq-motion-ready{opacity:0;transform:translateY(10px)}
+body.algq-admin-branded .algq-motion-in{opacity:1;transform:none;transition:opacity .42s ease,transform .42s cubic-bezier(.2,.8,.2,1)}
+body.algq-admin-branded .algq-hover-lift{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+body.algq-admin-branded .algq-hover-lift:hover{transform:translateY(-3px);border-color:rgba(22,124,128,.38);box-shadow:0 18px 44px rgba(7,20,34,.14)}
+body.algq-admin-branded .algq-pulse-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--are-teal);box-shadow:0 0 0 0 rgba(22,124,128,.4);animation:algqPulse 2.2s infinite}
+@keyframes algqPulse{0%{box-shadow:0 0 0 0 rgba(22,124,128,.38)}70%{box-shadow:0 0 0 9px rgba(22,124,128,0)}100%{box-shadow:0 0 0 0 rgba(22,124,128,0)}}
+@media(prefers-reduced-motion:reduce){body.algq-admin-branded *,body.algq-admin-branded *:before,body.algq-admin-branded *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.algq-motion-ready{opacity:1!important;transform:none!important}}
+@media(max-width:782px){body.algq-admin-branded .wrap{margin:14px 12px 30px 2px}body.algq-admin-branded .wrap>h1:first-child,body.algq-admin-branded .wrap>.wp-heading-inline:first-child{padding:24px 20px;font-size:25px!important;border-radius:15px}}

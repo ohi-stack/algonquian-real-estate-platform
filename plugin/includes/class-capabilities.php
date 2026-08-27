@@ -7,6 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require_once ALGQ_PLATFORM_DIR . 'includes/class-admin-branding.php';
+
 final class ALGQ_Platform_Capabilities {
 	/** @var string[] */
 	private const PLATFORM_CAPABILITIES = array(
@@ -35,6 +37,7 @@ final class ALGQ_Platform_Capabilities {
 
 	public static function init(): void {
 		add_action( 'admin_init', array( __CLASS__, 'reconcile' ) );
+		ALGQ_Admin_Branding::init();
 	}
 
 	public static function install(): void {
