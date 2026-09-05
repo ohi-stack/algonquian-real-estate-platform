@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — 2026-09-05
+
+### Fixed
+
+- Separated the desktop account links from the six primary navigation sections so Buyer Login and Client Portal no longer crowd Technology and Company.
+- Anchored Buyer Login and Client Portal in an independent far-right desktop rail with a divider and reserved horizontal space.
+- Suppressed Search, Contact, and Submit a Property inside the white-header plugin utility rail on desktop so the header remains consistent with the approved ARE layout.
+- Added a constrained-desktop fallback that hides the account rail before allowing the six primary menu sections to overflow.
+- Preserved the existing mobile/tablet drawer behavior unchanged.
+
 ## 0.2.0 — 2026-08-22
 
 ### Added
