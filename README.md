@@ -75,6 +75,10 @@ Every independently installable plugin must include:
 
 ARE systems may be organized internally around services, plugins, workflows, and canonical records, but public communication must begin with the customer's situation, question, problem, or desired outcome. Public pages, forms, shortcodes, FAQs, SEO content, automated messages, and customer-facing agent output must follow `docs/CUSTOMER-VOICE-AND-SEARCH-INTENT-STANDARD.md` and the machine-readable mapping in `config/customer-intent-map.json`.
 
+## Public Page Design Rule
+
+New and materially revised public WPBakery pages must use the canonical ARE institutional page family defined in `docs/ARE-PUBLIC-PAGE-STYLE-STANDARD.md`: full-width parallax hero, dark navy overlay, gold classification badge, large white headline, gold divider, customer-relevant lead statement, paired CTAs, operational cards, alternating white/light-neutral/deep-navy sections, restrained ARE gold/teal/blue accents, and a cinematic closing CTA. Page-specific content may change; the visual system should remain consistent.
+
 ## WPBakery Rule
 
 Generated WPBakery content must use:
@@ -121,6 +125,7 @@ Static validation does not replace activation and end-to-end testing in a dispos
 
 - `docs/wordpress-installation-readiness.md` — mandatory installation and production acceptance matrix.
 - `docs/CUSTOMER-VOICE-AND-SEARCH-INTENT-STANDARD.md` — governing customer-first public messaging, SEO, CTA, shortcode, and automation standard.
+- `docs/ARE-PUBLIC-PAGE-STYLE-STANDARD.md` — canonical public WPBakery visual, spacing, card, CTA, customer-voice, technology, disclosure, and closing-hero standard.
 - `config/customer-intent-map.json` — machine-readable service-to-customer-intent map.
 - `SECURITY.md` — vulnerability handling and platform security baseline.
 - `CHANGELOG.md` — release history and outstanding production requirements.
@@ -128,4 +133,4 @@ Static validation does not replace activation and end-to-end testing in a dispos
 
 ## Current Objective
 
-Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, publish only packages supported by recorded test evidence, and ensure every public-facing pathway communicates from the customer's point of view while preserving the internal authoritative workflow.
+Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, publish only packages supported by recorded test evidence, and ensure every public-facing pathway communicates from the customer's point of view while preserving the internal authoritative workflow and the canonical ARE public-page design system.
