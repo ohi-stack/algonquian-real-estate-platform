@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Algonquian Pipeline CRM
  * Plugin URI: https://algonquianrealestate.com/technology/plugins/pipeline-crm/
- * Description: Canonical deal records, controlled acquisition stages, Kanban workflow, assignments, notes, tasks, activity history, and closing status for the Algonquian Real Estate platform.
- * Version: 2.0.0
- * Requires at least: 6.5
- * Requires PHP: 8.1
+ * Description: Canonical deal records plus the shared ARE relationship CRM layer for contacts, organizations, activities, tasks and controlled links to specialized platform records.
+ * Version: 2.2.0
+ * Requires at least: 6.8
+ * Requires PHP: 8.2
  * Author: Onegodian | Algonquian Real Estate Technology Division
  * Author URI: https://algonquianrealestate.com/
  * Text Domain: algq-pipeline-crm
@@ -14,8 +14,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ALGQ_PIPELINE_VERSION', '2.0.0' );
-define( 'ALGQ_PIPELINE_SCHEMA_VERSION', '2.0.0' );
+define( 'ALGQ_PIPELINE_VERSION', '2.2.0' );
+define( 'ALGQ_PIPELINE_SCHEMA_VERSION', '2.2.0' );
 define( 'ALGQ_PIPELINE_FILE', __FILE__ );
 define( 'ALGQ_PIPELINE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ALGQ_PIPELINE_URL', plugin_dir_url( __FILE__ ) );
@@ -24,7 +24,9 @@ require_once ALGQ_PIPELINE_DIR . 'includes/class-stages.php';
 require_once ALGQ_PIPELINE_DIR . 'includes/class-database.php';
 require_once ALGQ_PIPELINE_DIR . 'includes/class-capabilities.php';
 require_once ALGQ_PIPELINE_DIR . 'includes/class-repository.php';
+require_once ALGQ_PIPELINE_DIR . 'includes/class-crm-repository.php';
 require_once ALGQ_PIPELINE_DIR . 'includes/class-service.php';
+require_once ALGQ_PIPELINE_DIR . 'includes/class-crm-service.php';
 require_once ALGQ_PIPELINE_DIR . 'includes/class-migrator.php';
 require_once ALGQ_PIPELINE_DIR . 'includes/class-rest.php';
 require_once ALGQ_PIPELINE_DIR . 'includes/class-shortcodes.php';
@@ -89,4 +91,67 @@ function algq_pipeline_create_deal( array $data ) {
  */
 function algq_pipeline_transition_deal( $deal_id, $stage, array $context = array() ) {
     return ALGQ_Pipeline_Service::instance()->transition( absint( $deal_id ), sanitize_key( $stage ), $context );
+}
+
+/**
+ * Return one shared CRM contact.
+ *
+ * @param int|string $identifier Numeric ID or UUID.
+ * @return array|null
+ */
+function algq_crm_get_contact( $identifier ) {
+    return ALGQ_Pipeline_CRM_Service::instance()->get_contact( $identifier );
+}
+
+/**
+ * Create or update a shared CRM contact using an optional source identity.
+ *
+ * @param array $data Shared contact fields.
+ * @return array|WP_Error
+ */
+function algq_crm_upsert_contact( array $data ) {
+    return ALGQ_Pipeline_CRM_Service::instance()->upsert_contact( $data );
+}
+
+/**
+ * Create a shared CRM organization.
+ *
+ * @param array $data Organization fields.
+ * @return array|WP_Error
+ */
+function algq_crm_create_organization( array $data ) {
+    return ALGQ_Pipeline_CRM_Service::instance()->create_organization( $data );
+}
+
+/**
+ * Link a shared CRM contact or organization to a Deal or authoritative external record.
+ *
+ * @param array $data Relationship fields.
+ * @return array|WP_Error
+ */
+function algq_crm_link_relationship( array $data ) {
+    return ALGQ_Pipeline_CRM_Service::instance()->link_relationship( $data );
+}
+
+/**
+ * Record a relationship activity.
+ *
+ * @param int   $contact_id CRM contact ID.
+ * @param array $data Activity fields.
+ * @return array|WP_Error
+ */
+function algq_crm_add_activity( int $contact_id, array $data ) {
+    return ALGQ_Pipeline_CRM_Service::instance()->add_activity( $contact_id, $data );
+}
+
+/**
+ * Create a non-Deal relationship task.
+ *
+ * Deal-specific work must continue to use the canonical Pipeline Deal task system.
+ *
+ * @param array $data Task fields.
+ * @return array|WP_Error
+ */
+function algq_crm_create_task( array $data ) {
+    return ALGQ_Pipeline_CRM_Service::instance()->create_task( $data );
 }
