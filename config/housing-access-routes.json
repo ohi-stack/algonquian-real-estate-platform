@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "feature": "ARE Housing Access Pilot",
+  "status": "architecture_target",
+  "primary_navigation_area": "Services",
+  "contextual_navigation_area": "Property Owners",
+  "public_routes": [
+    {"path": "/services/housing-access/", "title": "Housing Access & Lease Support", "access": "public"},
+    {"path": "/services/housing-access/how-it-works/", "title": "How Housing Access Works", "access": "public"},
+    {"path": "/services/housing-access/apply/", "title": "Apply for Housing Access", "access": "public"},
+    {"path": "/services/housing-access/rental-assistance/", "title": "Rental Assistance Coordination", "access": "public"},
+    {"path": "/services/housing-access/housing-search/", "title": "Housing Search Support", "access": "public"},
+    {"path": "/services/housing-access/landlords/", "title": "Landlord Partnerships", "access": "public"},
+    {"path": "/services/housing-access/master-lease/", "title": "Master-Lease Housing", "access": "public"},
+    {"path": "/services/housing-access/frequently-asked-questions/", "title": "Housing Access FAQ", "access": "public"},
+    {"path": "/services/housing-access/disclosures/", "title": "Housing Access Disclosures", "access": "public"},
+    {"path": "/property-owner-solutions/master-lease-partnership/", "title": "Master-Lease Partnership", "access": "public", "context": "Property Owners"}
+  ],
+  "protected_routes": [
+    {"path": "/housing-access-portal/", "title": "Housing Access Portal", "capability": "algq_hap_access"},
+    {"path": "/housing-access-portal/application/", "title": "Application", "capability": "algq_hap_access"},
+    {"path": "/housing-access-portal/documents/", "title": "Documents", "capability": "algq_hap_documents"},
+    {"path": "/housing-access-portal/housing-search/", "title": "Housing Search", "capability": "algq_hap_access"},
+    {"path": "/housing-access-portal/property-matches/", "title": "Property Matches", "capability": "algq_hap_access"},
+    {"path": "/housing-access-portal/assistance/", "title": "Rental Assistance", "capability": "algq_hap_access"},
+    {"path": "/housing-access-portal/messages/", "title": "Messages", "capability": "algq_hap_access"},
+    {"path": "/housing-access-portal/lease/", "title": "Lease", "capability": "algq_hap_lease_view"}
+  ],
+  "admin_routes": [
+    {"path": "/admin/housing-access/", "title": "Housing Access", "capability": "algq_manage_hap"},
+    {"path": "/admin/housing-access/applications/", "title": "Applications", "capability": "algq_manage_hap"},
+    {"path": "/admin/housing-access/properties/", "title": "Properties", "capability": "algq_manage_hap"},
+    {"path": "/admin/housing-access/approvals/", "title": "Approvals", "capability": "algq_approve_hap"},
+    {"path": "/admin/housing-access/exposure/", "title": "ARE Exposure", "capability": "algq_approve_hap"},
+    {"path": "/admin/housing-access/reports/", "title": "Reports", "capability": "algq_manage_hap"}
+  ],
+  "implementation_note": "Route declarations are architecture targets. They do not establish WordPress pages, capabilities or authorization until implemented, tested and recorded as passed."
+}
