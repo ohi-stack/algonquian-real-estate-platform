@@ -37,13 +37,13 @@
     {
       "slug": "algq-pipeline-crm",
       "name": "Algonquian Pipeline CRM",
-      "authority": "Canonical deal records, acquisition stages, Kanban board, notes, tasks, assignments, activity history and closing status",
+      "authority": "Canonical deal records, acquisition lifecycle, and shared ARE CRM relationships for contacts, organizations, activities, next actions and controlled cross-plugin links",
       "required": true,
       "depends_on": ["algonquian-real-estate-platform"],
       "expected_entry_file": "algq-pipeline-crm.php",
-      "source_version": "2.0.0",
-      "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "source_version": "2.2.0",
+      "target_version": "2.2.0",
+      "release_state": "feature_upgrade_candidate"
     },
     {
       "slug": "algq-deal-intake",
