@@ -1,412 +1,446 @@
-# Navigation Architecture — Mega Menu and Footer
+# Navigation Architecture — Public Website, Mega Menu, Portals and Footer
 
 ## Purpose
 
-This document defines the production navigation structure for AlgonquianRealEstate.com and the Algonquian Real Estate Platform plugin suite.
+This document defines the current public navigation standard for AlgonquianRealEstate.com and its relationship to the broader Algonquian Real Estate platform architecture.
 
-The site navigation must support:
+The WordPress WXR architecture contains **303 pages: 216 public and 87 protected/private**. The WXR is a route inventory and application architecture; it is not the public header menu.
 
-- Public seller lead acquisition
-- Buyer and investor access
-- Deal marketplace access
-- Document and lender workflows
-- Education and digital products
-- Internal operating dashboards
+The public website must keep customer-facing navigation simple while preserving access to seller, acquisition, investor/capital, service, technology, company and protected application workflows.
 
-This architecture aligns with the plugin suite model, including Deal Intake, Pipeline CRM, MAO Engine, Offer Generator, Buyer Portal, Funding Tracker, Automation Engine, PDF & Signature Engine, Document Library, and Admin Command Center.
+## Authoritative Header Standard
 
-## Header Mega Menu Requirement
+The primary header contains exactly **6 primary areas**:
 
-The primary header menu must contain **6 main links**.
+1. **Property Owners**
+2. **Acquisitions**
+3. **Investors & Capital**
+4. **Services**
+5. **Technology**
+6. **Company**
 
-Each main link may open a mega menu with **up to 6 columns**.
+Each primary area may use a mega menu with up to 6 columns.
 
-Recommended top-level navigation:
+### Header Utilities
 
-1. Sell
-2. Buy / Invest
-3. Deals
-4. Tools
-5. Resources
-6. Company
+Utilities are separate from the six primary areas:
+
+- Search
+- Buyer Login
+- Client Portal
+- Submit a Property
+
+Protected deal, funding, document, automation, plugin administration and housing-access application screens must not be exposed as ordinary public-header destinations.
 
 ---
 
-## 1. Sell
+# 1. Property Owners
 
-Primary URL: `/sell-your-property`
+Primary URL: `/property-owner-solutions/`
 
-Mega menu columns:
+Recommended mega-menu groups:
 
-### Column 1 — Seller Options
+### Sell / Transition
 - Sell Your Property
-- Request Cash Offer
-- Seller Financing Inquiry
-- Subject-To Inquiry
-- Distressed Property Intake
-- Landlord Exit Form
+- What Are My Options?
+- Sell As-Is
+- Seller Financing Options
+- Property Transition Planning
+- Submit a Property
 
-### Column 2 — Property Types
-- Single Family
+### Life / Property Situations
+- Inherited Property Guidance
+- Estate Transition Assistance
+- Empty Nest Transition Planning
+- Senior Property Assistance
+- Distressed Property Rescue
+- Property Legacy Planning
+
+### Stewardship
+- Property Stewardship Services
+- Essential Property Watch
+- Active Stewardship
+- Transition Support
+- Vacant Property Monitoring
+- Property Check-Ins
+
+### Owner Support
+- Vendor Coordination
+- Storm Inspections
+- Community Property Preservation
+- Trusted Property Contact
+- Request Stewardship Service
+
+### Housing Partnerships
+- Master-Lease Partnership
+- Housing Access Landlord Information
+- Property Qualification
+- Owner Documentation
+- Housing Assistance Cooperation
+
+### Featured Actions
+- Submit a Property
+- Request Service
+- Contact Property Team
+
+---
+
+# 2. Acquisitions
+
+Primary URL: `/investment-opportunities/`
+
+Recommended mega-menu groups:
+
+### Opportunities
+- Available Deals
+- Off-Market Properties
 - Multifamily
-- Rental Property
-- Vacant Land
-- Distressed Property
-- Estate Property
+- Mixed-Use
+- Commercial
+- Value-Add
 
-### Column 3 — Seller Tools
-- Property Intake Form
-- Repair Estimate Upload
-- Mortgage Balance Form
-- Timeline to Sell
-- Upload Photos
-- Schedule Call
+### Acquisition Criteria
+- Acquisition Criteria
+- Submit a Property
+- Real Estate Acquisition
+- Property Underwriting
+- Deal Analysis
 
-### Column 4 — How It Works
-- Step 1: Submit Property
-- Step 2: Review
-- Step 3: Offer
-- Step 4: Close
-- Frequently Asked Questions
+### Development
+- Development Concepts
+- Residential
+- Multifamily
+- Mixed-Use
+- Adaptive Reuse
+- Development Sites
+
+### Deal Process
+- Property Submission
+- Qualification
+- Underwriting
+- Offer
+- Due Diligence
+- Closing
+
+### Partner Paths
+- Joint Ventures
+- Private Lending
+- Capital Partners
+- Buyer Network
+
+### Featured Actions
+- Submit a Property
+- View Opportunities
 - Contact Acquisitions
 
-### Column 5 — Forms
-- Property Intake Checklist
-- Seller Information Form
-- Due Diligence Checklist
-- Inspection Checklist
-- Title Review Checklist
-- Contact Form
-
-### Column 6 — Featured CTA
-- Get an Offer
-- Start Seller Intake
-- Speak With Acquisitions
-
 ---
 
-## 2. Buy / Invest
+# 3. Investors & Capital
 
-Primary URL: `/buyers/register`
+Primary URL: `/investors/`
 
-Mega menu columns:
+Recommended mega-menu groups:
 
-### Column 1 — Buyer Access
-- Buyer Registration
+### Investor Network
+- Join Investor Network
+- How It Works
+- Investment Criteria
+- Buyer Network
+- Deal Packages
+- Investor Resources
+
+### Capital Partners
+- Private Lenders
+- Institutional Lenders
+- Joint Venture Equity
+- Funding Request
+- Lender Package
+- Contact Capital Team
+
+### Lender Resources
+- Company Overview
+- Business Plan
+- Acquisition Criteria
+- Underwriting Standards
+- Source & Use of Funds
+- Risk Management
+
+### Deal Access
+- Available Deals
+- Off-Market Properties
+- Marketplace
 - Buyer Login
 - Buyer Dashboard
-- Available Deals
-- Saved Deals
-- Deal Alerts
 
-### Column 2 — Investor Types
-- Cash Buyers
-- Multifamily Buyers
-- Land Buyers
-- Institutional Buyers
-- Private Investors
-- Joint Venture Partners
-
-### Column 3 — Deal Access
-- Premium Deal Access
-- Early Access Deals
-- VIP Buyer Tier
-- Proof of Funds Upload
+### Documents / Disclosures
+- Document Request
+- Lender Document Library
+- Investor Disclosures
 - NDA Access
-- Deal Package Downloads
+- Frequently Asked Questions
 
-### Column 4 — Investment Tools
-- MAO Calculator
-- Deal Analyzer
-- Rental Calculator
-- Cap Rate Calculator
-- Cash Flow Worksheet
-- Underwriting Dashboard
-
-### Column 5 — Funding
-- Funding Request
-- Lender Directory
-- Private Capital
-- JV Capital
-- Hard Money
-- Capital Stack Review
-
-### Column 6 — Featured CTA
-- Join Buyer List
-- View Deals
-- Request Funding Match
+### Featured Actions
+- Join Investor Network
+- Request Lender Package
+- Buyer Login
 
 ---
 
-## 3. Deals
+# 4. Services
 
-Primary URL: `/deals`
+Primary URL: `/services/`
 
-Mega menu columns:
+Recommended mega-menu groups:
 
-### Column 1 — Deal Pipeline
-- All Deals
-- New Deals
-- Underwriting
-- Offers Sent
-- Under Contract
-- Closed Deals
+### Real Estate Services
+- Real Estate Acquisition
+- Property Underwriting
+- Deal Analysis
+- Property Transition Support
+- Document Preparation
 
-### Column 2 — Marketplace
-- Deal Marketplace
-- Featured Deals
-- Hot Deals
-- Buyer Offers
-- Assignment Opportunities
-- Deal Alerts
+### Property Stewardship
+- Property Stewardship
+- Essential Property Watch
+- Active Stewardship
+- Transition Support
+- Property Check-Ins
 
-### Column 3 — Underwriting
-- MAO Engine
-- ARV Review
-- Repair Estimates
-- Rent Analysis
-- Comparable Sales
-- Risk Flags
+### Housing Access & Lease Support
+- Housing Access & Lease Support
+- How Housing Access Works
+- Apply for Housing Access
+- Rental Assistance Coordination
+- Housing Search Support
+- Housing Access Disclosures
 
-### Column 4 — Offers
-- Offer Generator
-- Cash Offer
-- Seller Financing Offer
-- Subject-To Offer
-- Letter of Intent
-- Purchase Agreement
+### Landlord / Housing Partnerships
+- Landlord Partnership
+- Master-Lease Housing
+- Property Qualification
+- Assistance-Program Coordination
+- Housing Access FAQ
 
-### Column 5 — Documents
-- Deal Documents
-- Lender Package
-- Due Diligence Files
-- Inspection Reports
-- Rent Rolls
-- Closing Checklist
+### Technology Services
+- Technology Implementation
+- Workflow Automation
+- Custom Platform Setup
+- Consulting
 
-### Column 6 — Featured CTA
-- Submit a Deal
-- Analyze a Deal
-- Generate Offer
+### Featured Actions
+- Request a Service
+- Apply for Housing Access
+- Client Portal
+
+Housing Access is a private ARE service/workflow. It is not a government program, housing authority or guaranteed housing benefit. See `docs/ARE-HOUSING-ACCESS-PILOT.md` for the operating architecture.
 
 ---
 
-## 4. Tools
+# 5. Technology
 
-Primary URL: `/tools`
+Primary URL: `/technology/`
 
-Mega menu columns:
+Recommended mega-menu groups:
 
-### Column 1 — Calculators
-- MAO Calculator
-- Rental Analyzer
-- Cap Rate Calculator
-- Cash Flow Calculator
-- Repair Estimator
-- Offer Calculator
+### ARE Technology Division
+- Overview
+- Platform
+- Technology Infrastructure
+- Platform Architecture
+- Shared Services
+- API & Integrations
 
-### Column 2 — Automation
-- Automation Engine
-- Lead Scoring
-- Follow-Up Automation
-- Buyer Alerts
-- Document Triggers
-- Workflow Rules
+### Automation / Agents
+- Automation Infrastructure
+- Agent Infrastructure
+- Operational Event System
+- Human Approval & Control Framework
 
-### Column 3 — Documents
-- Document Library
-- PDF Generator
-- Signature Engine
-- Template Store
-- Lender Package Builder
-- Compliance Forms
+### Platform Operations
+- Data & Records Architecture
+- Security & Access Controls
+- Transaction Workflow
+- System Health & Monitoring
+- Platform Governance
 
-### Column 4 — Dashboards
-- Admin Command Center
-- Deal Dashboard
-- Buyer Dashboard
-- Funding Dashboard
-- Document Dashboard
-- KPI Reports
-
-### Column 5 — Digital Products
-- Contract Templates
-- MAO Spreadsheet
-- Acquisition Checklists
-- SOPs
-- Investor Toolkits
-- Education Downloads
-
-### Column 6 — Featured CTA
-- Open Tools
-- Download Templates
-- View Dashboard
-
----
-
-## 5. Resources
-
-Primary URL: `/resources`
-
-Mega menu columns:
-
-### Column 1 — Learn
-- Education Portal
-- Real Estate Training
-- Deal Analysis Lessons
-- Seller Financing
-- Subject-To Basics
-- Connecticut Investing
-
-### Column 2 — Forms & Documents
-- Entity Documents
-- Lender Documents
-- Acquisition Forms
-- Financial Controls
-- Risk Management
-- Property Management Forms
-
-### Column 3 — Guides
-- First Deal Guide
-- Seller Financing Guide
-- Wholesale Assignment Guide
-- Buyer Guide
-- Funding Guide
-- Due Diligence Guide
-
-### Column 4 — Blog / Updates
-- Market Updates
-- Platform Updates
-- Investor Notes
-- Case Studies
-- Development Logs
-- Release Notes
-
-### Column 5 — Support
-- Documentation
-- Getting Started
-- FAQs
-- Contact Support
-- Book Consultation
-- Report Issue
-
-### Column 6 — Featured CTA
-- View Resources
-- Download Checklist
-- Start Learning
-
----
-
-## 6. Company
-
-Primary URL: `/about`
-
-Mega menu columns:
-
-### Column 1 — Company
-- About
-- Contact
-- Mission
-- Acquisition Criteria
-- Service Area
-- Waterbury, Connecticut
-
-### Column 2 — Algonquian Real Estate
-- Company Overview
-- Entity Information
-- ARE Technology Division
-- Internal Documentation
-- Platform Overview
-- Investor Relations
-
-### Column 3 — Legal / Policies
-- Terms of Use
-- Privacy Policy
-- Disclaimer
-- Earnings Disclaimer
-- Education Disclaimer
-- Accessibility
-
-### Column 4 — Technology
+### Products
 - Plugin Suite
-- SaaS Roadmap
-- Automation Systems
-- Product Catalog
-- Version Roadmap
-- Licensing
+- Software Licensing
+- Digital Products
+- Custom Implementations
+- Automation Services
 
-### Column 5 — Contact Paths
-- Seller Contact
-- Buyer Contact
-- Lender Contact
-- Partner Contact
-- Support Contact
-- General Inquiry
+### Standards / Documentation
+- ARE Technology Standards
+- Platform Release & Production Standards
+- Documentation
+- Development Roadmap
+- Security
 
-### Column 6 — Featured CTA
-- Contact Algonquian Real Estate
+### Featured Actions
 - View Platform
-- Partner With Us
+- View Plugin Suite
+- Contact ARE Technology
+
+---
+
+# 6. Company
+
+Primary URL: `/about/`
+
+Recommended mega-menu groups:
+
+### Company
+- About
+- Company
+- Leadership
+- Company History
+- Mission and Vision
+- Operating Principles
+
+### Contact
+- General Inquiry
+- Property Inquiry
+- Investor Inquiry
+- Lender Inquiry
+- Vendor Inquiry
+- Media Inquiry
+
+### Resources
+- Resources
+- Guides
+- Checklists
+- Templates
+- Connecticut Real Estate
+- FAQs
+
+### Help
+- Help Center
+- Getting Started
+- Troubleshooting
+- Technical Reference
+- Contact Support
+
+### Legal / Compliance
+- Privacy Policy
+- Terms of Use
+- Accessibility
+- Fair Housing
+- Data Security
+- Record Retention
+
+### Featured Actions
+- Contact ARE
+- Client Portal
+- Learn About ARE
+
+---
+
+# Protected Application Architecture
+
+The following are application surfaces rather than public-header destinations:
+
+- Deal Operating System (`/dashboard/`, `/deals/`, `/pipeline/`, `/underwriting/`, `/offers/`)
+- Documents
+- Funding
+- Automation
+- Buyer Dashboard / Marketplace account
+- Property Stewardship Portal
+- Housing Access Portal
+- Account / authentication screens
+- Administrative Platform
+- Protected plugin interfaces
+
+Access must be controlled by authentication plus appropriate WordPress/application capabilities. A WordPress page being marked private is not, by itself, the complete authorization model for sensitive records.
+
+---
+
+# Housing Access Route Placement
+
+Recommended public service routes:
+
+- `/services/housing-access/`
+- `/services/housing-access/how-it-works/`
+- `/services/housing-access/apply/`
+- `/services/housing-access/rental-assistance/`
+- `/services/housing-access/housing-search/`
+- `/services/housing-access/landlords/`
+- `/services/housing-access/master-lease/`
+- `/services/housing-access/frequently-asked-questions/`
+- `/services/housing-access/disclosures/`
+
+Recommended contextual Property Owner route:
+
+- `/property-owner-solutions/master-lease-partnership/`
+
+Recommended protected routes:
+
+- `/housing-access-portal/`
+- `/housing-access-portal/application/`
+- `/housing-access-portal/documents/`
+- `/housing-access-portal/housing-search/`
+- `/housing-access-portal/property-matches/`
+- `/housing-access-portal/assistance/`
+- `/housing-access-portal/messages/`
+- `/housing-access-portal/lease/`
+
+These routes are architecture targets until implemented and tested.
 
 ---
 
 # Footer Requirement
 
-The footer must contain **4 columns of links**.
+The footer contains exactly **4 link columns**.
 
-## Footer Column 1 — Company
+## Column 1 — Company
 - About
+- Leadership
 - Contact
+- Mission and Vision
+- Operating Principles
+- Company Information
+
+## Column 2 — Property & Services
+- Property Owner Solutions
 - Sell Your Property
+- Property Stewardship
+- Housing Access & Lease Support
 - Acquisition Criteria
-- Service Area
-- Algonquian Real Estate LLC
+- Submit a Property
 
-## Footer Column 2 — Platform
-- Deal Intake
-- Pipeline CRM
-- MAO Engine
-- Buyer Portal
-- Document Library
-- Admin Command Center
-
-## Footer Column 3 — Investors / Buyers
-- Buyer Registration
+## Column 3 — Investors & Technology
+- Investor Network
+- Capital Partners
 - Buyer Login
-- Available Deals
-- Funding Request
-- Investor Resources
-- Deal Alerts
+- ARE Technology Division
+- Plugin Suite
+- Documentation
 
-## Footer Column 4 — Legal / Resources
-- Forms & Documents
-- Terms of Use
+## Column 4 — Support & Legal
+- Help Center
+- Resources
+- Client Portal
 - Privacy Policy
-- Disclaimer
-- Education Disclaimer
-- Contact Support
+- Terms of Use
+- Fair Housing
 
 ---
 
-# WordPress Implementation Notes
+# WordPress Implementation
 
-## Navigation Menus
-
-Register these WordPress menus:
+Register the public menu and four footer locations:
 
 ```php
 register_nav_menus(
     array(
         'algq_primary_menu' => __( 'Algonquian Primary Mega Menu', 'algq-real-estate-platform' ),
         'algq_footer_company' => __( 'Footer Company Links', 'algq-real-estate-platform' ),
-        'algq_footer_platform' => __( 'Footer Platform Links', 'algq-real-estate-platform' ),
-        'algq_footer_investors' => __( 'Footer Investor Links', 'algq-real-estate-platform' ),
-        'algq_footer_legal' => __( 'Footer Legal & Resources Links', 'algq-real-estate-platform' ),
+        'algq_footer_services' => __( 'Footer Property & Services Links', 'algq-real-estate-platform' ),
+        'algq_footer_investors_technology' => __( 'Footer Investors & Technology Links', 'algq-real-estate-platform' ),
+        'algq_footer_support_legal' => __( 'Footer Support & Legal Links', 'algq-real-estate-platform' ),
     )
 );
 ```
-
-## Shortcodes
 
 Recommended shortcodes:
 
@@ -415,9 +449,7 @@ Recommended shortcodes:
 [algq_footer_links]
 ```
 
-## WPBakery Placement
-
-Use:
+WPBakery placement must use valid shortcode syntax:
 
 ```text
 [vc_column_text]
@@ -425,28 +457,30 @@ Use:
 [/vc_column_text]
 ```
 
-Never use HTML closing syntax such as `</vc_column_text>` because it breaks WPBakery layouts.
+Never use `</vc_column_text>`.
 
 ---
 
-# Styling Requirements
+# Presentation Standard
 
-Use Algonquian institutional branding:
+Use the ARE institutional interface system:
 
-- Navy background
-- Gold accent borders
-- White text
-- Charcoal secondary text
-- Clean institutional spacing
-- Responsive mobile fallback
+- Deep navy foundation
+- ARE blue
+- Gold accents
+- Teal operational/status accents
+- White/light surfaces where appropriate
+- Responsive cards and navigation
+- Accessible focus states
+- `prefers-reduced-motion` support
 
-Mega menu layout:
+Mega menu:
 
 - Desktop: up to 6 columns
 - Tablet: 2–3 columns
-- Mobile: accordion or stacked columns
+- Mobile: immediate hamburger opening; submenus expand on click
 
-Footer layout:
+Footer:
 
 - Desktop: 4 columns
 - Tablet: 2 columns
@@ -456,11 +490,15 @@ Footer layout:
 
 # Production Acceptance Criteria
 
-- Header contains exactly 6 primary links.
-- Each primary link can support up to 6 columns.
-- Footer contains exactly 4 structured link columns.
-- Links match the platform page architecture.
-- Public, buyer, lender, document, and internal system paths are separated clearly.
-- Mobile navigation remains usable.
+- Exactly 6 public primary areas: Property Owners, Acquisitions, Investors & Capital, Services, Technology, Company.
+- Search, Buyer Login, Client Portal and Submit a Property remain utilities.
+- Housing Access appears under Services, with owner/master-lease contextual links under Property Owners.
+- Protected application routes do not appear as ordinary public marketing destinations.
+- WXR route inventory remains broader than header navigation.
+- Mega menus support no more than 6 columns.
+- Footer contains exactly 4 structured columns.
+- Mobile hamburger opens immediately and nested submenus expand on click.
+- Public and protected paths are clearly separated.
 - WPBakery shortcode syntax is valid.
-- Styling is scoped to avoid breaking the active WordPress theme.
+- Styling is scoped and responsive.
+- Authorization is capability-based for sensitive application records.
