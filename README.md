@@ -71,6 +71,10 @@ Every independently installable plugin must include:
 - No plaintext credentials or uncontrolled debug output.
 - Accessible and responsive administration screens using the common Algonquian interface system.
 
+## Customer-Facing Communication Rule
+
+ARE systems may be organized internally around services, plugins, workflows, and canonical records, but public communication must begin with the customer's situation, question, problem, or desired outcome. Public pages, forms, shortcodes, FAQs, SEO content, automated messages, and customer-facing agent output must follow `docs/CUSTOMER-VOICE-AND-SEARCH-INTENT-STANDARD.md` and the machine-readable mapping in `config/customer-intent-map.json`.
+
 ## WPBakery Rule
 
 Generated WPBakery content must use:
@@ -116,10 +120,12 @@ Static validation does not replace activation and end-to-end testing in a dispos
 ## Documentation
 
 - `docs/wordpress-installation-readiness.md` — mandatory installation and production acceptance matrix.
+- `docs/CUSTOMER-VOICE-AND-SEARCH-INTENT-STANDARD.md` — governing customer-first public messaging, SEO, CTA, shortcode, and automation standard.
+- `config/customer-intent-map.json` — machine-readable service-to-customer-intent map.
 - `SECURITY.md` — vulnerability handling and platform security baseline.
 - `CHANGELOG.md` — release history and outstanding production requirements.
 - `config/plugin-manifest.json` — authoritative plugin inventory, dependency graph, and release contract.
 
 ## Current Objective
 
-Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, and publish only packages supported by recorded test evidence.
+Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, publish only packages supported by recorded test evidence, and ensure every public-facing pathway communicates from the customer's point of view while preserving the internal authoritative workflow.
