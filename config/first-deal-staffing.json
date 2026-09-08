@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0.0",
+  "organization": "Algonquian Real Estate LLC",
+  "stage": "first-deal",
+  "operating_principles": [
+    "real-estate-first",
+    "revenue-first",
+    "automation-first",
+    "low-fixed-overhead",
+    "human-final-authority"
+  ],
+  "founder_authority": {
+    "role": "Founder / Managing Member",
+    "retains_final_approval_for": [
+      "acquisition approval",
+      "negotiated transaction terms",
+      "final offers",
+      "contractual commitments",
+      "financing decisions",
+      "capital deployment",
+      "closing approval",
+      "material operating decisions"
+    ]
+  },
+  "planning_assumptions": {
+    "outside_employment_support_ceiling_monthly_usd": 2000,
+    "outside_employment_support_note": "Planning ceiling only; subject to personal obligations and actual availability.",
+    "target_recurring_fixed_personnel_overhead_monthly_usd": {
+      "min": 800,
+      "max": 1400
+    },
+    "pricing_note": "All role-cost figures are planning assumptions, not executed contracts, guaranteed pricing, wage determinations, or commitments."
+  },
+  "priority_roles": [
+    {
+      "priority": 1,
+      "role_id": "ct_real_estate_attorney",
+      "title": "Connecticut Real Estate Attorney",
+      "engagement_model": "outside-counsel-matter-or-transaction-based",
+      "primary_outcome": "Legally controlled and executable transactions",
+      "core_responsibilities": [
+        "governance and signing-authority review",
+        "borrowing-resolution review",
+        "purchase agreement review",
+        "seller-financing legal review",
+        "private lending and JV document review where applicable",
+        "Subject-To legal review before execution",
+        "title and closing issue review",
+        "transaction-specific legal escalation"
+      ],
+      "may_not_without_documented_authority": [
+        "make final business approvals",
+        "deploy company funds",
+        "bind ARE to unapproved transaction terms"
+      ]
+    },
+    {
+      "priority": 2,
+      "role_id": "bookkeeper_cpa",
+      "title": "Bookkeeper / CPA",
+      "engagement_model": "fractional-monthly-plus-cpa-review-as-needed",
+      "primary_outcome": "Current lender-reviewable financial records",
+      "planning_cost_monthly_usd": {
+        "min": 200,
+        "max": 400
+      },
+      "core_responsibilities": [
+        "chart of accounts",
+        "startup expense ledger",
+        "owner contribution tracking",
+        "bank reconciliation",
+        "monthly profit and loss",
+        "balance sheet",
+        "cash-flow reporting",
+        "debt schedules",
+        "property-level accounting after acquisition",
+        "tax and lender support"
+      ]
+    },
+    {
+      "priority": 3,
+      "role_id": "acquisition_lead_manager",
+      "title": "Acquisition & Lead Manager",
+      "engagement_model": "part-time-employee-or-contractor",
+      "initial_hours_per_week": {
+        "min": 10,
+        "max": 20
+      },
+      "planning_cost_monthly_usd": {
+        "min": 600,
+        "max": 1000
+      },
+      "primary_outcome": "Consistent qualified acquisition opportunities and disciplined follow-up",
+      "core_responsibilities": [
+        "property-owner outreach",
+        "tired-landlord prospecting",
+        "absentee-owner prospecting",
+        "vacant and distressed-property lead development",
+        "approved inherited-property and seller-financing follow-up",
+        "appointment scheduling",
+        "initial property information collection",
+        "CRM next-action maintenance",
+        "lead qualification",
+        "referral relationship follow-up"
+      ],
+      "kpis": [
+        "new owner contacts",
+        "qualified leads",
+        "follow-ups completed",
+        "appointments scheduled",
+        "properties submitted for underwriting",
+        "offers generated",
+        "contracts produced",
+        "lead-to-next-stage conversion rate"
+      ],
+      "system_authority": {
+        "intake_owner": "Algonquian Deal Intake",
+        "canonical_deal_owner": "Algonquian Pipeline CRM"
+      },
+      "requires_human_approval_for": [
+        "final pricing",
+        "offer terms",
+        "contracts",
+        "financing commitments",
+        "closing decisions"
+      ]
+    },
+    {
+      "priority": 4,
+      "role_id": "contractor_rehab_estimator",
+      "title": "Contractor / Rehab Estimator",
+      "engagement_model": "preferred-vendor-project-based",
+      "primary_outcome": "Property-specific written repair scope and budget",
+      "core_responsibilities": [
+        "condition review",
+        "preliminary scope of work",
+        "repair budget",
+        "labor and material ranges",
+        "contingency identification",
+        "specialist escalation",
+        "bid comparison support"
+      ],
+      "does_not_replace": [
+        "licensed home inspector",
+        "structural engineer",
+        "licensed electrician",
+        "licensed plumber",
+        "environmental professional",
+        "code official",
+        "other required specialists"
+      ]
+    },
+    {
+      "priority": 5,
+      "role_id": "capital_lending_specialist",
+      "title": "Capital & Lending Specialist",
+      "engagement_model": "relationship-or-deal-based",
+      "primary_outcome": "Documented financing path before transaction dependency",
+      "core_responsibilities": [
+        "lender matching",
+        "capital-structure analysis",
+        "down-payment and reserve requirement analysis",
+        "DSCR and guaranty requirement analysis",
+        "financing-gap identification",
+        "lender documentation planning",
+        "refinance and exit-financing planning",
+        "capital-source matrix maintenance"
+      ],
+      "compliance_boundary": "Activities involving lending, brokerage, securities, referrals, or compensation must remain within applicable law and licensing requirements.",
+      "may_not_without_documented_authority": [
+        "make financing commitments for ARE",
+        "move company funds",
+        "bind ARE to lender or investor terms"
+      ]
+    }
+  ],
+  "engagement_sequence": [
+    "ct_real_estate_attorney",
+    "bookkeeper_cpa",
+    "acquisition_lead_manager",
+    "contractor_rehab_estimator",
+    "capital_lending_specialist"
+  ],
+  "platform_authority_map": {
+    "submission_records": "Algonquian Deal Intake",
+    "canonical_deal": "Algonquian Pipeline CRM",
+    "underwriting": "Algonquian MAO Engine",
+    "offer_generation": "Algonquian Offer Generator",
+    "controlled_documents": "Algonquian Document Library",
+    "pdf_and_signature_workflows": "Algonquian PDF & Signature Engine",
+    "funding_records": "Algonquian Funding Tracker",
+    "workflow_automation": "Algonquian Automation Engine",
+    "executive_oversight": "Algonquian Admin Command Center"
+  },
+  "not_priority_now": [
+    {
+      "role": "Full-Time Software Developer",
+      "reason": "Technology work should be funded when it materially removes labor, improves conversion, enables transactions, protects records, or produces measurable revenue."
+    },
+    {
+      "role": "Large Permanent Administrative Staff",
+      "reason": "Early overhead must be justified by transaction execution, compliance, financial control, capital access, property diligence, or recurring revenue."
+    }
+  ],
+  "next_hiring_tier": [
+    "Transaction Coordinator",
+    "Property / Asset Manager",
+    "Operations Manager",
+    "Underwriting / Acquisitions Analyst",
+    "Expanded Acquisition Manager or team"
+  ]
+}
