@@ -48,6 +48,67 @@ function algq_funding_tracker_boot() {
 	( new ALGQ_Funding_Tracker_Shortcodes( $repository ) )->register();
 	( new ALGQ_Funding_Tracker_REST( $repository ) )->register();
 
+	/*
+	 * Publish read-only capital intelligence to the Admin Command Center.
+	 * Funding Tracker remains authoritative for capital-source and funding records;
+	 * Command Center only consumes the normalized summary through filters.
+	 */
+	add_filter(
+		'algq_command_center_funding_summary',
+		static function ( $fallback ) use ( $repository ) {
+			$summary = $repository->get_summary();
+			if ( ! is_array( $summary ) ) {
+				return $fallback;
+			}
+
+			return array(
+				'committed' => max( 0, (float) ( $summary['committed_total'] ?? 0 ) ),
+				'needed'    => max( 0, (float) ( $summary['requested_total'] ?? 0 ) ),
+			);
+		}
+	);
+
+	add_filter(
+		'algq_command_center_funding_track',
+		static function ( $fallback ) use ( $repository ) {
+			$summary = $repository->get_summary();
+			if ( ! is_array( $summary ) ) {
+				return $fallback;
+			}
+
+			$requested = max( 0, (float) ( $summary['requested_total'] ?? 0 ) );
+			$committed = max( 0, (float) ( $summary['committed_total'] ?? 0 ) );
+			$funded    = max( 0, (float) ( $summary['funded_total'] ?? 0 ) );
+			$records   = array();
+
+			foreach ( (array) $repository->get_commitments( 5 ) as $record ) {
+				$records[] = array(
+					'id'               => absint( $record['id'] ?? 0 ),
+					'deal_id'          => absint( $record['deal_id'] ?? 0 ),
+					'source_name'      => sanitize_text_field( (string) ( $record['source_name'] ?? '' ) ),
+					'status'           => sanitize_key( (string) ( $record['status'] ?? '' ) ),
+					'requested_amount' => max( 0, (float) ( $record['requested_amount'] ?? 0 ) ),
+					'committed_amount' => max( 0, (float) ( $record['committed_amount'] ?? 0 ) ),
+					'funded_amount'    => max( 0, (float) ( $record['funded_amount'] ?? 0 ) ),
+					'updated_at'       => sanitize_text_field( (string) ( $record['updated_at'] ?? '' ) ),
+				);
+			}
+
+			return array(
+				'connected'         => true,
+				'requested'         => $requested,
+				'committed'         => $committed,
+				'funded'            => $funded,
+				'gap'               => max( 0, $requested - $committed ),
+				'commitment_percent'=> $requested > 0 ? min( 100, (int) round( ( $committed / $requested ) * 100 ) ) : 0,
+				'funded_percent'    => $requested > 0 ? min( 100, (int) round( ( $funded / $requested ) * 100 ) ) : 0,
+				'source_count'      => absint( $summary['source_count'] ?? 0 ),
+				'record_count'      => absint( $summary['record_count'] ?? 0 ),
+				'recent_records'    => $records,
+			);
+		}
+	);
+
 	add_action( 'admin_notices', 'algq_funding_tracker_dependency_notice' );
 }
 add_action( 'plugins_loaded', 'algq_funding_tracker_boot' );
