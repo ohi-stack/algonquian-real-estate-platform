@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Shared ARE WordPress admin design system for Platform and companion-plugin screens.
+- Canonical navy, blue, gold, teal, neutral, success, warning, and critical design tokens.
+- Reusable KPI, card, panel, toolbar, badge, status, progress, skeleton, empty-state, and button utility classes.
+- Restrained card entrance, hover, progress, live-status, and loading motion with `prefers-reduced-motion` support.
+- Screen-scoped loading so unrelated WordPress and third-party plugin administration pages are not restyled.
+- `algq_admin_ui_is_are_screen` filter for companion-plugin screen registration.
+- ARE Admin UI implementation and release standard documentation.
+
+### Changed
+
+- Standard WordPress postboxes, cards, tables, forms, buttons, notices, tabs, and existing ALGQ KPI widgets now inherit the common ARE admin presentation when rendered on an ARE screen.
+
 ## 2.0.0 — 2026-07-31
 
 ### Added
