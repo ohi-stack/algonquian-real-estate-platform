@@ -18,9 +18,20 @@ The Platform Plugin is the infrastructure authority for the Algonquian Real Esta
 - Centralized WordPress SMTP transport and delivery logging
 - Private file storage and tokenized download delivery
 - Scheduled and on-demand platform health checks
+- Shared ARE WordPress admin UI system for branded plugin workspaces, widgets, tables, forms, states, and restrained motion
 - Idempotent WPBakery page generation that never overwrites existing pages
 - Legacy shortcode bridges that defer to authoritative companion plugins
 - REST health endpoint at `/wp-json/algq/v1/health`
+
+## ARE Admin UI
+
+The Platform supplies the common WordPress administration presentation layer for ARE screens. Companion plugins retain their own business logic and data authority while inheriting one visual system.
+
+Canonical admin colors include deep navy `#071522`, secondary navy `#0B1F33`, ARE blue `#0B3A63`, gold `#D1A54A`, teal `#0F8F83`, white, and neutral application surfaces.
+
+Reusable components are documented in `docs/ARE-ADMIN-UI-STANDARD.md`. The design layer includes KPI cards, panels, tables, forms, buttons, notices, tabs, status badges, progress/loading patterns, empty states, responsive behavior, keyboard focus treatment, and restrained motion. Nonessential motion is disabled when the user has enabled `prefers-reduced-motion`.
+
+The UI is screen-scoped. It does not globally restyle unrelated WordPress or third-party plugin pages.
 
 ## Requirements
 
