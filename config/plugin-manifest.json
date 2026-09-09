@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "platform": {
     "name": "Algonquian Real Estate Platform",
     "parent_entity": "Algonquian Real Estate LLC",
@@ -7,9 +7,11 @@
     "wordpress_minimum": "6.8",
     "php_minimum": "8.2",
     "namespace": "algq",
-    "author_display": "Onegodian | Algonquian Real Estate",
+    "author_display": "Algonquian Real Estate, LLC",
     "release_channel": "production-release-train",
-    "production_policy": "Canonical source may be promoted to main after code review and static validation, but no plugin may be described as live-production ready until its WordPress installation, migration, permissions, security and end-to-end acceptance gates are recorded as passed."
+    "production_policy": "Canonical source may be promoted to main after code review and static validation, but no plugin may be described as live-production ready until its WordPress installation, migration, permissions, security and end-to-end acceptance gates are recorded as passed.",
+    "live_inventory_count": 18,
+    "live_inventory_observed_at": "2026-09-09"
   },
   "plugins": [
     {
@@ -34,8 +36,11 @@
       "depends_on": [],
       "expected_entry_file": "algonquian-navigation.php",
       "source_version": "0.2.0",
-      "target_version": "0.2.0",
-      "release_state": "candidate_source"
+      "deployed_version": "0.3.0",
+      "target_version": "0.3.0",
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "production_ahead_of_canonical_source_reconciliation_required"
     },
     {
       "slug": "algq-pipeline-crm",
@@ -45,8 +50,11 @@
       "depends_on": ["algonquian-real-estate-platform"],
       "expected_entry_file": "algq-pipeline-crm.php",
       "source_version": "2.0.0",
-      "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "deployed_version": "2.1.0",
+      "target_version": "2.1.0",
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "production_ahead_of_canonical_source_reconciliation_required"
     },
     {
       "slug": "algq-deal-intake",
@@ -56,8 +64,11 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm"],
       "expected_entry_file": "algq-deal-intake.php",
       "source_version": "2.0.0",
-      "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "deployed_version": "2.1.0",
+      "target_version": "2.1.0",
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "production_ahead_of_canonical_source_reconciliation_required"
     },
     {
       "slug": "algq-mao-engine",
@@ -67,8 +78,11 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm"],
       "expected_entry_file": "algq-mao-engine.php",
       "source_version": "2.0.0",
+      "deployed_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-document-library",
@@ -78,8 +92,11 @@
       "depends_on": ["algonquian-real-estate-platform"],
       "expected_entry_file": "algq-document-library.php",
       "source_version": "2.0.0",
+      "deployed_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-pdf-signature",
@@ -89,8 +106,11 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-document-library"],
       "expected_entry_file": "algq-pdf-signature.php",
       "source_version": "2.0.0",
+      "deployed_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-offer-generator",
@@ -100,8 +120,11 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm", "algq-mao-engine", "algq-document-library", "algq-pdf-signature"],
       "expected_entry_file": "algq-offer-generator.php",
       "source_version": "2.0.0",
+      "deployed_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-automation-engine",
@@ -111,8 +134,11 @@
       "depends_on": ["algonquian-real-estate-platform"],
       "expected_entry_file": "algq-automation-engine.php",
       "source_version": "2.0.0",
+      "deployed_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-command-center",
@@ -122,8 +148,11 @@
       "depends_on": ["algonquian-real-estate-platform"],
       "expected_entry_file": "algq-command-center.php",
       "source_version": "1.2.0",
+      "deployed_version": "1.1.0",
       "target_version": "1.2.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_ahead_of_production_deployment_pending"
     },
     {
       "slug": "algq-buyer-portal",
@@ -133,8 +162,11 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm", "algq-document-library"],
       "expected_entry_file": "algq-buyer-portal.php",
       "source_version": "1.1.0",
+      "deployed_version": "1.1.0",
       "target_version": "1.1.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-deal-marketplace",
@@ -144,8 +176,11 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm", "algq-buyer-portal"],
       "expected_entry_file": "algq-deal-marketplace.php",
       "source_version": "2.0.0",
+      "deployed_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-funding-tracker",
@@ -155,8 +190,11 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm"],
       "expected_entry_file": "algq-funding-tracker.php",
       "source_version": "1.0.0",
+      "deployed_version": "1.0.0",
       "target_version": "1.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-digital-products",
@@ -166,8 +204,11 @@
       "depends_on": ["algonquian-real-estate-platform"],
       "expected_entry_file": "algq-digital-products.php",
       "source_version": "1.0.0",
+      "deployed_version": "1.0.0",
       "target_version": "1.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-digital-store",
@@ -177,8 +218,11 @@
       "depends_on": ["algonquian-real-estate-platform", "woocommerce"],
       "expected_entry_file": "algq-digital-store.php",
       "source_version": "1.2.0",
+      "deployed_version": "1.2.0",
       "target_version": "1.2.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-woocommerce-bridge",
@@ -188,8 +232,11 @@
       "depends_on": ["algonquian-real-estate-platform", "woocommerce"],
       "expected_entry_file": "algq-woocommerce-bridge.php",
       "source_version": "2.0.0",
+      "deployed_version": "2.0.0",
       "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-property-stewardship",
@@ -199,8 +246,25 @@
       "depends_on": ["algonquian-real-estate-platform", "algq-document-library"],
       "expected_entry_file": "algq-property-stewardship.php",
       "source_version": "1.0.0",
-      "target_version": "1.0.0",
-      "release_state": "canonical_source_on_main"
+      "deployed_version": "1.2.0",
+      "target_version": "1.2.0",
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "production_ahead_of_canonical_source_reconciliation_required"
+    },
+    {
+      "slug": "algq-agent-engine",
+      "name": "Algonquian ARE Agent Engine",
+      "authority": "Agent orchestration, skills, approvals, execution runs, next-action coordination and audit controls without duplicating authoritative business records",
+      "required": false,
+      "depends_on": ["algonquian-real-estate-platform", "algq-pipeline-crm", "algq-automation-engine"],
+      "expected_entry_file": "algq-agent-engine.php",
+      "source_version": "0.1.0",
+      "deployed_version": "0.1.0",
+      "target_version": "0.1.0",
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "live_installed_external_source_reconciliation_required"
     }
   ],
   "release_order": [
@@ -220,7 +284,8 @@
     "algq-digital-products",
     "algq-digital-store",
     "algq-woocommerce-bridge",
-    "algq-property-stewardship"
+    "algq-property-stewardship",
+    "algq-agent-engine"
   ],
   "release_requirements": {
     "required_files": ["README.md", "CHANGELOG.md", "SECURITY.md", "uninstall.php"],
@@ -228,6 +293,7 @@
     "required_controls": ["direct_access_guard", "capability_checks", "nonce_checks", "input_validation", "output_escaping", "activation_handler", "deactivation_handler", "safe_dependency_failure", "no_plaintext_secrets"],
     "generated_page_rule": "Use [vc_column_text]...[/vc_column_text]; never use </vc_column_text>.",
     "production_gate": "No package may be described as production-ready until installation, activation, upgrade, permissions, security, database, page-generation and end-to-end workflow checks pass.",
-    "agent_boundary": "AI agents may research, enrich, classify, calculate, draft, prioritize, schedule, monitor and execute approved administrative workflows; final acquisition strategy, binding offers, contracts, capital commitments, funds movement and closing authority remain human-controlled."
+    "agent_boundary": "AI agents may research, enrich, classify, calculate, draft, prioritize, schedule, monitor and execute approved administrative workflows; final acquisition strategy, binding offers, contracts, capital commitments, funds movement and closing authority remain human-controlled.",
+    "production_reconciliation_rule": "deployed_version records the live WordPress installation; source_version records canonical source on this repository unless release_state states external source; target_version must never be lower than deployed_version."
   }
 }
