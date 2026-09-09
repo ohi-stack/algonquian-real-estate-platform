@@ -20,8 +20,11 @@
       "depends_on": [],
       "expected_entry_file": "algonquian-real-estate-platform.php",
       "source_version": "2.0.0",
-      "target_version": "2.0.0",
-      "release_state": "canonical_source_on_main"
+      "deployed_version": "2.3.0",
+      "target_version": "2.3.0",
+      "production_observed_at": "2026-09-09",
+      "downgrade_prohibited": true,
+      "release_state": "production_ahead_of_canonical_source_reconciliation_required"
     },
     {
       "slug": "algonquian-navigation",
