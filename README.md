@@ -13,9 +13,9 @@ Algonquian Real Estate LLC was organized as a Connecticut limited liability comp
 
 ## Release Status
 
-**Production Candidate — acceptance testing required**
+**Development — production hardening; known blockers remain**
 
-The repository contains production-directed source and release controls, but a plugin is not classified as production-ready solely because a ZIP or plugin header says `1.0.0`. Each package must pass the installation-readiness gate in `docs/wordpress-installation-readiness.md`.
+The repository contains production-directed source and release controls, but the platform is not yet a release candidate or production-ready. The current evidence and blockers are tracked in `docs/PRODUCTION-READINESS-STATUS.md`. Each package must also pass the installation-readiness gate in `docs/wordpress-installation-readiness.md`.
 
 ## Protected Foundation
 
@@ -115,6 +115,8 @@ Static validation does not replace activation and end-to-end testing in a dispos
 
 ## Documentation
 
+- `docs/PRODUCTION-READINESS-STATUS.md` — current blockers, ten-layer gate, release sequence, evidence ledger, and stop conditions.
+- `docs/PUBLIC-PLUGIN-PAGE-CONTENT-STATUS.md` — live canonical route and page-content audit.
 - `docs/wordpress-installation-readiness.md` — mandatory installation and production acceptance matrix.
 - `SECURITY.md` — vulnerability handling and platform security baseline.
 - `CHANGELOG.md` — release history and outstanding production requirements.
@@ -122,4 +124,4 @@ Static validation does not replace activation and end-to-end testing in a dispos
 
 ## Current Objective
 
-Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, and publish only packages supported by recorded test evidence.
+Produce a reviewed, dependency-ordered integration candidate: reconcile every plugin package and all 17 canonical public routes, complete the ten-layer and WordPress acceptance matrices, build reproducible checksummed ZIPs from tagged source, test rollback, and publish only packages supported by recorded evidence and human approval.
