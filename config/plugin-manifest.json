@@ -80,19 +80,19 @@
     {
       "slug": "algq-deal-intake",
       "name": "Algonquian Deal Intake",
-      "authority": "Seller leads, property submissions, consent records, attachments, duplicate detection and controlled initial deal creation",
+      "authority": "Seller leads, property reviews, property submissions, consent evidence, protected artifacts, duplicate detection, lead scoring and controlled initial deal creation",
       "required": true,
       "depends_on": [
         "algonquian-real-estate-platform",
         "algq-pipeline-crm"
       ],
       "expected_entry_file": "algq-deal-intake.php",
-      "source_version": "2.0.0",
+      "source_version": "2.1.0",
       "deployed_version": "2.1.0",
       "target_version": "2.1.0",
       "production_observed_at": "2026-09-09",
       "downgrade_prohibited": true,
-      "release_state": "production_ahead_of_canonical_source_reconciliation_required"
+      "release_state": "canonical_source_matches_production"
     },
     {
       "slug": "algq-mao-engine",
