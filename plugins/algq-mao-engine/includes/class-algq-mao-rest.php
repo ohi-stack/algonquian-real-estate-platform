@@ -19,9 +19,14 @@ final class ALGQ_MAO_REST {
 	}
 	private function args() {
 		$amount = array( 'type' => 'number', 'required' => false, 'sanitize_callback' => array( $this->calculator, 'amount' ), 'validate_callback' => function ( $v ) { return is_numeric( $v ) && (float) $v >= 0; } );
-		$args = array( 'strategy' => array( 'type' => 'string', 'enum' => array( 'wholesale','flip','rental','multifamily' ), 'default' => 'wholesale' ) );
-		foreach ( array( 'arv','repairs','purchase_costs','holding_costs','financing_costs','selling_costs','desired_profit','assignment_fee','annual_gross_income','other_annual_income','annual_operating_expenses','annual_debt_service' ) as $key ) { $args[ $key ] = $amount; }
+		$rate = array( 'type' => 'number', 'required' => false, 'validate_callback' => function ( $v ) { return is_numeric( $v ) && (float) $v >= 0 && (float) $v <= 100; } );
+		$years = array( 'type' => 'number', 'required' => false, 'validate_callback' => function ( $v ) { return is_numeric( $v ) && (float) $v >= 0 && (float) $v <= 50; } );
+		$args = array( 'strategy' => array( 'type' => 'string', 'enum' => array( 'wholesale','flip','rental','multifamily','seller_financing' ), 'default' => 'wholesale' ) );
+		foreach ( array( 'arv','repairs','purchase_costs','holding_costs','financing_costs','selling_costs','desired_profit','assignment_fee','annual_gross_income','other_annual_income','annual_operating_expenses','annual_debt_service','purchase_price','down_payment','seller_financed_principal','seller_monthly_payment','refinance_value','conventional_down_payment' ) as $key ) { $args[ $key ] = $amount; }
 		$args['target_cap_rate'] = array( 'type' => 'number', 'required' => false, 'sanitize_callback' => array( $this->calculator, 'public_rate' ), 'validate_callback' => function ( $v ) { return is_numeric( $v ) && (float) $v >= 0 && (float) $v <= 1; } );
+		foreach ( array( 'seller_interest_rate','refinance_interest_rate','conventional_interest_rate' ) as $key ) { $args[ $key ] = $rate; }
+		foreach ( array( 'seller_amortization_years','seller_balloon_years','refinance_amortization_years','conventional_amortization_years' ) as $key ) { $args[ $key ] = $years; }
+		$args['refinance_ltv'] = $rate;
 		return $args;
 	}
 	private function consume() {

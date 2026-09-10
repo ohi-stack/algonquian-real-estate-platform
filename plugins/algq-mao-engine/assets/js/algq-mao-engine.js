@@ -40,21 +40,73 @@
 		return item;
 	}
 
+	function sensitivityTable(result) {
+		if (!result.sensitivity) {
+			return null;
+		}
+		var table = document.createElement('table');
+		table.className = 'algq-mao-sensitivity';
+		var caption = document.createElement('caption');
+		caption.textContent = 'Sensitivity Analysis';
+		table.appendChild(caption);
+		var seller = result.strategy === 'seller_financing';
+		var titles = seller ? ['Case', 'Refi Value', 'Payment', 'Balloon', 'Refi Gap', 'DSCR', 'Cash Flow'] : ['Case', 'ARV', 'Repairs', 'MAO', 'Profit'];
+		var head = document.createElement('tr');
+		titles.forEach(function (title) {
+			var th = document.createElement('th');
+			th.textContent = title;
+			head.appendChild(th);
+		});
+		table.appendChild(head);
+		Object.keys(result.sensitivity).forEach(function (name) {
+			var data = result.sensitivity[name];
+			var tr = document.createElement('tr');
+			var values = seller
+				? [name, money(data.refinance_value), money(data.monthly_payment), money(data.balloon_balance), money(data.refinance_gap), Number(data.dscr || 0).toFixed(2) + 'x', money(data.cash_flow)]
+				: [name, money(data.arv), money(data.repairs), money(data.mao), money(data.projected_profit)];
+			values.forEach(function (value) {
+				var td = document.createElement('td');
+				td.textContent = value;
+				tr.appendChild(td);
+			});
+			table.appendChild(tr);
+		});
+		return table;
+	}
+
 	function render(form, result) {
 		var target = form.querySelector('.algq-mao-result');
 		clear(target);
 
 		var summary = document.createElement('div');
 		summary.className = 'algq-mao-result-grid';
-		summary.appendChild(row('Maximum Allowable Offer', money(result.mao)));
-		summary.appendChild(row('Projected Profit', money(result.projected_profit)));
-		summary.appendChild(row('Estimated Spread', money(result.estimated_spread)));
-		summary.appendChild(row('Risk', result.risk_flag || 'Review'));
-
-		if (result.noi > 0) {
+		if (result.strategy === 'seller_financing') {
+			summary.appendChild(row('Purchase Price', money(result.purchase_price)));
+			summary.appendChild(row('Down Payment', money(result.down_payment)));
+			summary.appendChild(row('Seller-Financed Principal', money(result.seller_financed_principal)));
+			summary.appendChild(row('Monthly Payment', money(result.monthly_payment)));
+			summary.appendChild(row('Annual Debt Service', money(result.annual_debt_service)));
+			summary.appendChild(row('Balloon Balance', money(result.balloon_balance)));
+			summary.appendChild(row('Total Debt Service to Balloon', money(result.total_debt_service)));
 			summary.appendChild(row('NOI', money(result.noi)));
-			summary.appendChild(row('Cap Rate', percent(result.cap_rate)));
-			summary.appendChild(row('DSCR', Number(result.dscr || 0).toFixed(2)));
+			summary.appendChild(row('Annual Cash Flow', money(result.cash_flow)));
+			summary.appendChild(row('DSCR', Number(result.dscr || 0).toFixed(2) + 'x'));
+			summary.appendChild(row('Refinance Capacity', money(result.refinance_capacity)));
+			summary.appendChild(row('Refinance Gap', money(result.refinance_gap)));
+			summary.appendChild(row('Conventional Monthly Payment', money(result.conventional_monthly_payment)));
+			summary.appendChild(row('Monthly Payment Savings', money(result.monthly_payment_savings)));
+			summary.appendChild(row('Upfront Cash Savings', money(result.upfront_cash_savings)));
+			summary.appendChild(row('Risk', result.risk_flag || 'Review'));
+		} else {
+			summary.appendChild(row('Maximum Allowable Offer', money(result.mao)));
+			summary.appendChild(row('Projected Profit', money(result.projected_profit)));
+			summary.appendChild(row('Estimated Spread', money(result.estimated_spread)));
+			summary.appendChild(row('Risk', result.risk_flag || 'Review'));
+			if (result.noi > 0) {
+				summary.appendChild(row('NOI', money(result.noi)));
+				summary.appendChild(row('Cap Rate', percent(result.cap_rate)));
+				summary.appendChild(row('DSCR', Number(result.dscr || 0).toFixed(2)));
+			}
 		}
 		target.appendChild(summary);
 
@@ -70,29 +122,8 @@
 			target.appendChild(reasons);
 		}
 
-		if (result.sensitivity) {
-			var table = document.createElement('table');
-			table.className = 'algq-mao-sensitivity';
-			var caption = document.createElement('caption');
-			caption.textContent = 'Sensitivity Analysis';
-			table.appendChild(caption);
-			var head = document.createElement('tr');
-			['Case', 'ARV', 'Repairs', 'MAO', 'Profit'].forEach(function (title) {
-				var th = document.createElement('th');
-				th.textContent = title;
-				head.appendChild(th);
-			});
-			table.appendChild(head);
-			Object.keys(result.sensitivity).forEach(function (name) {
-				var data = result.sensitivity[name];
-				var tr = document.createElement('tr');
-				[name, money(data.arv), money(data.repairs), money(data.mao), money(data.projected_profit)].forEach(function (value) {
-					var td = document.createElement('td');
-					td.textContent = value;
-					tr.appendChild(td);
-				});
-				table.appendChild(tr);
-			});
+		var table = sensitivityTable(result);
+		if (table) {
 			target.appendChild(table);
 		}
 	}

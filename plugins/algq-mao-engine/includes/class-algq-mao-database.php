@@ -28,10 +28,14 @@ final class ALGQ_MAO_Database {
 			annual_gross_income DECIMAL(16,2) DEFAULT 0, annual_operating_expenses DECIMAL(16,2) DEFAULT 0, target_cap_rate DECIMAL(8,5) DEFAULT 0,
 			mao DECIMAL(16,2) DEFAULT 0, estimated_spread DECIMAL(16,2) DEFAULT 0, projected_profit DECIMAL(16,2) DEFAULT 0,
 			noi DECIMAL(16,2) DEFAULT 0, cap_rate DECIMAL(8,5) DEFAULT 0,
+			purchase_price DECIMAL(16,2) DEFAULT 0, down_payment DECIMAL(16,2) DEFAULT 0, seller_financed_principal DECIMAL(16,2) DEFAULT 0,
+			monthly_payment DECIMAL(16,2) DEFAULT 0, annual_debt_service DECIMAL(16,2) DEFAULT 0, balloon_balance DECIMAL(16,2) DEFAULT 0,
+			total_debt_service DECIMAL(16,2) DEFAULT 0, dscr DECIMAL(10,3) DEFAULT 0, cash_flow DECIMAL(16,2) DEFAULT 0,
+			refinance_capacity DECIMAL(16,2) DEFAULT 0, refinance_gap DECIMAL(16,2) DEFAULT 0, conventional_monthly_payment DECIMAL(16,2) DEFAULT 0,
 			risk_flag VARCHAR(40) DEFAULT 'Review', risk_reasons LONGTEXT,
 			created_by BIGINT UNSIGNED DEFAULT 0, approved_by BIGINT UNSIGNED DEFAULT 0,
 			created_at DATETIME NOT NULL, updated_at DATETIME NULL, approved_at DATETIME NULL,
-			PRIMARY KEY (id), UNIQUE KEY uuid (uuid), KEY deal_id (deal_id), KEY status (status), KEY risk_flag (risk_flag), KEY created_at (created_at)
+			PRIMARY KEY (id), UNIQUE KEY uuid (uuid), KEY deal_id (deal_id), KEY strategy (strategy), KEY status (status), KEY risk_flag (risk_flag), KEY created_at (created_at)
 		) {$charset};";
 		dbDelta( $sql );
 		$ids = $wpdb->get_col( "SELECT id FROM {$table} WHERE uuid IS NULL OR uuid = ''" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
@@ -48,17 +52,23 @@ final class ALGQ_MAO_Database {
 			'strategy' => sanitize_key( $result['strategy'] ), 'status' => 'draft', 'formula_version' => ALGQ_MAO_Calculator::FORMULA_VERSION,
 			'assumption_version' => sanitize_text_field( $a['assumption_version'] ?? 'unknown' ),
 			'input_snapshot' => wp_json_encode( $i ), 'result_snapshot' => wp_json_encode( $result ),
-			'arv' => $result['arv'], 'repairs' => $result['repairs'], 'purchase_costs' => $result['purchase_costs'],
-			'holding_costs' => $result['holding_costs'], 'financing_costs' => $result['financing_costs'], 'selling_costs' => $result['selling_costs'],
-			'desired_profit' => $result['desired_profit'], 'assignment_fee' => $result['assignment_fee'],
-			'annual_gross_income' => $i['annual_gross_income'], 'annual_operating_expenses' => $i['annual_operating_expenses'],
-			'target_cap_rate' => $i['target_cap_rate'] > 0 ? $i['target_cap_rate'] : $a['rental_target_cap_rate'],
-			'mao' => $result['mao'], 'estimated_spread' => $result['estimated_spread'], 'projected_profit' => $result['projected_profit'],
-			'noi' => $result['noi'], 'cap_rate' => $result['cap_rate'], 'risk_flag' => sanitize_text_field( $result['risk_flag'] ),
-			'risk_reasons' => wp_json_encode( $result['risk_reasons'] ), 'created_by' => absint( $user_id ), 'approved_by' => 0,
-			'created_at' => $now, 'updated_at' => $now,
+			'arv' => $result['arv'] ?? 0, 'repairs' => $result['repairs'] ?? 0, 'purchase_costs' => $result['purchase_costs'] ?? 0,
+			'holding_costs' => $result['holding_costs'] ?? 0, 'financing_costs' => $result['financing_costs'] ?? 0, 'selling_costs' => $result['selling_costs'] ?? 0,
+			'desired_profit' => $result['desired_profit'] ?? 0, 'assignment_fee' => $result['assignment_fee'] ?? 0,
+			'annual_gross_income' => $i['annual_gross_income'] ?? 0, 'annual_operating_expenses' => $i['annual_operating_expenses'] ?? 0,
+			'target_cap_rate' => ( $i['target_cap_rate'] ?? 0 ) > 0 ? $i['target_cap_rate'] : ( $a['rental_target_cap_rate'] ?? 0 ),
+			'mao' => $result['mao'] ?? 0, 'estimated_spread' => $result['estimated_spread'] ?? 0, 'projected_profit' => $result['projected_profit'] ?? 0,
+			'noi' => $result['noi'] ?? 0, 'cap_rate' => $result['cap_rate'] ?? 0,
+			'purchase_price' => $result['purchase_price'] ?? 0, 'down_payment' => $result['down_payment'] ?? 0,
+			'seller_financed_principal' => $result['seller_financed_principal'] ?? 0, 'monthly_payment' => $result['monthly_payment'] ?? 0,
+			'annual_debt_service' => $result['annual_debt_service'] ?? ( $i['annual_debt_service'] ?? 0 ), 'balloon_balance' => $result['balloon_balance'] ?? 0,
+			'total_debt_service' => $result['total_debt_service'] ?? 0, 'dscr' => $result['dscr'] ?? 0, 'cash_flow' => $result['cash_flow'] ?? 0,
+			'refinance_capacity' => $result['refinance_capacity'] ?? 0, 'refinance_gap' => $result['refinance_gap'] ?? 0,
+			'conventional_monthly_payment' => $result['conventional_monthly_payment'] ?? 0,
+			'risk_flag' => sanitize_text_field( $result['risk_flag'] ), 'risk_reasons' => wp_json_encode( $result['risk_reasons'] ),
+			'created_by' => absint( $user_id ), 'approved_by' => 0, 'created_at' => $now, 'updated_at' => $now,
 		);
-		$formats = array( '%s','%d','%s','%s','%s','%s','%s','%s','%s','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%s','%s','%d','%d','%s','%s' );
+		$formats = array( '%s','%d','%s','%s','%s','%s','%s','%s','%s','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%f','%s','%s','%d','%d','%s','%s' );
 		return $wpdb->insert( self::table(), $data, $formats ) ? (int) $wpdb->insert_id : false;
 	}
 
@@ -80,6 +90,7 @@ final class ALGQ_MAO_Database {
 			'total' => (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$t}" ), // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			'approved' => (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$t} WHERE status=%s", 'approved' ) ),
 			'high_risk' => (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$t} WHERE risk_flag=%s", 'High Risk' ) ),
+			'seller_financing' => (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$t} WHERE strategy=%s", 'seller_financing' ) ),
 			'average_mao' => (float) $wpdb->get_var( "SELECT AVG(mao) FROM {$t}" ), // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		);
 	}
