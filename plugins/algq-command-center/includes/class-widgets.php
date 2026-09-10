@@ -1,96 +1,39 @@
 <?php
-/**
- * Dashboard widgets.
- *
- * @package Algonquian_Command_Center
- */
-
+/** Dashboard widgets. @package Algonquian_Command_Center */
 defined( 'ABSPATH' ) || exit;
 
 final class ALGQ_Command_Center_Widgets {
     public static function registry(): array {
-        return apply_filters(
-            'algq_command_center_widget_registry',
-            array(
-                'new_leads' => array( 'label' => __( 'New Leads', 'algq-command-center' ), 'group' => 'acquisition', 'format' => 'number' ),
-                'active_deals' => array( 'label' => __( 'Active Deals', 'algq-command-center' ), 'group' => 'acquisition', 'format' => 'number' ),
-                'underwriting_queue' => array( 'label' => __( 'Underwriting Queue', 'algq-command-center' ), 'group' => 'acquisition', 'format' => 'number' ),
-                'offers_pending' => array( 'label' => __( 'Offers Pending', 'algq-command-center' ), 'group' => 'transactions', 'format' => 'number' ),
-                'contracts_pending' => array( 'label' => __( 'Under Contract', 'algq-command-center' ), 'group' => 'transactions', 'format' => 'number' ),
-                'closings' => array( 'label' => __( 'Closings', 'algq-command-center' ), 'group' => 'transactions', 'format' => 'number' ),
-                'buyers_registered' => array( 'label' => __( 'Registered Buyers', 'algq-command-center' ), 'group' => 'buyers', 'format' => 'number' ),
-                'buyer_interest' => array( 'label' => __( 'Buyer Interest', 'algq-command-center' ), 'group' => 'buyers', 'format' => 'number' ),
-                'pipeline_value' => array( 'label' => __( 'Pipeline Value', 'algq-command-center' ), 'group' => 'executive', 'format' => 'currency' ),
-                'funding_status' => array( 'label' => __( 'Funding Progress', 'algq-command-center' ), 'group' => 'capital', 'format' => 'percent' ),
-                'documents_generated' => array( 'label' => __( 'Documents', 'algq-command-center' ), 'group' => 'documents', 'format' => 'number' ),
-                'signatures_pending' => array( 'label' => __( 'Signatures Pending', 'algq-command-center' ), 'group' => 'documents', 'format' => 'number' ),
-                'automation_failed' => array( 'label' => __( 'Automation Failures', 'algq-command-center' ), 'group' => 'automation', 'format' => 'number' ),
-                'system_health_score' => array( 'label' => __( 'Platform Health', 'algq-command-center' ), 'group' => 'platform', 'format' => 'health' ),
-            )
-        );
+        return apply_filters( 'algq_command_center_widget_registry', array(
+            'qualified_deals_advanced' => array( 'label' => __( 'Qualified Deals Advanced', 'algq-command-center' ), 'group' => 'executive', 'format' => 'number' ),
+            'new_leads' => array( 'label' => __( 'New Leads', 'algq-command-center' ), 'group' => 'acquisition', 'format' => 'number' ),
+            'active_deals' => array( 'label' => __( 'Active Deals', 'algq-command-center' ), 'group' => 'acquisition', 'format' => 'number' ),
+            'underwriting_queue' => array( 'label' => __( 'Underwriting Queue', 'algq-command-center' ), 'group' => 'acquisition', 'format' => 'number' ),
+            'offers_pending' => array( 'label' => __( 'Offers Pending', 'algq-command-center' ), 'group' => 'transactions', 'format' => 'number' ),
+            'contracts_pending' => array( 'label' => __( 'Under Contract', 'algq-command-center' ), 'group' => 'transactions', 'format' => 'number' ),
+            'closings' => array( 'label' => __( 'Closings', 'algq-command-center' ), 'group' => 'transactions', 'format' => 'number' ),
+            'pipeline_value' => array( 'label' => __( 'Pipeline Potential', 'algq-command-center' ), 'group' => 'executive', 'format' => 'currency' ),
+            'buyers_registered' => array( 'label' => __( 'Registered Buyers', 'algq-command-center' ), 'group' => 'buyers', 'format' => 'number' ),
+            'buyer_interest' => array( 'label' => __( 'Buyer Interest', 'algq-command-center' ), 'group' => 'buyers', 'format' => 'number' ),
+            'funding_status' => array( 'label' => __( 'Funding Progress', 'algq-command-center' ), 'group' => 'capital', 'format' => 'percent' ),
+            'signatures_pending' => array( 'label' => __( 'Signatures Pending', 'algq-command-center' ), 'group' => 'documents', 'format' => 'number' ),
+            'automation_failed' => array( 'label' => __( 'Automation Failures', 'algq-command-center' ), 'group' => 'automation', 'format' => 'number' ),
+            'system_health_score' => array( 'label' => __( 'Platform Health', 'algq-command-center' ), 'group' => 'platform', 'format' => 'health' ),
+        ) );
     }
-
-    public static function enabled_widgets(): array {
-        $allowed = array_keys( self::registry() );
-        $enabled = (array) get_option( 'algq_command_center_enabled_widgets', $allowed );
-        return array_values( array_intersect( array_map( 'sanitize_key', $enabled ), $allowed ) );
-    }
-
-    public static function render_kpi_cards(): void {
-        $metrics = ALGQ_Command_Center_Data_Provider::metrics();
-        $registry = self::registry();
-        echo '<div class="algq-kpi-grid" data-algq-sortable="kpis">';
-        foreach ( self::enabled_widgets() as $key ) {
-            if ( ! isset( $registry[ $key ] ) ) {
-                continue;
-            }
-            echo '<section class="algq-kpi-card" draggable="true">';
-            echo '<span class="algq-kpi-label">' . esc_html( $registry[ $key ]['label'] ) . '</span>';
-            echo '<strong class="algq-kpi-value">' . esc_html( self::format_value( $key, $registry[ $key ], $metrics ) ) . '</strong>';
-            echo '<small class="algq-kpi-group">' . esc_html( ucfirst( (string) $registry[ $key ]['group'] ) ) . '</small>';
-            echo '</section>';
-        }
-        echo '</div>';
-    }
-
-    public static function render_activity_feed(): void {
-        $items = ALGQ_Command_Center_Data_Provider::activity();
-        echo '<section class="algq-panel"><div class="algq-panel-heading"><h3>' . esc_html__( 'Recent Operational Activity', 'algq-command-center' ) . '</h3></div><ul class="algq-feed">';
-        foreach ( $items as $item ) {
-            echo '<li><strong>' . esc_html( (string) ( $item['type'] ?? 'Activity' ) ) . '</strong><span>' . esc_html( (string) ( $item['message'] ?? '' ) ) . '</span><em>' . esc_html( (string) ( $item['time'] ?? '' ) ) . '</em></li>';
-        }
-        echo '</ul></section>';
-    }
-
-    public static function render_pipeline(): void {
-        $stages = ALGQ_Command_Center_Data_Provider::pipeline_stages();
-        echo '<section class="algq-panel"><div class="algq-panel-heading"><h3>' . esc_html__( 'Pipeline by Stage', 'algq-command-center' ) . '</h3></div><div class="algq-stage-list">';
-        foreach ( $stages as $stage ) {
-            echo '<div class="algq-stage-row"><span>' . esc_html( (string) $stage['label'] ) . '</span><strong>' . esc_html( (string) $stage['count'] ) . '</strong></div>';
-        }
-        echo '</div></section>';
-    }
-
-    public static function render_health(): void {
-        $checks = ALGQ_Command_Center_Health_Monitor::checks();
-        echo '<section class="algq-panel"><div class="algq-panel-heading"><h3>' . esc_html__( 'Platform Health', 'algq-command-center' ) . '</h3></div><div class="algq-health-list">';
-        foreach ( $checks as $check ) {
-            $status = sanitize_key( (string) ( $check['status'] ?? 'warning' ) );
-            echo '<div class="algq-health-row"><span class="algq-status algq-status-' . esc_attr( $status ) . '">' . esc_html( ucfirst( $status ) ) . '</span><strong>' . esc_html( (string) ( $check['label'] ?? '' ) ) . '</strong><span>' . esc_html( (string) ( $check['message'] ?? '' ) ) . '</span></div>';
-        }
-        echo '</div></section>';
-    }
-
-    private static function format_value( string $key, array $config, array $metrics ): string {
-        if ( 'system_health_score' === $key ) {
-            $health = $metrics['system_health'] ?? array();
-            return isset( $health['score'] ) ? (string) absint( $health['score'] ) . '%' : '0%';
-        }
-        $value = $metrics[ $key ] ?? 0;
-        return match ( $config['format'] ?? 'number' ) {
-            'currency' => '$' . number_format_i18n( (float) $value, 0 ),
-            'percent' => is_array( $value ) ? (string) absint( $value['percent'] ?? 0 ) . '%' : (string) absint( $value ) . '%',
-            default => number_format_i18n( (int) $value ),
-        };
-    }
+    public static function enabled_widgets(): array { $allowed=array_keys(self::registry()); $enabled=(array)get_option('algq_command_center_enabled_widgets',$allowed); return array_values(array_intersect(array_map('sanitize_key',$enabled),$allowed)); }
+    public static function render_kpi_cards(): void { $m=ALGQ_Command_Center_Data_Provider::metrics(); $r=self::registry(); echo '<div class="algq-kpi-grid">'; foreach(self::enabled_widgets() as $k){if(!isset($r[$k]))continue; echo '<section class="algq-kpi-card"><span class="algq-kpi-label">'.esc_html($r[$k]['label']).'</span><strong class="algq-kpi-value">'.esc_html(self::format_value($k,$r[$k],$m)).'</strong><small class="algq-kpi-group">'.esc_html(ucfirst($r[$k]['group'])).'</small></section>';} echo '</div>'; }
+    public static function render_executive_brief(): void { self::panel('Needs Your Attention Today',array('Decisions and approvals requiring human authority','Critical transaction deadlines within 72 hours','Active deals with no next action or stalled progression','Seller responses and offers awaiting action','Funding, buyer-match, closing, automation, or platform blockers'),'Executive Brief'); }
+    public static function render_decisions(): void { self::panel('Decisions Required',array('Acquisition strategy and offer amount','Offer release and counteroffers','Contract execution or amendment','Due-diligence waiver or exception','Buyer selection and disposition terms','Financing structure, capital commitment, expenditure, wire release, and closing authorization'),'Human Authority'); }
+    public static function render_risk(): void { self::panel('Deals At Risk',array('NO_NEXT_ACTION integrity exceptions','Qualified deals not underwritten on time','Underwritten deals awaiting a decision','Offers ready but unreleased or unanswered','Title, inspection, document, funding, buyer, or closing blockers'),'Exception Monitor'); }
+    public static function render_deadlines(): void { self::panel('Critical Deadlines',array('Offer expirations','Inspection and attorney-review deadlines','Financing, deposit, title, and document deadlines','Buyer/disposition deadlines','Closing and post-closing actions'),'Today • 24h • 72h • 7d • 30d'); }
+    public static function render_revenue(): void { $m=ALGQ_Command_Center_Data_Provider::metrics(); echo '<section class="algq-panel"><span class="algq-eyebrow">Revenue & Economics</span><h3>Transaction economics at a glance</h3><div class="algq-metric-summary"><strong>Pipeline Potential: '.esc_html('$'.number_format_i18n((float)($m['pipeline_value']??0),0)).'</strong><strong>Closings: '.esc_html(number_format_i18n((int)($m['closings']??0))).'</strong><strong>Funding Progress: '.esc_html(is_array($m['funding_status']??null)?absint($m['funding_status']['percent']??0).'%' : absint($m['funding_status']??0).'%').'</strong></div><p class="algq-muted">Projected gross revenue, net deal profit, service revenue and lead-source economics populate here when their authoritative plugins expose those values.</p></section>'; }
+    public static function render_agents(): void { self::panel('Agent Operations',array('Intake / Enrichment / Qualification','Property Analysis / Underwriting / Acquisition','Follow-Up / Offer / Transaction','Buyer / Capital / Closing','Relationship / Executive'),'Status • Current Job • Deal • Result • Confidence • Human Review'); }
+    public static function render_approvals(): void { self::panel('Approval Performance',array('Pending and critical approvals','Average decision time','Oldest pending approval','Approved / rejected / revisions requested','Expired or materially changed approvals'),'Human Approval Control'); }
+    public static function render_capital(): void { self::panel('Buyer & Capital Gaps',array('Deals requiring capital and gap remaining','Funding matched and capital-source status','Deals requiring buyers','Qualified buyer matches and interest','Disposition or financing blockers'),'Transaction Readiness'); }
+    public static function render_activity_feed(): void { $items=ALGQ_Command_Center_Data_Provider::activity(); echo '<section class="algq-panel"><h3>Recent Meaningful Activity</h3><ul class="algq-feed">'; foreach($items as $i){echo '<li><strong>'.esc_html((string)($i['type']??'Activity')).'</strong><span>'.esc_html((string)($i['message']??'')).'</span><em>'.esc_html((string)($i['time']??'')).'</em></li>';} echo '</ul></section>'; }
+    public static function render_pipeline(): void { $stages=ALGQ_Command_Center_Data_Provider::pipeline_stages(); echo '<section class="algq-panel"><span class="algq-eyebrow">Acquisition Funnel</span><h3>Pipeline by Stage</h3><div class="algq-stage-list">'; foreach($stages as $s){echo '<div class="algq-stage-row"><span>'.esc_html((string)$s['label']).'</span><strong>'.esc_html((string)$s['count']).'</strong></div>';} echo '</div></section>'; }
+    public static function render_health(): void { $checks=ALGQ_Command_Center_Health_Monitor::checks(); echo '<section class="algq-panel"><h3>Platform Health</h3><div class="algq-health-list">'; foreach($checks as $c){$st=sanitize_key((string)($c['status']??'warning'));echo '<div class="algq-health-row"><span class="algq-status algq-status-'.esc_attr($st).'">'.esc_html(ucfirst($st)).'</span><strong>'.esc_html((string)($c['label']??'')).'</strong><span>'.esc_html((string)($c['message']??'')).'</span></div>';} echo '</div></section>'; }
+    private static function panel(string $title,array $items,string $eyebrow=''): void { echo '<section class="algq-panel">'; if($eyebrow)echo '<span class="algq-eyebrow">'.esc_html($eyebrow).'</span>'; echo '<h3>'.esc_html($title).'</h3><div class="algq-action-grid">'; foreach($items as $item)echo '<div class="algq-action-card">'.esc_html($item).'</div>'; echo '</div></section>'; }
+    private static function format_value(string $key,array $config,array $metrics): string { if('system_health_score'===$key){$h=$metrics['system_health']??array();return isset($h['score'])?(string)absint($h['score']).'%':'0%';}$v=$metrics[$key]??0;return match($config['format']??'number'){'currency'=>'$'.number_format_i18n((float)$v,0),'percent'=>is_array($v)?(string)absint($v['percent']??0).'%':(string)absint($v). '%',default=>number_format_i18n((int)$v)}; }
 }
