@@ -3,9 +3,9 @@
  * Plugin Name: Algonquian Real Estate Platform
  * Plugin URI: https://algonquianrealestate.com/technology/platform/
  * Description: Shared infrastructure, security, registry, mail delivery, audit logging, private file storage, health monitoring, capabilities, and common integration contracts for the Algonquian Real Estate plugin ecosystem.
- * Version: 2.0.0
- * Author: Onegodian
- * Author URI: https://algonquianrealestate.com/
+ * Version: 3.1.0
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algonquian-real-estate-platform
  * Domain Path: /languages
  * Requires at least: 6.8
@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'ALGQ_PLATFORM_VERSION' ) ) {
-	define( 'ALGQ_PLATFORM_VERSION', '2.0.0' );
+	define( 'ALGQ_PLATFORM_VERSION', '3.1.0' );
 }
 
 if ( ! defined( 'ALGQ_PLATFORM_FILE' ) ) {
@@ -34,6 +34,9 @@ if ( ! defined( 'ALGQ_PLATFORM_URL' ) ) {
 }
 
 require_once ALGQ_PLATFORM_DIR . 'includes/class-capabilities.php';
+require_once ALGQ_PLATFORM_DIR . 'includes/class-service-interface.php';
+require_once ALGQ_PLATFORM_DIR . 'includes/class-admin-ui.php';
+require_once ALGQ_PLATFORM_DIR . 'includes/class-operational-modules.php';
 require_once ALGQ_PLATFORM_DIR . 'includes/class-plugin-registry.php';
 require_once ALGQ_PLATFORM_DIR . 'includes/class-audit-log.php';
 require_once ALGQ_PLATFORM_DIR . 'includes/class-mail-gateway.php';
@@ -51,7 +54,6 @@ final class ALGQ_Platform {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
-
 		return self::$instance;
 	}
 
@@ -61,18 +63,20 @@ final class ALGQ_Platform {
 
 	public function boot(): void {
 		load_plugin_textdomain( 'algonquian-real-estate-platform', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-
 		if ( ! self::meets_requirements() ) {
 			add_action( 'admin_notices', array( $this, 'render_requirement_notice' ) );
 			return;
 		}
 
+		ARE_Platform_Service_Registry::init();
 		ALGQ_Platform_Capabilities::init();
 		ALGQ_Platform_Registry::init();
 		ALGQ_Platform_Audit_Log::init();
 		ALGQ_Mail_Gateway::init();
 		ALGQ_Private_Files::init();
 		ALGQ_Platform_Health_Monitor::init();
+		ALGQ_Admin_UI::init();
+		ALGQ_Platform_Operational_Modules::init();
 
 		add_action( 'init', array( $this, 'register_shortcodes' ), 100 );
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
@@ -88,7 +92,7 @@ final class ALGQ_Platform {
 		if ( ! self::meets_requirements() ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 			wp_die(
-				esc_html__( 'Algonquian Real Estate Platform 2.0.0 requires WordPress 6.8 or later and PHP 8.2 or later.', 'algonquian-real-estate-platform' ),
+				esc_html__( 'Algonquian Real Estate Platform 3.1.0 requires WordPress 6.8 or later and PHP 8.2 or later.', 'algonquian-real-estate-platform' ),
 				esc_html__( 'Platform requirements not met', 'algonquian-real-estate-platform' ),
 				array( 'back_link' => true )
 			);
@@ -100,10 +104,11 @@ final class ALGQ_Platform {
 		ALGQ_Private_Files::ensure_storage();
 		ALGQ_Platform_Page_Generator::create_missing_pages();
 		ALGQ_Platform_Health_Monitor::schedule();
+		ALGQ_Platform_Operational_Modules::activate();
 
 		update_option( 'algq_platform_version', ALGQ_PLATFORM_VERSION );
-		update_option( 'algq_platform_schema_version', '2.0.0' );
-		update_option( 'algq_platform_release_status', 'Production infrastructure core' );
+		update_option( 'algq_platform_schema_version', '3.1.0' );
+		update_option( 'algq_platform_release_status', 'Platform 3.1 unified reconciliation build' );
 
 		ALGQ_Platform_Audit_Log::log(
 			'platform.activated',
@@ -118,7 +123,6 @@ final class ALGQ_Platform {
 
 	private static function meets_requirements(): bool {
 		global $wp_version;
-
 		return version_compare( PHP_VERSION, '8.2', '>=' )
 			&& isset( $wp_version )
 			&& version_compare( (string) $wp_version, '6.8', '>=' );
@@ -128,39 +132,36 @@ final class ALGQ_Platform {
 		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return;
 		}
-
 		echo '<div class="notice notice-error"><p>'
-			. esc_html__( 'Algonquian Real Estate Platform 2.0.0 is inactive because WordPress 6.8+ and PHP 8.2+ are required.', 'algonquian-real-estate-platform' )
+			. esc_html__( 'Algonquian Real Estate Platform 3.1.0 is inactive because WordPress 6.8+ and PHP 8.2+ are required.', 'algonquian-real-estate-platform' )
 			. '</p></div>';
 	}
 
 	public function register_shortcodes(): void {
 		add_shortcode( 'algq_platform_overview', array( $this, 'render_platform_overview_shortcode' ) );
-
 		if ( ! shortcode_exists( 'algq_plugin_suite' ) ) {
 			add_shortcode( 'algq_plugin_suite', array( $this, 'render_platform_overview_shortcode' ) );
 		}
 
 		$legacy_bridges = array(
 			'algq_seller_intake'      => 'Algonquian Deal Intake',
-			'algq_mao_calculator'      => 'Algonquian MAO Engine',
-			'algq_buyer_registration'  => 'Algonquian Buyer Portal',
-			'algq_pipeline_crm'         => 'Algonquian Pipeline CRM',
-			'algq_buyer_portal'         => 'Algonquian Buyer Portal',
-			'algq_funding_tracker'      => 'Algonquian Funding Tracker',
-			'algq_document_library'     => 'Algonquian Document Library',
-			'algq_automation_engine'    => 'Algonquian Automation Engine',
-			'algq_admin_dashboard'      => 'Algonquian Admin Command Center',
-			'algq_digital_store'        => 'Algonquian Digital Store',
-			'algq_product_vault'        => 'Algonquian Digital Store',
-			'algq_store_checkout'       => 'Algonquian Digital Store',
+			'algq_mao_calculator'     => 'Algonquian MAO Engine',
+			'algq_buyer_registration' => 'Algonquian Buyer Portal',
+			'algq_pipeline_crm'        => 'Algonquian Pipeline CRM',
+			'algq_buyer_portal'        => 'Algonquian Buyer Portal',
+			'algq_funding_tracker'     => 'Algonquian Funding Tracker',
+			'algq_document_library'    => 'Algonquian Document Library',
+			'algq_automation_engine'   => 'Algonquian Automation Engine',
+			'algq_admin_dashboard'     => 'Algonquian Admin Command Center',
+			'algq_digital_store'       => 'Algonquian Digital Store',
+			'algq_product_vault'       => 'Algonquian Digital Store',
+			'algq_store_checkout'      => 'Algonquian Digital Store',
 		);
 
 		foreach ( $legacy_bridges as $shortcode => $plugin_name ) {
 			if ( shortcode_exists( $shortcode ) ) {
 				continue;
 			}
-
 			add_shortcode(
 				$shortcode,
 				static function () use ( $plugin_name ): string {
@@ -171,7 +172,6 @@ final class ALGQ_Platform {
 							esc_html__( 'The companion plugin responsible for this interface is not active or has not registered its shortcode.', 'algonquian-real-estate-platform' )
 						);
 					}
-
 					return '';
 				}
 			);
@@ -186,7 +186,6 @@ final class ALGQ_Platform {
 				static fn( array $plugin ): bool => ! empty( $plugin['active'] ) && ! empty( $plugin['compatible'] )
 			)
 		);
-
 		ob_start();
 		?>
 		<section class="algq-platform-overview">
@@ -213,7 +212,6 @@ final class ALGQ_Platform {
 			'dashicons-building',
 			26
 		);
-
 		$this->admin_pages[] = add_submenu_page(
 			'algq-platform',
 			esc_html__( 'Platform Settings', 'algonquian-real-estate-platform' ),
@@ -228,7 +226,6 @@ final class ALGQ_Platform {
 		if ( ! in_array( $hook_suffix, array_filter( $this->admin_pages ), true ) ) {
 			return;
 		}
-
 		$this->enqueue_shared_assets( true );
 	}
 
@@ -236,9 +233,8 @@ final class ALGQ_Platform {
 		if ( ! is_singular() ) {
 			return;
 		}
-
 		global $post;
-		if ( $post instanceof WP_Post && has_shortcode( (string) $post->post_content, 'algq_platform_overview' ) ) {
+		if ( $post instanceof WP_Post && ( has_shortcode( (string) $post->post_content, 'algq_platform_overview' ) || has_shortcode( (string) $post->post_content, 'algq_platform_modules' ) || has_shortcode( (string) $post->post_content, 'algq_operational_modules' ) ) ) {
 			$this->enqueue_shared_assets( false );
 		}
 	}
@@ -248,7 +244,6 @@ final class ALGQ_Platform {
 		if ( ! file_exists( $path ) ) {
 			return;
 		}
-
 		wp_enqueue_style(
 			$admin ? 'algq-platform-admin' : 'algq-platform',
 			ALGQ_PLATFORM_URL . 'assets/css/algq-platform.css',
@@ -273,6 +268,7 @@ final class ALGQ_Platform {
 			<p>
 				<a class="button button-primary" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=algq_platform_run_health' ), 'algq_platform_run_health' ) ); ?>"><?php echo esc_html__( 'Run Health Check', 'algonquian-real-estate-platform' ); ?></a>
 				<a class="button" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=algq_platform_rebuild_pages' ), 'algq_platform_rebuild_pages' ) ); ?>"><?php echo esc_html__( 'Create Missing Pages', 'algonquian-real-estate-platform' ); ?></a>
+				<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=algq-platform-modules' ) ); ?>"><?php echo esc_html__( 'Operational Modules', 'algonquian-real-estate-platform' ); ?></a>
 			</p>
 			<h2><?php echo esc_html__( 'Plugin Registry', 'algonquian-real-estate-platform' ); ?></h2>
 			<table class="widefat striped"><thead><tr><th><?php echo esc_html__( 'Plugin', 'algonquian-real-estate-platform' ); ?></th><th><?php echo esc_html__( 'Installed', 'algonquian-real-estate-platform' ); ?></th><th><?php echo esc_html__( 'Active', 'algonquian-real-estate-platform' ); ?></th><th><?php echo esc_html__( 'Compatible', 'algonquian-real-estate-platform' ); ?></th></tr></thead><tbody>
@@ -331,6 +327,7 @@ final class ALGQ_Platform {
 		$this->assert_admin_access();
 		check_admin_referer( 'algq_platform_rebuild_pages' );
 		ALGQ_Platform_Page_Generator::create_missing_pages();
+		ALGQ_Platform_Operational_Modules::activate();
 		ALGQ_Platform_Audit_Log::log( 'platform.pages.reconciled' );
 		wp_safe_redirect( admin_url( 'admin.php?page=algq-platform&pages=1' ) );
 		exit;
