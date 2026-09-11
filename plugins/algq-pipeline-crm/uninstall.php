@@ -9,6 +9,11 @@ if ( 'yes' !== ( $settings['delete_data_on_uninstall'] ?? 'no' ) ) {
 
 global $wpdb;
 $tables = array(
+    $wpdb->prefix . 'algq_crm_activity',
+    $wpdb->prefix . 'algq_crm_tasks',
+    $wpdb->prefix . 'algq_crm_relationships',
+    $wpdb->prefix . 'algq_crm_contacts',
+    $wpdb->prefix . 'algq_crm_organizations',
     $wpdb->prefix . 'algq_deal_activity',
     $wpdb->prefix . 'algq_deal_tasks',
     $wpdb->prefix . 'algq_deal_notes',

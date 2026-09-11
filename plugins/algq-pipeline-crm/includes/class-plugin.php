@@ -10,12 +10,14 @@ final class ALGQ_Pipeline_Plugin {
         self::$booted = true;
         ALGQ_Pipeline_Database::maybe_upgrade();
         ALGQ_Pipeline_Service::instance();
+        ALGQ_Pipeline_CRM_Service::instance();
         ALGQ_Pipeline_REST::init();
         ALGQ_Pipeline_Shortcodes::init();
         if ( is_admin() ) { ALGQ_Pipeline_Admin::init(); }
         add_action( 'init', array( __CLASS__, 'load_textdomain' ) );
         add_action( 'admin_notices', array( __CLASS__, 'dependency_notice' ) );
         do_action( 'algq_pipeline_loaded', ALGQ_PIPELINE_VERSION );
+        do_action( 'algq_pipeline_crm_relationship_layer_loaded', ALGQ_PIPELINE_VERSION );
     }
 
     public static function activate(): void {
@@ -24,6 +26,7 @@ final class ALGQ_Pipeline_Plugin {
         self::defaults();
         self::create_pages();
         ALGQ_Pipeline_Service::instance();
+        ALGQ_Pipeline_CRM_Service::instance();
         ALGQ_Pipeline_Migrator::run_legacy_import();
         update_option( 'algq_pipeline_version', ALGQ_PIPELINE_VERSION, false );
         flush_rewrite_rules();
@@ -48,7 +51,7 @@ final class ALGQ_Pipeline_Plugin {
         $pages = array(
             'plugin/pipeline-crm' => array( 'Algonquian Pipeline CRM', self::page_content( 'Algonquian Pipeline CRM', 'Manage canonical deal records and the controlled acquisition lifecycle.', '[algq_pipeline_dashboard]' ) ),
             'plugin/pipeline-crm/start' => array( 'Getting Started With Pipeline CRM', self::page_content( 'Getting Started With the Algonquian Pipeline CRM', 'Configure assignments, review activity, and move opportunities through controlled stages.', '[algq_pipeline_dashboard]' ) ),
-            'plugin/pipeline-crm/docs' => array( 'Pipeline CRM Documentation', self::page_content( 'Pipeline CRM Documentation', 'Administrator, workflow, security, REST API, and troubleshooting references.', '[algq_pipeline_activity]' ) ),
+            'plugin/pipeline-crm/docs' => array( 'Pipeline CRM Documentation', self::page_content( 'Pipeline CRM Documentation', 'Administrator, workflow, security, REST API, CRM relationship architecture, and troubleshooting references.', '[algq_pipeline_activity]' ) ),
             'plugin/pipeline-crm/board' => array( 'Pipeline Board', self::page_content( 'Acquisition Pipeline Board', 'View and manage authorized opportunities from intake through closing.', '[algq_pipeline_board]' ) ),
         );
         $ids = get_option( 'algq_pipeline_page_ids', array() );

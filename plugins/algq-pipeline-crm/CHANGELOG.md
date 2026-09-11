@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.2.1 — Platform 3.1 service-compatibility release
+
+- Promoted the 2.2 relationship architecture onto the current release line.
+- Registered Pipeline CRM as an authoritative object-backed provider through the Platform 3.1 service registry.
+- Standardized plugin ownership metadata to Algonquian Real Estate, LLC.
+- Preserved Pipeline CRM as the canonical Deal owner while exposing controlled deal, task, activity, contact, organization and relationship operations to companion systems.
+- Retained schema version 2.2.0; this release changes integration/runtime compatibility rather than the CRM table schema.
+
+## 2.2.0 — Shared ARE relationship CRM foundation
+
+- Added shared CRM contacts and organizations without changing Pipeline CRM's canonical Deal authority.
+- Added relationship types for sellers, owners, buyers, capital sources, lenders, equity/JV partners, professionals, vendors, referral sources and stewardship clients.
+- Added owner, status, priority, source, relationship-strength, tag, last-activity and next-action fields.
+- Added controlled links to canonical Deals and authoritative external plugin records.
+- Added relationship activity history and non-Deal follow-up tasks.
+- Prevented relationship tasks from duplicating canonical Deal tasks.
+- Added idempotent source identities for companion-plugin integrations.
+- Added CRM service functions and integration hooks.
+- Added repository-wide and plugin-level CRM authority documentation.
+- Raised the declared WordPress/PHP minimums to the current platform standard: WordPress 6.8 and PHP 8.2.
+
 ## 2.0.0 — Production architecture upgrade
 
 - Replaced custom-post-type deal storage with versioned canonical tables.

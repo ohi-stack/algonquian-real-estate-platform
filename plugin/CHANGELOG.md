@@ -1,5 +1,22 @@
 # Changelog
 
+## 3.1.0 — 2026-09-10
+
+### Added
+
+- Platform Service Interface supporting both object-backed authoritative providers and callable service providers.
+- Modules 13–20: Seller Portal, Title & Closing Engine, Disposition Engine, Investor Portal, Reporting & Analytics, Document Vault, Task / Project Management, and Communications Hub.
+- Shared operational work-item table with assignments, statuses, next actions, deadlines, external references, audit events, and REST endpoints.
+- `[algq_operational_modules]` and `[algq_platform_modules]` overview interfaces plus eight module-specific shortcodes.
+- Platform 3.1 integration contract for Pipeline CRM 2.2.1 while preserving Pipeline CRM as canonical Deal authority.
+
+### Changed
+
+- Standardized current plugin ownership metadata to Algonquian Real Estate, LLC.
+- Reconciled both `algq_platform_registry` and `algq_platform_plugin_registry` compatibility filters.
+- Promoted the shared ARE Admin UI from the unreleased line into the 3.1 platform release.
+- Kept protected operational domains in their designated companion plugins; Platform workspaces coordinate rather than duplicate those records.
+
 ## Unreleased
 
 ### Added
