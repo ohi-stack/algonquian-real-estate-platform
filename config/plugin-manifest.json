@@ -167,18 +167,18 @@
     {
       "slug": "algq-automation-engine",
       "name": "Algonquian Automation Engine",
-      "authority": "Automation rules, triggers, conditions, actions, queues, retries, failure handling and execution history",
+      "authority": "Automation rules, standardized event translation, conditions, actions, queues, retries, workflow tasks, failure handling and execution history",
       "required": true,
       "depends_on": [
         "algonquian-real-estate-platform"
       ],
       "expected_entry_file": "algq-automation-engine.php",
-      "source_version": "2.0.0",
+      "source_version": "2.1.0",
       "deployed_version": "2.0.0",
-      "target_version": "2.0.0",
+      "target_version": "2.1.0",
       "production_observed_at": "2026-09-09",
       "downgrade_prohibited": true,
-      "release_state": "canonical_source_matches_production"
+      "release_state": "canonical_source_ahead_of_production_pending_deployment"
     },
     {
       "slug": "algq-command-center",

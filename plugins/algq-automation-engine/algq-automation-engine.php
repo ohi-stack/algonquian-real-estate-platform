@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Algonquian Automation Engine
- * Plugin URI: https://algonquianrealestate.com/technology/plugin-suite/
- * Description: Executes auditable trigger, condition, and action workflows across the Algonquian Real Estate platform.
- * Version: 2.0.0
- * Author: Onegodian
- * Author URI: https://algonquianrealestate.com
+ * Plugin URI: https://algonquianrealestate.com/algonquian-automation-engine/
+ * Description: Executes auditable trigger, condition, action, queue, and standardized event workflows across the Algonquian Real Estate platform.
+ * Version: 2.1.0
+ * Author: Algonquian Real Estate, LLC
+ * Author URI: https://algonquianrealestate.com/technology/
  * Text Domain: algq-automation-engine
  * Domain Path: /languages
  * Requires at least: 6.8
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ALGQ_AUTOMATION_VERSION', '2.0.0' );
+define( 'ALGQ_AUTOMATION_VERSION', '2.1.0' );
 define( 'ALGQ_AUTOMATION_SCHEMA_VERSION', '2.0.0' );
 define( 'ALGQ_AUTOMATION_FILE', __FILE__ );
 define( 'ALGQ_AUTOMATION_PATH', plugin_dir_path( __FILE__ ) );
@@ -27,6 +27,7 @@ $algq_automation_files = array(
     'includes/class-algq-automation-db.php',
     'includes/class-algq-automation-actions.php',
     'includes/class-algq-automation-engine.php',
+    'includes/class-algq-automation-event-bridge.php',
     'includes/class-algq-automation-rest.php',
     'includes/class-algq-automation-pages.php',
     'includes/class-algq-automation-admin.php',
@@ -63,9 +64,11 @@ final class ALGQ_Automation_Plugin {
         );
 
         ALGQ_Automation_Activator::maybe_upgrade();
+        ALGQ_Automation_Event_Bridge::register();
         ALGQ_Automation_Engine::register();
         ALGQ_Automation_REST::register();
         ALGQ_Automation_Pages::register_shortcodes();
+        $this->register_platform_service();
 
         if ( is_admin() ) {
             ALGQ_Automation_Admin::register();
@@ -80,10 +83,40 @@ final class ALGQ_Automation_Plugin {
                 'capabilities'       => ALGQ_Automation_Security::capabilities(),
                 'scheduled_jobs'     => array( 'algq_automation_process_queue' ),
                 'rest_namespaces'    => array( 'algq/v1/automation' ),
+                'services'           => array( 'automation.workflows' ),
+                'canonical_events'   => array_keys( ALGQ_Automation_Event_Bridge::canonical_events() ),
                 'health_callback'    => array( 'ALGQ_Automation_Engine', 'health' ),
                 'administrative_url' => admin_url( 'admin.php?page=algq-automation' ),
             )
         );
+    }
+
+    private function register_platform_service(): void {
+        if ( ! interface_exists( 'ARE_Platform_Service_Interface' ) || ! function_exists( 'algq_platform_register_service' ) ) {
+            return;
+        }
+
+        require_once ALGQ_AUTOMATION_PATH . 'includes/class-algq-automation-platform-service.php';
+
+        if ( ! class_exists( 'ALGQ_Automation_Platform_Service' ) ) {
+            return;
+        }
+
+        $result = algq_platform_register_service( new ALGQ_Automation_Platform_Service() );
+
+        if ( is_wp_error( $result ) ) {
+            ALGQ_Automation_Engine::log(
+                'error',
+                'service_registration_failed',
+                $result->get_error_message(),
+                array(
+                    'event_key'   => 'automation.service_registration',
+                    'object_type' => 'platform_service',
+                    'object_id'   => 0,
+                    'payload'     => array( 'service_id' => 'automation.workflows' ),
+                )
+            );
+        }
     }
 }
 
