@@ -16,528 +16,73 @@
     ]
   },
   "pages": [
-    {
-      "route": "/algonquian-real-estate-platform/",
-      "title": "Platform Overview",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_platform_overview]",
-      "access": "public_or_mixed",
-      "status": "confirmed_registered_in_main_not_observed_live",
-      "notes": "Platform 3.1.0 is canonical source; live inventory previously observed Platform 2.3.0."
-    },
-    {
-      "route": "/seller-portal/",
-      "title": "Seller Portal",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_seller_portal_v3]",
-      "access": "logged_in",
-      "status": "confirmed_registered_in_main_not_observed_live",
-      "notes": "Platform Module 13 presentation/workflow layer; Deal Intake and Pipeline CRM retain seller-intake/Deal authority. Do not replace live Deal Intake seller portal until Platform 3.1 is deployed and validated."
-    },
-    {
-      "route": "/platform/title-closing/",
-      "title": "Title & Closing Engine",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_title_closing_engine]",
-      "access": "staff",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/platform/disposition/",
-      "title": "Disposition Engine",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_disposition_engine]",
-      "access": "staff",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/investor-portal/",
-      "title": "Investor Portal",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_investor_portal]",
-      "access": "logged_in",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/platform/reporting/",
-      "title": "Reporting & Analytics",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_reporting_analytics]",
-      "access": "staff",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/platform/document-vault/",
-      "title": "Document Vault",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_document_vault]",
-      "access": "staff",
-      "status": "confirmed_registered_in_main_not_observed_live",
-      "notes": "Controlled access/storage workspace; Document Library remains canonical document-record owner."
-    },
-    {
-      "route": "/platform/tasks/",
-      "title": "Task / Project Management",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_task_project_management]",
-      "access": "staff",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/platform/communications/",
-      "title": "Communications Hub",
-      "plugin": "algonquian-real-estate-platform",
-      "shortcode": "[algq_communications_hub]",
-      "access": "staff",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/pipeline/",
-      "title": "Pipeline CRM Dashboard",
-      "plugin": "algq-pipeline-crm",
-      "shortcode": "[algq_pipeline_dashboard]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main",
-      "plugin_generated_route": "/plugin/pipeline-crm/"
-    },
-    {
-      "route": "/pipeline/board/",
-      "title": "Pipeline Board",
-      "plugin": "algq-pipeline-crm",
-      "shortcode": "[algq_pipeline_board]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main",
-      "plugin_generated_route": "/plugin/pipeline-crm/board/"
-    },
-    {
-      "route": "/pipeline/activity/",
-      "title": "Pipeline Activity",
-      "plugin": "algq-pipeline-crm",
-      "shortcode": "[algq_pipeline_activity]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/submit-a-property/",
-      "title": "Submit a Property",
-      "plugin": "algq-deal-intake",
-      "shortcode": "[algq_deal_intake_form]",
-      "access": "public",
-      "status": "confirmed_registered_in_recovered_production_source",
-      "notes": "Deal Intake 2.1 funnel reconciler uses the canonical form here; [algq_property_submission] is equivalent."
-    },
-    {
-      "route": "/sell-your-property/",
-      "title": "Sell Your Property",
-      "plugin": "algq-deal-intake",
-      "shortcode": "[algq_deal_intake_form]",
-      "access": "public",
-      "status": "confirmed_registered_in_recovered_production_source",
-      "notes": "Deal Intake 2.1 funnel reconciler explicitly maps this route to the canonical intake form."
-    },
-    {
-      "route": "/request-property-review/",
-      "title": "Request a Property Review",
-      "plugin": "algq-deal-intake",
-      "shortcode": "[algq_property_review]",
-      "access": "public",
-      "status": "confirmed_registered_in_recovered_production_source"
-    },
-    {
-      "route": "/property-options/",
-      "title": "What Are My Options?",
-      "plugin": "algq-deal-intake",
-      "shortcode": "[algq_homeowner_options]",
-      "access": "public",
-      "status": "confirmed_registered_in_recovered_production_source"
-    },
-    {
-      "route": "/seller-portal/",
-      "title": "Seller Portal — deployed Deal Intake interface",
-      "plugin": "algq-deal-intake",
-      "shortcode": "[algq_seller_portal]",
-      "access": "protected_or_record_scoped",
-      "status": "confirmed_registered_in_recovered_production_source",
-      "notes": "Current deployed Deal Intake 2.1 interface. Supersede with Platform Module 13 only after Platform 3.1 deployment/validation."
-    },
-    {
-      "route": "/internal/deal-intake/",
-      "title": "Internal Deal Intake",
-      "plugin": "algq-deal-intake",
-      "shortcode": "[deal_intake_form_internal]",
-      "access": "staff",
-      "status": "confirmed_registered_in_recovered_production_source"
-    },
-    {
-      "route": "/internal/deal-quick-capture/",
-      "title": "Quick Deal Capture",
-      "plugin": "algq-deal-intake",
-      "shortcode": "[deal_quick_capture]",
-      "access": "staff",
-      "status": "confirmed_registered_in_recovered_production_source"
-    },
-    {
-      "route": "/plugin/mao-engine/calculator/",
-      "title": "MAO Calculator",
-      "plugin": "algq-mao-engine",
-      "shortcode": "[algq_mao_calculator]",
-      "access": "public_calculation_or_protected_persistence",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/mao-engine/",
-      "title": "MAO Engine Overview",
-      "plugin": "algq-mao-engine",
-      "shortcode": "[algq_mao_plugin_page]",
-      "access": "public_or_mixed",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/mao-engine/start/",
-      "title": "MAO Engine Getting Started",
-      "plugin": "algq-mao-engine",
-      "shortcode": "[algq_mao_plugin_page view=\"start\"]",
-      "access": "public_or_mixed",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/mao-engine/docs/",
-      "title": "MAO Engine Documentation",
-      "plugin": "algq-mao-engine",
-      "shortcode": "[algq_mao_plugin_page view=\"docs\"]",
-      "access": "public_or_mixed",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/offer-generator/",
-      "title": "Offer Generator",
-      "plugin": "algq-offer-generator",
-      "shortcode": "[algq_offer_generator]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/generate-offer/",
-      "title": "Offer Builder",
-      "plugin": "algq-offer-generator",
-      "shortcode": "[algq_offer_builder]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/offer-history/",
-      "title": "Offer History",
-      "plugin": "algq-offer-generator",
-      "shortcode": "[algq_offer_history]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/documents/",
-      "title": "Document Library",
-      "plugin": "algq-document-library",
-      "shortcode": "[algq_document_library]",
-      "access": "protected_or_authorized",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/documents/packages/",
-      "title": "Document Packages",
-      "plugin": "algq-document-library",
-      "shortcode": "[algq_document_packages]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/documents/request-access/",
-      "title": "Document Access Request",
-      "plugin": "algq-document-library",
-      "shortcode": "[algq_document_request]",
-      "access": "public_request_controlled_entitlement",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/documents/signatures/",
-      "title": "Signature Archive",
-      "plugin": "algq-pdf-signature",
-      "shortcode": "[algq_signature_archive]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/pdf-signature-engine/",
-      "title": "PDF & Signature Engine",
-      "plugin": "algq-pdf-signature",
-      "shortcode": "[algq_pdf_engine]",
-      "access": "protected_or_documentation",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/pdf-signature-engine/start/",
-      "title": "PDF & Signature Getting Started",
-      "plugin": "algq-pdf-signature",
-      "shortcode": "[algq_pdf_engine view=\"start\"]",
-      "access": "protected_or_documentation",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/pdf-signature-engine/docs/",
-      "title": "PDF & Signature Documentation",
-      "plugin": "algq-pdf-signature",
-      "shortcode": "[algq_pdf_engine view=\"docs\"]",
-      "access": "protected_or_documentation",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/automation-engine/",
-      "title": "Automation Overview",
-      "plugin": "algq-automation-engine",
-      "shortcode": "[algq_automation_overview]",
-      "access": "public_or_protected_documentation",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/automation-engine/start/",
-      "title": "Automation Getting Started",
-      "plugin": "algq-automation-engine",
-      "shortcode": "[algq_automation_getting_started]",
-      "access": "public_or_protected_documentation",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/plugin/automation-engine/docs/",
-      "title": "Automation Documentation",
-      "plugin": "algq-automation-engine",
-      "shortcode": "[algq_automation_docs]",
-      "access": "public_or_protected_documentation",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/automation-rules/",
-      "title": "Automation Rules",
-      "plugin": "algq-automation-engine",
-      "shortcode": "[algq_automation_rules]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/command-center/",
-      "title": "Admin Command Center",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main_not_observed_live",
-      "notes": "Canonical source is 1.2.0; live inventory previously observed 1.1.0."
-    },
-    {
-      "route": "/command-center/kpis/",
-      "title": "Command Center KPIs",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center_kpis]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/command-center/pipeline/",
-      "title": "Command Center Pipeline View",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center_pipeline]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/command-center/activity/",
-      "title": "Command Center Activity",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center_activity]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/command-center/health/",
-      "title": "Command Center Health",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center_health]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/plugin-command-center/",
-      "title": "Command Center Overview",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center_overview]",
-      "access": "documentation",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/plugin-command-center-start/",
-      "title": "Command Center Getting Started",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center_start]",
-      "access": "documentation",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/plugin-command-center-docs/",
-      "title": "Command Center Documentation",
-      "plugin": "algq-command-center",
-      "shortcode": "[algq_command_center_docs]",
-      "access": "documentation",
-      "status": "confirmed_registered_in_main_not_observed_live"
-    },
-    {
-      "route": "/buyers-register/",
-      "title": "Buyer Registration",
-      "plugin": "algq-buyer-portal",
-      "shortcode": "[algq_buyer_registration]",
-      "access": "public",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/buyer-login/",
-      "title": "Buyer Login",
-      "plugin": "algq-buyer-portal",
-      "shortcode": "[algq_buyer_login]",
-      "access": "public",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/buyer-dashboard/",
-      "title": "Buyer Dashboard",
-      "plugin": "algq-buyer-portal",
-      "shortcode": "[algq_buyer_dashboard]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/buyer-deals/",
-      "title": "Authorized Buyer Deals",
-      "plugin": "algq-buyer-portal",
-      "shortcode": "[algq_buyer_deals]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/marketplace/",
-      "title": "Deal Marketplace",
-      "plugin": "algq-deal-marketplace",
-      "shortcode": "[algq_deal_marketplace]",
-      "access": "mixed",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/buyer-dashboard/marketplace/",
-      "title": "Buyer Marketplace Dashboard",
-      "plugin": "algq-deal-marketplace",
-      "shortcode": "[algq_buyer_marketplace_dashboard]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main",
-      "notes": "Primary generated route when /buyer-dashboard/ exists."
-    },
-    {
-      "route": "/buyer-dashboard/nda/",
-      "title": "Marketplace NDA",
-      "plugin": "algq-deal-marketplace",
-      "shortcode": "[algq_buyer_nda_gate]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main",
-      "notes": "Primary generated route when /buyer-dashboard/ exists."
-    },
-    {
-      "route": "/buyer-dashboard/submit-offer/",
-      "title": "Submit Marketplace Offer",
-      "plugin": "algq-deal-marketplace",
-      "shortcode": "[algq_buyer_offer_form]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main",
-      "notes": "Primary generated route when /buyer-dashboard/ exists."
-    },
-    {
-      "route": "/funding/",
-      "title": "Funding Tracker Overview",
-      "plugin": "algq-funding-tracker",
-      "shortcode": "[algq_funding_tracker]",
-      "access": "public_or_mixed",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/funding-dashboard/",
-      "title": "Funding Dashboard",
-      "plugin": "algq-funding-tracker",
-      "shortcode": "[algq_funding_dashboard]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/capital-sources/",
-      "title": "Capital Sources",
-      "plugin": "algq-funding-tracker",
-      "shortcode": "[algq_capital_sources]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main",
-      "notes": "Site route can be created as an operational alias; plugin exposes the shortcode even if activation does not generate this top-level page."
-    },
-    {
-      "route": "/property-stewardship-services/",
-      "title": "Property Stewardship Services",
-      "plugin": "algq-property-stewardship",
-      "shortcode": "[algq_property_stewardship]",
-      "access": "public",
-      "status": "confirmed_registered_in_main_live_source_unreconciled"
-    },
-    {
-      "route": "/client-portal/",
-      "title": "Property Stewardship Client Portal",
-      "plugin": "algq-property-stewardship",
-      "shortcode": "[algq_stewardship_portal]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main_live_source_unreconciled",
-      "plugin_generated_route": "/property-stewardship-portal/",
-      "notes": "Use /client-portal/ as the site navigation route if desired; current canonical source generates /property-stewardship-portal/. Exact live 1.2.0 source remains unreconciled."
-    },
-    {
-      "route": "/digital-products/",
-      "title": "Digital Products Catalog",
-      "plugin": "algq-digital-products",
-      "shortcode": "[algq_digital_products]",
-      "access": "public",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/store/",
-      "title": "Digital Store",
-      "plugin": "algq-digital-store",
-      "shortcode": "[algq_digital_store]",
-      "access": "public",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/product-vault/",
-      "title": "Product Vault",
-      "plugin": "algq-digital-store",
-      "shortcode": "[algq_product_vault]",
-      "access": "protected",
-      "status": "confirmed_registered_in_main"
-    },
-    {
-      "route": "/store/checkout/",
-      "title": "Store Checkout",
-      "plugin": "algq-digital-store",
-      "shortcode": "[algq_store_checkout]",
-      "access": "mixed_woocommerce_checkout",
-      "status": "confirmed_registered_in_main"
-    }
+    {"route":"/algonquian-real-estate-platform/","title":"Platform Overview","plugin":"algonquian-real-estate-platform","shortcode":"[algq_platform_overview]","access":"public_or_mixed","status":"confirmed_registered_in_main_not_observed_live","notes":"Platform 3.1.0 is canonical source; live inventory previously observed Platform 2.3.0."},
+    {"route":"/seller-portal/","title":"Seller Portal","plugin":"algonquian-real-estate-platform","shortcode":"[algq_seller_portal_v3]","access":"logged_in","status":"confirmed_registered_in_main_not_observed_live","notes":"Platform Module 13 presentation/workflow layer; Deal Intake and Pipeline CRM retain seller-intake/Deal authority. Do not replace live Deal Intake seller portal until Platform 3.1 is deployed and validated."},
+    {"route":"/platform/title-closing/","title":"Title & Closing Engine","plugin":"algonquian-real-estate-platform","shortcode":"[algq_title_closing_engine]","access":"staff","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/platform/disposition/","title":"Disposition Engine","plugin":"algonquian-real-estate-platform","shortcode":"[algq_disposition_engine]","access":"staff","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/investor-portal/","title":"Investor Portal","plugin":"algonquian-real-estate-platform","shortcode":"[algq_investor_portal]","access":"logged_in","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/platform/reporting/","title":"Reporting & Analytics","plugin":"algonquian-real-estate-platform","shortcode":"[algq_reporting_analytics]","access":"staff","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/platform/document-vault/","title":"Document Vault","plugin":"algonquian-real-estate-platform","shortcode":"[algq_document_vault]","access":"staff","status":"confirmed_registered_in_main_not_observed_live","notes":"Controlled access/storage workspace; Document Library remains canonical document-record owner."},
+    {"route":"/platform/tasks/","title":"Task / Project Management","plugin":"algonquian-real-estate-platform","shortcode":"[algq_task_project_management]","access":"staff","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/platform/communications/","title":"Communications Hub","plugin":"algonquian-real-estate-platform","shortcode":"[algq_communications_hub]","access":"staff","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/pipeline/","title":"Pipeline CRM Dashboard","plugin":"algq-pipeline-crm","shortcode":"[algq_pipeline_dashboard]","access":"protected","status":"confirmed_registered_in_main","plugin_generated_route":"/plugin/pipeline-crm/"},
+    {"route":"/pipeline/board/","title":"Pipeline Board","plugin":"algq-pipeline-crm","shortcode":"[algq_pipeline_board]","access":"protected","status":"confirmed_registered_in_main","plugin_generated_route":"/plugin/pipeline-crm/board/"},
+    {"route":"/pipeline/activity/","title":"Pipeline Activity","plugin":"algq-pipeline-crm","shortcode":"[algq_pipeline_activity]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/submit-a-property/","title":"Submit a Property","plugin":"algq-deal-intake","shortcode":"[algq_deal_intake_form]","access":"public","status":"confirmed_registered_in_recovered_production_source","notes":"Deal Intake 2.1 funnel reconciler uses the canonical form here; [algq_property_submission] is equivalent."},
+    {"route":"/sell-your-property/","title":"Sell Your Property","plugin":"algq-deal-intake","shortcode":"[algq_deal_intake_form]","access":"public","status":"confirmed_registered_in_recovered_production_source","notes":"Deal Intake 2.1 funnel reconciler explicitly maps this route to the canonical intake form."},
+    {"route":"/request-property-review/","title":"Request a Property Review","plugin":"algq-deal-intake","shortcode":"[algq_property_review]","access":"public","status":"confirmed_registered_in_recovered_production_source"},
+    {"route":"/property-options/","title":"What Are My Options?","plugin":"algq-deal-intake","shortcode":"[algq_homeowner_options]","access":"public","status":"confirmed_registered_in_recovered_production_source"},
+    {"route":"/seller-portal/","title":"Seller Portal — deployed Deal Intake interface","plugin":"algq-deal-intake","shortcode":"[algq_seller_portal]","access":"protected_or_record_scoped","status":"confirmed_registered_in_recovered_production_source","notes":"Current deployed Deal Intake 2.1 interface. Supersede with Platform Module 13 only after Platform 3.1 deployment/validation."},
+    {"route":"/internal/deal-intake/","title":"Internal Deal Intake","plugin":"algq-deal-intake","shortcode":"[deal_intake_form_internal]","access":"staff","status":"confirmed_registered_in_recovered_production_source"},
+    {"route":"/internal/deal-quick-capture/","title":"Quick Deal Capture","plugin":"algq-deal-intake","shortcode":"[deal_quick_capture]","access":"staff","status":"confirmed_registered_in_recovered_production_source"},
+    {"route":"/plugin/mao-engine/calculator/","title":"MAO Calculator","plugin":"algq-mao-engine","shortcode":"[algq_mao_calculator]","access":"public_calculation_or_protected_persistence","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/mao-engine/","title":"MAO Engine Overview","plugin":"algq-mao-engine","shortcode":"[algq_mao_plugin_page]","access":"public_or_mixed","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/mao-engine/start/","title":"MAO Engine Getting Started","plugin":"algq-mao-engine","shortcode":"[algq_mao_plugin_page view=\"start\"]","access":"public_or_mixed","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/mao-engine/docs/","title":"MAO Engine Documentation","plugin":"algq-mao-engine","shortcode":"[algq_mao_plugin_page view=\"docs\"]","access":"public_or_mixed","status":"confirmed_registered_in_main"},
+    {"route":"/offer-generator/","title":"Offer Generator","plugin":"algq-offer-generator","shortcode":"[algq_offer_generator]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/generate-offer/","title":"Offer Builder","plugin":"algq-offer-generator","shortcode":"[algq_offer_builder]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/offer-history/","title":"Offer History","plugin":"algq-offer-generator","shortcode":"[algq_offer_history]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/documents/","title":"Document Library","plugin":"algq-document-library","shortcode":"[algq_document_library]","access":"protected_or_authorized","status":"confirmed_registered_in_main"},
+    {"route":"/documents/packages/","title":"Document Packages","plugin":"algq-document-library","shortcode":"[algq_document_packages]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/documents/request-access/","title":"Document Access Request","plugin":"algq-document-library","shortcode":"[algq_document_request]","access":"public_request_controlled_entitlement","status":"confirmed_registered_in_main"},
+    {"route":"/documents/signatures/","title":"Signature Archive","plugin":"algq-pdf-signature","shortcode":"[algq_signature_archive]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/pdf-signature-engine/","title":"PDF & Signature Engine","plugin":"algq-pdf-signature","shortcode":"[algq_pdf_engine]","access":"protected_or_documentation","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/pdf-signature-engine/start/","title":"PDF & Signature Getting Started","plugin":"algq-pdf-signature","shortcode":"[algq_pdf_engine view=\"start\"]","access":"protected_or_documentation","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/pdf-signature-engine/docs/","title":"PDF & Signature Documentation","plugin":"algq-pdf-signature","shortcode":"[algq_pdf_engine view=\"docs\"]","access":"protected_or_documentation","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/automation-engine/","title":"Automation Overview","plugin":"algq-automation-engine","shortcode":"[algq_automation_overview]","access":"public_or_protected_documentation","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/automation-engine/start/","title":"Automation Getting Started","plugin":"algq-automation-engine","shortcode":"[algq_automation_getting_started]","access":"public_or_protected_documentation","status":"confirmed_registered_in_main"},
+    {"route":"/plugin/automation-engine/docs/","title":"Automation Documentation","plugin":"algq-automation-engine","shortcode":"[algq_automation_docs]","access":"public_or_protected_documentation","status":"confirmed_registered_in_main"},
+    {"route":"/automation-rules/","title":"Automation Rules","plugin":"algq-automation-engine","shortcode":"[algq_automation_rules]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/command-center/","title":"Admin Command Center","plugin":"algq-command-center","shortcode":"[algq_command_center]","access":"protected","status":"confirmed_registered_in_main_not_observed_live","notes":"Canonical source is 1.2.0; live inventory previously observed 1.1.0."},
+    {"route":"/command-center/kpis/","title":"Command Center KPIs","plugin":"algq-command-center","shortcode":"[algq_command_center_kpis]","access":"protected","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/command-center/pipeline/","title":"Command Center Pipeline View","plugin":"algq-command-center","shortcode":"[algq_command_center_pipeline]","access":"protected","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/command-center/activity/","title":"Command Center Activity","plugin":"algq-command-center","shortcode":"[algq_command_center_activity]","access":"protected","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/command-center/health/","title":"Command Center Health","plugin":"algq-command-center","shortcode":"[algq_command_center_health]","access":"protected","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/plugin-command-center/","title":"Command Center Overview","plugin":"algq-command-center","shortcode":"[algq_command_center_overview]","access":"documentation","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/plugin-command-center-start/","title":"Command Center Getting Started","plugin":"algq-command-center","shortcode":"[algq_command_center_start]","access":"documentation","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/plugin-command-center-docs/","title":"Command Center Documentation","plugin":"algq-command-center","shortcode":"[algq_command_center_docs]","access":"documentation","status":"confirmed_registered_in_main_not_observed_live"},
+    {"route":"/buyers-register/","title":"Buyer Registration","plugin":"algq-buyer-portal","shortcode":"[algq_buyer_registration]","access":"public","status":"confirmed_registered_in_main"},
+    {"route":"/buyer-login/","title":"Buyer Login","plugin":"algq-buyer-portal","shortcode":"[algq_buyer_login]","access":"public","status":"confirmed_registered_in_main"},
+    {"route":"/buyer-dashboard/","title":"Buyer Dashboard","plugin":"algq-buyer-portal","shortcode":"[algq_buyer_dashboard]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/buyer-deals/","title":"Authorized Buyer Deals","plugin":"algq-buyer-portal","shortcode":"[algq_buyer_deals]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/marketplace/","title":"Deal Marketplace","plugin":"algq-deal-marketplace","shortcode":"[algq_deal_marketplace]","access":"mixed","status":"confirmed_registered_in_main"},
+    {"route":"/buyer-dashboard/marketplace/","title":"Buyer Marketplace Dashboard","plugin":"algq-deal-marketplace","shortcode":"[algq_buyer_marketplace_dashboard]","access":"protected","status":"confirmed_registered_in_main","notes":"Primary generated route when /buyer-dashboard/ exists."},
+    {"route":"/buyer-dashboard/nda/","title":"Marketplace NDA","plugin":"algq-deal-marketplace","shortcode":"[algq_buyer_nda_gate]","access":"protected","status":"confirmed_registered_in_main","notes":"Primary generated route when /buyer-dashboard/ exists."},
+    {"route":"/buyer-dashboard/submit-offer/","title":"Submit Marketplace Offer","plugin":"algq-deal-marketplace","shortcode":"[algq_buyer_offer_form]","access":"protected","status":"confirmed_registered_in_main","notes":"Primary generated route when /buyer-dashboard/ exists."},
+    {"route":"/funding/","title":"Funding Tracker Overview","plugin":"algq-funding-tracker","shortcode":"[algq_funding_tracker]","access":"public_or_mixed","status":"confirmed_registered_in_main"},
+    {"route":"/funding-dashboard/","title":"Funding Dashboard","plugin":"algq-funding-tracker","shortcode":"[algq_funding_dashboard]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/capital-sources/","title":"Capital Sources","plugin":"algq-funding-tracker","shortcode":"[algq_capital_sources]","access":"protected","status":"confirmed_registered_in_main","notes":"Site route can be created as an operational alias; plugin exposes the shortcode even if activation does not generate this top-level page."},
+    {"route":"/property-stewardship-services/","title":"Property Stewardship Services","plugin":"algq-property-stewardship","shortcode":"[algq_property_stewardship]","access":"public","status":"confirmed_registered_in_main_live_source_unreconciled"},
+    {"route":"/client-portal/","title":"Property Stewardship Client Portal","plugin":"algq-property-stewardship","shortcode":"[algq_stewardship_portal]","access":"protected","status":"confirmed_registered_in_main_live_source_unreconciled","plugin_generated_route":"/property-stewardship-portal/","notes":"Use /client-portal/ as the site navigation route if desired; current canonical source generates /property-stewardship-portal/. Exact live 1.2.0 source remains unreconciled."},
+    {"route":"/digital-products/","title":"Digital Products Catalog","plugin":"algq-digital-products","shortcode":"[algq_digital_products]","access":"public","status":"confirmed_registered_in_main"},
+    {"route":"/store/","title":"Digital Store","plugin":"algq-digital-store","shortcode":"[algq_digital_store]","access":"public","status":"confirmed_registered_in_main"},
+    {"route":"/product-vault/","title":"Product Vault","plugin":"algq-digital-store","shortcode":"[algq_product_vault]","access":"protected","status":"confirmed_registered_in_main"},
+    {"route":"/store/checkout/","title":"Store Checkout","plugin":"algq-digital-store","shortcode":"[algq_store_checkout]","access":"mixed_woocommerce_checkout","status":"confirmed_registered_in_main"}
   ],
   "not_page_shortcode_owners": {
     "algq-woocommerce-bridge": "No dedicated operational page shortcode required; WooCommerce/order-entitlement synchronization layer.",
     "algonquian-navigation": "Navigation/presentation layer; not an operational page owner.",
     "algq-agent-engine": "Live WordPress adapter shortcode surface is not mapped until the exact 0.1.0 PHP adapter source is recovered."
   },
-  "do_not_map_as_public_operational_pages": [
-    "internal wp-admin screens",
-    "direct REST endpoints",
-    "service-registry operations",
-    "database tables",
-    "internal migration utilities"
-  ]
+  "do_not_map_as_public_operational_pages": ["internal wp-admin screens","direct REST endpoints","service-registry operations","database tables","internal migration utilities"]
 }
