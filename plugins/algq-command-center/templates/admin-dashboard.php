@@ -5,6 +5,7 @@
         <div class="algq-header-meta"><span class="algq-version">v<?php echo esc_html( ALGQ_COMMAND_CENTER_VERSION ); ?></span><a class="button button-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=algq-command-center-system-health' ) ); ?>"><?php echo esc_html__( 'System Health', 'algq-command-center' ); ?></a></div>
     </header>
     <?php ALGQ_Command_Center_Widgets::render_kpi_cards(); ?>
+    <?php ALGQ_Command_Center_Widgets::render_funding_track(); ?>
     <div class="algq-two-col"><?php ALGQ_Command_Center_Widgets::render_pipeline(); ?><?php ALGQ_Command_Center_Widgets::render_activity_feed(); ?></div>
     <?php ALGQ_Command_Center_Widgets::render_health(); ?>
 </div>

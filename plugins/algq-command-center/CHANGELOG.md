@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Added an ARE-branded Funding Track panel to the Admin Command Center dashboard.
+- Added requested, committed, funded, funding-gap, commitment-coverage, and funded-coverage views.
+- Added capital-source and funding-record counts plus recent funding activity.
+- Funding data is consumed through a read-only integration filter so Funding Tracker remains authoritative for capital records.
+- Added a clear empty state when live Funding Tracker data is unavailable.
+
 ## 1.2.0 — 2026-08-08
 
 - Added granular Command Center capabilities for view, manage, export, audit, and system commands.

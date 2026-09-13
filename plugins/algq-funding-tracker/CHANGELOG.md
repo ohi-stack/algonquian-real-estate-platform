@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added read-only Command Center integration for authoritative funding summaries.
+- Added a normalized Funding Track feed exposing requested, committed, funded, gap, coverage, capital-source counts, funding-record counts, and recent funding activity.
+- Preserved Funding Tracker as the authoritative owner of capital-source and funding records while allowing executive dashboard consumption through integration filters.
+
 ## 1.0.0 — 2026-07-31
 
 ### Added
