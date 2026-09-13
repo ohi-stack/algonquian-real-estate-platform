@@ -8,6 +8,7 @@ final class ALGQ_Automation_Activator {
         self::options();
         self::capabilities();
         ALGQ_Automation_DB::migrate();
+        ALGQ_Automation_Event_Bridge::seed_templates();
         ALGQ_Automation_Pages::create_pages();
         ALGQ_Automation_Engine::schedule_next_run( 10 );
         update_option( 'algq_automation_version', ALGQ_AUTOMATION_VERSION, false );
@@ -30,6 +31,7 @@ final class ALGQ_Automation_Activator {
         if ( version_compare( $version, ALGQ_AUTOMATION_VERSION, '<' ) ) {
             self::options();
             self::capabilities();
+            ALGQ_Automation_Event_Bridge::seed_templates();
             ALGQ_Automation_Pages::create_pages();
             update_option( 'algq_automation_version', ALGQ_AUTOMATION_VERSION, false );
         }
@@ -38,13 +40,13 @@ final class ALGQ_Automation_Activator {
     private static function requirements(): void {
         if ( version_compare( PHP_VERSION, '8.2', '<' ) ) {
             deactivate_plugins( ALGQ_AUTOMATION_BASENAME );
-            wp_die( esc_html__( 'Algonquian Automation Engine 2.0.0 requires PHP 8.2 or newer.', 'algq-automation-engine' ) );
+            wp_die( esc_html__( 'Algonquian Automation Engine 2.1.0 requires PHP 8.2 or newer.', 'algq-automation-engine' ) );
         }
 
         global $wp_version;
         if ( version_compare( $wp_version, '6.8', '<' ) ) {
             deactivate_plugins( ALGQ_AUTOMATION_BASENAME );
-            wp_die( esc_html__( 'Algonquian Automation Engine 2.0.0 requires WordPress 6.8 or newer.', 'algq-automation-engine' ) );
+            wp_die( esc_html__( 'Algonquian Automation Engine 2.1.0 requires WordPress 6.8 or newer.', 'algq-automation-engine' ) );
         }
     }
 
