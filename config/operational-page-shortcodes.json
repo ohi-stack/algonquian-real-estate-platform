@@ -1,0 +1,264 @@
+{
+  "schema_version": "2026-09-13",
+  "purpose": "Canonical route-to-shortcode map for Algonquian Real Estate operational WordPress pages.",
+  "rules": {
+    "runtime_registry_is_authoritative": true,
+    "protected_pages_remain_protected": true,
+    "wpbakery_wrapper": "[vc_column_text]...[/vc_column_text]",
+    "literal_shortcode_placeholders_prohibited": true,
+    "source_status_values": [
+      "confirmed_registered_in_main",
+      "confirmed_registered_in_plugin_source",
+      "preferred_contract_pending_source_reconciliation"
+    ]
+  },
+  "pages": [
+    {
+      "route": "/pipeline/",
+      "title": "Pipeline CRM Dashboard",
+      "plugin": "algq-pipeline-crm",
+      "shortcode": "[algq_pipeline_dashboard]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/pipeline/board/",
+      "title": "Pipeline Board",
+      "plugin": "algq-pipeline-crm",
+      "shortcode": "[algq_pipeline_board]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/pipeline/activity/",
+      "title": "Pipeline Activity",
+      "plugin": "algq-pipeline-crm",
+      "shortcode": "[algq_pipeline_activity]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/buyers-register/",
+      "title": "Buyer Registration",
+      "plugin": "algq-buyer-portal",
+      "shortcode": "[algq_buyer_registration]",
+      "access": "public",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/buyer-login/",
+      "title": "Buyer Login",
+      "plugin": "algq-buyer-portal",
+      "shortcode": "[algq_buyer_login]",
+      "access": "public",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/buyer-dashboard/",
+      "title": "Buyer Dashboard",
+      "plugin": "algq-buyer-portal",
+      "shortcode": "[algq_buyer_dashboard]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/buyer-deals/",
+      "title": "Authorized Buyer Deals",
+      "plugin": "algq-buyer-portal",
+      "shortcode": "[algq_buyer_deals]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/marketplace/",
+      "title": "Deal Marketplace",
+      "plugin": "algq-deal-marketplace",
+      "shortcode": "[algq_deal_marketplace]",
+      "access": "mixed",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/buyer-marketplace-dashboard/",
+      "title": "Buyer Marketplace Dashboard",
+      "plugin": "algq-deal-marketplace",
+      "shortcode": "[algq_buyer_marketplace_dashboard]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/marketplace/nda/",
+      "title": "Marketplace NDA",
+      "plugin": "algq-deal-marketplace",
+      "shortcode": "[algq_buyer_nda_gate]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/marketplace/submit-offer/",
+      "title": "Submit Buyer Offer",
+      "plugin": "algq-deal-marketplace",
+      "shortcode": "[algq_buyer_offer_form]",
+      "access": "protected",
+      "status": "confirmed_registered_in_main"
+    },
+    {
+      "route": "/submit-a-property/",
+      "title": "Submit a Property",
+      "plugin": "algq-deal-intake",
+      "shortcode": "[algq_property_submission]",
+      "access": "public",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/request-property-review/",
+      "title": "Request a Property Review",
+      "plugin": "algq-deal-intake",
+      "shortcode": "[algq_property_review]",
+      "access": "public",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/sell-your-property/",
+      "title": "Sell Your Property",
+      "plugin": "algq-deal-intake",
+      "shortcode": "[algq_homeowner_options]",
+      "access": "public",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/seller-portal/",
+      "title": "Seller Portal",
+      "plugin": "algq-deal-intake",
+      "shortcode": "[algq_seller_portal]",
+      "access": "protected_or_record_scoped",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/underwriting/mao-calculator/",
+      "title": "MAO Calculator",
+      "plugin": "algq-mao-engine",
+      "shortcode": "[algq_mao_calculator]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/technology/plugins/mao-engine/",
+      "title": "MAO Engine",
+      "plugin": "algq-mao-engine",
+      "shortcode": "[algq_mao_plugin_page]",
+      "access": "public_or_mixed",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/offers/",
+      "title": "Offer Generator",
+      "plugin": "algq-offer-generator",
+      "shortcode": "[algq_offer_generator]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/offers/builder/",
+      "title": "Offer Builder",
+      "plugin": "algq-offer-generator",
+      "shortcode": "[algq_offer_builder]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/offers/history/",
+      "title": "Offer History",
+      "plugin": "algq-offer-generator",
+      "shortcode": "[algq_offer_history]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/documents/",
+      "title": "Document Library",
+      "plugin": "algq-document-library",
+      "shortcode": "[algq_document_library]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/documents/request/",
+      "title": "Document Request",
+      "plugin": "algq-document-library",
+      "shortcode": "[algq_document_request]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/documents/packages/",
+      "title": "Document Packages",
+      "plugin": "algq-document-library",
+      "shortcode": "[algq_document_packages]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/documents/pdf/",
+      "title": "PDF Engine",
+      "plugin": "algq-pdf-signature",
+      "shortcode": "[algq_pdf_engine]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/documents/signatures/",
+      "title": "Signature Archive",
+      "plugin": "algq-pdf-signature",
+      "shortcode": "[algq_signature_archive]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/automation/",
+      "title": "Automation Overview",
+      "plugin": "algq-automation-engine",
+      "shortcode": "[algq_automation_overview]",
+      "access": "protected_or_public_documentation",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/automation/getting-started/",
+      "title": "Automation Getting Started",
+      "plugin": "algq-automation-engine",
+      "shortcode": "[algq_automation_getting_started]",
+      "access": "protected_or_public_documentation",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/automation/docs/",
+      "title": "Automation Documentation",
+      "plugin": "algq-automation-engine",
+      "shortcode": "[algq_automation_docs]",
+      "access": "protected_or_public_documentation",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/automation-rules/",
+      "title": "Automation Rules",
+      "plugin": "algq-automation-engine",
+      "shortcode": "[algq_automation_rules]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    },
+    {
+      "route": "/dashboard/",
+      "title": "Admin Command Center",
+      "plugin": "algq-command-center",
+      "shortcode": "[algq_admin_dashboard]",
+      "access": "protected",
+      "status": "preferred_contract_pending_source_reconciliation"
+    }
+  ],
+  "do_not_map_as_public_operational_pages": [
+    "internal wp-admin screens",
+    "direct REST endpoints",
+    "service-registry operations",
+    "database tables",
+    "internal migration utilities"
+  ]
+}
