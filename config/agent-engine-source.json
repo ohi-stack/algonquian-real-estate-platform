@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "registered_at": "2026-09-09",
+  "system": "Algonquian ARE Agent Engine",
+  "slug": "algq-agent-engine",
+  "owner": "Algonquian Real Estate, LLC",
+  "technology_division": "Algonquian Real Estate Technology Division",
+  "role": "Agent orchestration and control plane",
+  "runtime_source": {
+    "repository": "ohi-stack/algq-agent-engine",
+    "default_branch": "main",
+    "package_name_observed": "react-example",
+    "package_version_observed": "0.0.0",
+    "source_status": "runtime_control_plane_source_present",
+    "equivalent_to_live_wordpress_plugin": false
+  },
+  "wordpress_adapter": {
+    "plugin_name": "Algonquian ARE Agent Engine",
+    "expected_entry_file": "algq-agent-engine.php",
+    "deployed_version": "0.1.0",
+    "production_observed_at": "2026-09-09",
+    "source_status": "deployed_adapter_source_not_recovered",
+    "downgrade_prohibited": true
+  },
+  "authority": {
+    "owns": [
+      "agent definitions",
+      "skill definitions",
+      "approval-policy evaluation",
+      "agent execution runs",
+      "approval tickets",
+      "agent run traces",
+      "orchestration audit events"
+    ],
+    "does_not_own": [
+      "canonical Deals",
+      "seller/property intake submissions",
+      "underwriting scenarios or results",
+      "offers or proposals",
+      "controlled documents",
+      "PDF or signature records",
+      "buyer profiles or buyer criteria",
+      "marketplace access, NDA or response records",
+      "capital criteria, commitments or funding status",
+      "property stewardship records",
+      "automation rules or automation execution history",
+      "closing authority",
+      "funds movement"
+    ]
+  },
+  "integration": {
+    "platform_contract": "ARE_Platform_Service_Interface",
+    "canonical_deal_authority": "algq-pipeline-crm",
+    "canonical_deal_reference": "deal_id",
+    "direct_cross_plugin_database_writes": false,
+    "required_controls": [
+      "capability and authorization checks",
+      "allowed-state validation",
+      "input-schema validation",
+      "idempotency",
+      "human approval for consequential actions",
+      "correlation IDs",
+      "durable audit history",
+      "failure and retry handling"
+    ]
+  },
+  "current_runtime_source_model": {
+    "implemented_agent_definitions_observed": 7,
+    "implemented_agents": [
+      "Deal Intake & Sourcing Agent",
+      "MAO & Quantitative Underwriting Agent",
+      "Purchase Offer & Contract Agent",
+      "Debt & Equity Capital Allocator Agent",
+      "Stage Checklist & Task Coordinator Agent",
+      "Legal & Document Generation Agent",
+      "Escrow & Closing Coordinator Agent"
+    ],
+    "target_operating_roles": [
+      "Intake",
+      "Enrichment",
+      "Qualification",
+      "Property Analysis",
+      "Underwriting",
+      "Acquisition",
+      "Follow-Up",
+      "Offer",
+      "Transaction",
+      "Buyer",
+      "Capital",
+      "Closing",
+      "Relationship",
+      "Executive"
+    ],
+    "target_role_count": 14,
+    "status": "prototype_runtime_source_not_full_target_roster"
+  },
+  "human_authority": {
+    "required_for": [
+      "negotiations",
+      "binding offers",
+      "contracts and signatures",
+      "legal decisions",
+      "acquisition or disposition approval",
+      "capital commitments",
+      "funds movement or release",
+      "transaction approval",
+      "closing"
+    ],
+    "rule": "Agent Engine may research, organize, analyze, calculate, draft, recommend, route, monitor and execute approved administrative workflows, but it may not replace human authority over consequential real-estate decisions."
+  },
+  "source_cleanup_requirements": [
+    "Replace prototype or unsupported sovereign/governmental wording with ARE institutional language.",
+    "Treat local RealEstateDeal and other frontend objects as DTO/demo models, never canonical storage.",
+    "Remove or clearly label seed metrics, seed runs and demo records so they cannot be mistaken for production evidence.",
+    "Align all target-system dispatch with Platform Service Interface service IDs before production execution.",
+    "Recover and compare the exact live WordPress 0.1.0 adapter source before declaring plugin source parity."
+  ]
+}
