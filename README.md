@@ -56,6 +56,25 @@ Seller submission
 → Command Center reporting and audit verification
 ```
 
+## Human Execution and First-Deal Staffing
+
+The platform supports human transaction execution; it does not replace professional or executive authority.
+
+ARE's first-deal staffing standard uses a low-fixed-overhead operating bench:
+
+1. Connecticut Real Estate Attorney — outside counsel / transaction-based.
+2. Bookkeeper / CPA — fractional financial control.
+3. Acquisition & Lead Manager — first recurring operating hire.
+4. Contractor / Rehab Estimator — project-based property diligence.
+5. Capital & Lending Specialist — relationship/deal-based financing support.
+
+Founder / authorized leadership retains final approval over acquisitions, negotiated terms, contractual commitments, financing decisions, capital deployment, and closing decisions unless authority is separately documented.
+
+See:
+
+- `docs/FIRST-DEAL-STAFFING-PLAN.md` — role responsibilities, engagement sequence, budget controls, KPIs, authority boundaries, and next hiring tier.
+- `config/first-deal-staffing.json` — machine-readable staffing and authority map for Command Center, agent, and workflow integration.
+
 ## Shared Production Standards
 
 Every independently installable plugin must include:
@@ -95,7 +114,7 @@ assets/       Shared front-end and administrative assets
 branding/     Brand standards and approved placeholders
 database/     Schema and migration documentation
 docs/         Architecture, installation, security and user documentation
-config/       Machine-readable plugin and route manifests
+config/       Machine-readable plugin, route, staffing, and operating manifests
 scripts/      Validation and build tooling
 roadmap/      Version roadmap and launch planning
 releases/     Generated release artifacts; never the only source of record
@@ -116,10 +135,12 @@ Static validation does not replace activation and end-to-end testing in a dispos
 ## Documentation
 
 - `docs/wordpress-installation-readiness.md` — mandatory installation and production acceptance matrix.
+- `docs/FIRST-DEAL-STAFFING-PLAN.md` — first-deal human operating bench and authority model.
+- `config/first-deal-staffing.json` — machine-readable staffing and human-approval map.
 - `SECURITY.md` — vulnerability handling and platform security baseline.
 - `CHANGELOG.md` — release history and outstanding production requirements.
 - `config/plugin-manifest.json` — authoritative plugin inventory, dependency graph, and release contract.
 
 ## Current Objective
 
-Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, and publish only packages supported by recorded test evidence.
+Reconcile every plugin package with the canonical manifest, complete WordPress activation and integration testing, generate release ZIPs from tagged canonical source, and publish only packages supported by recorded test evidence. In parallel, operate the first-deal staffing model so qualified leads, underwriting, property diligence, financing, legal review, and final human approvals advance through one controlled transaction workflow.
