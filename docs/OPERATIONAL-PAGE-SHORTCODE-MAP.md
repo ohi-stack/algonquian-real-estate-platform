@@ -23,7 +23,7 @@ The map distinguishes current canonical source from the last observed live versi
 9. Funding Tracker owns capital-source/funding records.
 10. Property Stewardship owns stewardship service/visit/vendor records.
 11. Platform Modules 13–20 coordinate cross-functional work but do not take specialized record ownership.
-12. WPBakery syntax is `[vc_column_text]...[/vc_column_text]`. Never use `</vc_column_text>`.
+12. WPBakery syntax is `[vc_column_text]...[/vc_column_text]`. Never use the malformed HTML-style closing token.
 
 ## Corrected production-funnel mappings
 
