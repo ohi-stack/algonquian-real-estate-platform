@@ -51,7 +51,18 @@ final class ALGQ_Command_Center_Assets {
     }
 
     private function enqueue(): void {
-        wp_enqueue_style( 'algq-command-center', ALGQ_COMMAND_CENTER_URL . 'assets/css/command-center.css', array(), ALGQ_COMMAND_CENTER_VERSION );
+        $shared_css = dirname( ALGQ_COMMAND_CENTER_DIR, 2 ) . '/shared-ui/are-admin-ui.css';
+        $shared_js  = dirname( ALGQ_COMMAND_CENTER_DIR, 2 ) . '/shared-ui/are-admin-ui.js';
+        $shared_url = plugins_url( '../../shared-ui/', ALGQ_COMMAND_CENTER_FILE );
+
+        if ( file_exists( $shared_css ) ) {
+            wp_enqueue_style( 'algq-are-admin-ui', $shared_url . 'are-admin-ui.css', array(), ALGQ_COMMAND_CENTER_VERSION );
+        }
+        wp_enqueue_style( 'algq-command-center', ALGQ_COMMAND_CENTER_URL . 'assets/css/command-center.css', array( 'algq-are-admin-ui' ), ALGQ_COMMAND_CENTER_VERSION );
+
+        if ( file_exists( $shared_js ) ) {
+            wp_enqueue_script( 'algq-are-admin-ui', $shared_url . 'are-admin-ui.js', array(), ALGQ_COMMAND_CENTER_VERSION, true );
+        }
         wp_enqueue_script( 'algq-command-center', ALGQ_COMMAND_CENTER_URL . 'assets/js/command-center.js', array(), ALGQ_COMMAND_CENTER_VERSION, true );
         wp_localize_script(
             'algq-command-center',
