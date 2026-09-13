@@ -1,0 +1,73 @@
+{
+  "baseline_id": "algq-pipeline-crm-2.1.0-production-migration-baseline",
+  "recorded_at": "2026-09-13",
+  "plugin": {
+    "slug": "algq-pipeline-crm",
+    "name": "Algonquian Pipeline CRM",
+    "plugin_version": "2.1.0",
+    "schema_version": "2.1.0",
+    "live_observed_version": "2.1.0",
+    "authority": "Canonical Deal records, controlled acquisition stages, assignments, notes, tasks, activity history, next actions, relationships and closing/disposition status."
+  },
+  "baseline_artifact": {
+    "filename": "algq-pipeline-crm-2.1.0-production(1).zip",
+    "sha256": "8244f27d55b21bcbf367f9dd4ceec36ba041c39202193d6b2e9f06454e97c81f",
+    "extracted_git_tree": "a4af4390fbd9e8b389d07b0e8aa3d0f475a31a97",
+    "file_count": 34,
+    "php_file_count": 22,
+    "php_lint": "pass"
+  },
+  "baseline_tables": {
+    "algq_deals": [
+      "id", "uuid", "deal_number", "title", "property_address", "municipality", "state", "postal_code",
+      "primary_contact_name", "primary_contact_email", "primary_contact_phone", "assigned_user_id", "stage_key",
+      "priority", "acquisition_strategy", "source", "source_plugin", "external_source_id", "intake_submission_id",
+      "asking_price", "offer_amount", "underwriting_status", "offer_status", "contract_status", "buyer_status",
+      "funding_status", "closing_status", "closing_date", "disposition", "loss_reason", "next_action",
+      "next_action_due_at", "created_by", "updated_by", "created_at", "updated_at", "last_activity_at",
+      "archived_at", "deleted_at", "record_version"
+    ],
+    "algq_deal_stage_history": ["id", "deal_id", "from_stage", "to_stage", "reason", "changed_by", "changed_at"],
+    "algq_deal_notes": ["id", "deal_id", "note", "visibility", "created_by", "created_at", "updated_at", "deleted_at"],
+    "algq_deal_tasks": ["id", "deal_id", "title", "description", "assigned_user_id", "status", "priority", "due_at", "completed_at", "created_by", "created_at", "updated_at"],
+    "algq_deal_activity": ["id", "deal_id", "event_key", "message", "context", "actor_user_id", "created_at"],
+    "algq_deal_relationships": ["id", "deal_id", "related_type", "related_id", "source_plugin", "metadata", "created_by", "created_at"]
+  },
+  "migration_target": {
+    "plugin_version": "2.2.1",
+    "schema_version": "2.2.0",
+    "canonical_source_state": "merged_on_main",
+    "deployed_state": "pending",
+    "required_starting_baseline": "2.1.0"
+  },
+  "blocking_schema_mappings": {
+    "algq_deals": {
+      "stage_key": "stage",
+      "primary_contact_name": "primary_contact",
+      "acquisition_strategy": "strategy",
+      "source_plugin": "source_system",
+      "external_source_id": "source_record_id"
+    },
+    "algq_deal_activity": {
+      "event_key": "event",
+      "context": "metadata_json"
+    }
+  },
+  "fields_requiring_explicit_retention_or_migration": [
+    "algq_deals.municipality",
+    "algq_deals.state",
+    "algq_deals.postal_code",
+    "algq_deals.primary_contact_email",
+    "algq_deals.primary_contact_phone",
+    "algq_deals.intake_submission_id",
+    "algq_deals.underwriting_status",
+    "algq_deals.offer_status",
+    "algq_deals.next_action",
+    "algq_deals.next_action_due_at",
+    "algq_deals.last_activity_at",
+    "algq_deals.deleted_at",
+    "algq_deal_notes.deleted_at",
+    "algq_deal_relationships"
+  ],
+  "production_rule": "Do not deploy Pipeline CRM 2.2.1 over a 2.1.0 production database until an explicit, tested migration preserves the 2.1.0 canonical Deal data and dependent integrations. dbDelta alone is not accepted as proof of semantic migration."
+}
