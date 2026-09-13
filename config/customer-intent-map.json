@@ -1,0 +1,122 @@
+{
+  "version": "1.0.0",
+  "owner": "Algonquian Real Estate LLC",
+  "purpose": "Map formal ARE services and workflows to customer situations, search intent, plain-language framing, and primary calls to action.",
+  "governing_rule": "Internal systems are organized around services and workflows; public communication is organized around the customer's situation, question, problem, and desired outcome.",
+  "intents": [
+    {
+      "service": "What Are My Options?",
+      "route": "/what-are-my-options/",
+      "customer_need": "I am not sure what to do with my property.",
+      "primary_cta": "See My Options"
+    },
+    {
+      "service": "Property Review",
+      "route": "/request-property-review/",
+      "customer_need": "Can someone look at my situation and help me figure out the next step?",
+      "primary_cta": "Get My Property Reviewed"
+    },
+    {
+      "service": "Sell Your Property",
+      "route": "/sell-your-property/",
+      "customer_need": "I may want to sell. What would that process look like?",
+      "primary_cta": "Tell Us About Your Property"
+    },
+    {
+      "service": "Sell As-Is",
+      "route": "/sell-as-is/",
+      "customer_need": "I need to sell without making repairs first.",
+      "primary_cta": "See If an As-Is Sale Fits"
+    },
+    {
+      "service": "Traditional Sale",
+      "route": "/traditional-sale-option/",
+      "customer_need": "Would listing the property be the better option for me?",
+      "primary_cta": "Compare My Sale Options"
+    },
+    {
+      "service": "Direct Sale",
+      "route": "/direct-sale-option/",
+      "customer_need": "Can I sell directly without a traditional listing process?",
+      "primary_cta": "Request a Direct-Sale Review"
+    },
+    {
+      "service": "Inherited Property Guidance",
+      "route": "/inherited-property-guidance/",
+      "customer_need": "I inherited a house. What do I do now?",
+      "primary_cta": "Talk Through the Property"
+    },
+    {
+      "service": "Estate Transition Assistance",
+      "route": "/estate-transition-assistance/",
+      "customer_need": "I am dealing with a property after someone passed away.",
+      "primary_cta": "Get Property-Side Help"
+    },
+    {
+      "service": "Downsizing Support",
+      "route": "/downsizing/",
+      "customer_need": "My house is too much for me now and I want to downsize.",
+      "primary_cta": "Plan My Next Step"
+    },
+    {
+      "service": "Future Move Planning",
+      "route": "/preparing-for-a-future-move/",
+      "customer_need": "I am not ready to move yet, but I want to start planning.",
+      "primary_cta": "Start Planning"
+    },
+    {
+      "service": "Property Stewardship Services",
+      "route": "/property-stewardship-services/",
+      "customer_need": "Who can keep an eye on my property when I cannot be there?",
+      "primary_cta": "Request Property Support"
+    },
+    {
+      "service": "Trusted Property Contact",
+      "route": "/trusted-property-contact/",
+      "customer_need": "I need someone local who can be my point of contact.",
+      "primary_cta": "Request a Local Property Contact"
+    },
+    {
+      "service": "Property Check-Ins",
+      "route": "/property-check-ins/",
+      "customer_need": "Can someone check the property and tell me what is going on?",
+      "primary_cta": "Schedule a Property Check-In"
+    },
+    {
+      "service": "Vendor Coordination",
+      "route": "/vendor-coordination/",
+      "customer_need": "I need help getting contractors or maintenance people to the property.",
+      "primary_cta": "Request Vendor Coordination"
+    },
+    {
+      "service": "Seller Financing",
+      "route": "/seller-financing/",
+      "customer_need": "Can I sell and receive payments over time?",
+      "primary_cta": "Review Seller-Financing Options"
+    },
+    {
+      "service": "Submit a Property",
+      "route": "/submit-a-property/",
+      "customer_need": "I have a property. Would Algonquian consider it?",
+      "primary_cta": "Submit My Property"
+    },
+    {
+      "service": "Buyer Network",
+      "route": "/buyers/",
+      "customer_need": "How do I get access to real estate opportunities?",
+      "primary_cta": "Join the Buyer Network"
+    },
+    {
+      "service": "Investors & Capital",
+      "route": "/investors/",
+      "customer_need": "How can I participate in Algonquian real estate opportunities?",
+      "primary_cta": "Review Participation Paths"
+    },
+    {
+      "service": "Private Lenders",
+      "route": "/private-lenders/",
+      "customer_need": "I have capital to lend on real estate deals.",
+      "primary_cta": "Discuss a Lending Relationship"
+    }
+  ]
+}
