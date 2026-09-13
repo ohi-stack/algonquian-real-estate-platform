@@ -1,0 +1,366 @@
+{
+  "schema_version": "2026-09-13",
+  "status": "approved_conversation_contract_pending_navigation_0_3_0_source_reconciliation",
+  "navigation_model": "6x6",
+  "primary_items": [
+    "Property Owners",
+    "Acquisitions",
+    "Investors & Capital",
+    "Services",
+    "Technology",
+    "Company"
+  ],
+  "utility_items": [
+    {"label": "Search", "route": "/?s="},
+    {"label": "Buyer Login", "route": "/buyer-login/"},
+    {"label": "Client Portal", "route": "/client-portal/"},
+    {"label": "Contact", "route": "/contact/"},
+    {"label": "Submit a Property", "route": "/submit-a-property/", "primary_cta": true}
+  ],
+  "sections": {
+    "property-owners": {
+      "label": "Property Owners",
+      "route": "/property-owners/",
+      "columns": {
+        "Explore Your Options": [
+          ["Property Owner Overview", "/property-owners/"],
+          ["What Are My Options?", "/property-options/"],
+          ["Request a Property Review", "/request-property-review/"],
+          ["Property Options Consultation", "/property-consultation/"],
+          ["Property Owner Resources", "/property-owner-resources/"],
+          ["Property Owner FAQ", "/faq/"]
+        ],
+        "Sell a Property": [
+          ["Sell Your Property", "/sell-your-property/"],
+          ["Submit a Property", "/submit-a-property/"],
+          ["Sell As-Is", "/sell-as-is/"],
+          ["Direct Sale", "/direct-sale/"],
+          ["Traditional Sale", "/traditional-sale/"],
+          ["Property Sale Readiness", "/property-sale-readiness/"]
+        ],
+        "Planning and Transitions": [
+          ["Property Transition Planning", "/property-transition-planning/"],
+          ["Legacy Conversation", "/legacy-conversation/"],
+          ["Property Legacy Planning", "/property-legacy-planning/"],
+          ["Empty Nest Transition", "/empty-nest-transition/"],
+          ["Downsizing Support", "/senior-property-assistance/downsizing/"],
+          ["Preparing for a Future Move", "/property-transition-planning/"]
+        ],
+        "Inherited and Estate Property": [
+          ["Inherited Property Guidance", "/inherited-property-guidance/"],
+          ["Estate Transition Assistance", "/estate-transition-assistance/"],
+          ["Property Valuation Coordination", "/estate-transition-assistance/property-valuation/"],
+          ["Clean-Out Coordination", "/estate-transition-assistance/cleanout/"],
+          ["Contractor Coordination", "/estate-transition-assistance/contractors/"],
+          ["Property Sale Options", "/estate-transition-assistance/sale-options/"]
+        ],
+        "Senior Property Assistance": [
+          ["Senior Property Assistance", "/senior-property-assistance/"],
+          ["Aging in Place", "/senior-property-assistance/aging-in-place/"],
+          ["Maintenance Coordination", "/senior-property-assistance/home-maintenance-coordination/"],
+          ["Future Property Planning", "/senior-property-assistance/next-generation/"],
+          ["Selling When the Time Is Right", "/senior-property-assistance/selling-when-ready/"],
+          ["Request Assistance", "/senior-property-assistance/consultation/"]
+        ],
+        "Stewardship and Property Care": [
+          ["Property Stewardship Services", "/property-stewardship-services/"],
+          ["Trusted Property Contact", "/trusted-property-contact/"],
+          ["Property Check-Ins", "/property-check-ins/"],
+          ["Vacant Property Monitoring", "/vacant-property-monitoring/"],
+          ["Vendor Coordination", "/vendor-coordination/"],
+          ["Stewardship Portal", "/client-portal/"]
+        ]
+      }
+    },
+    "acquisitions": {
+      "label": "Acquisitions",
+      "route": "/acquisitions/",
+      "columns": {
+        "Acquisition Overview": [
+          ["Acquisitions", "/acquisitions/"],
+          ["Acquisition Criteria", "/acquisition-criteria/"],
+          ["Acquisition Process", "/acquisitions/acquisition-process/"],
+          ["How We Review Properties", "/acquisitions/how-we-review-properties/"],
+          ["Target Connecticut Markets", "/connecticut/"],
+          ["Acquisition FAQ", "/acquisitions/faq/"]
+        ],
+        "Submit Opportunities": [
+          ["Submit a Property", "/submit-a-property/"],
+          ["Submit a Deal", "/submit-a-deal/"],
+          ["Broker Submissions", "/acquisitions/broker-submissions/"],
+          ["Wholesaler Submissions", "/acquisitions/wholesaler-submissions/"],
+          ["Attorney and Estate Referrals", "/acquisitions/attorney-estate-referrals/"],
+          ["Referral Partners", "/acquisitions/referral-partners/"]
+        ],
+        "Property Types": [
+          ["Three-Family Properties", "/acquisitions/three-family/"],
+          ["Small Multifamily", "/acquisitions/multifamily/"],
+          ["Residential Properties", "/acquisitions/residential/"],
+          ["Mixed-Use Properties", "/acquisitions/mixed-use/"],
+          ["Commercial Properties", "/acquisitions/commercial/"],
+          ["Development Sites", "/development-concepts/"]
+        ],
+        "Opportunity Types": [
+          ["Off-Market Properties", "/acquisitions/off-market-properties/"],
+          ["Value-Add Properties", "/acquisitions/value-add-properties/"],
+          ["Distressed Properties", "/acquisitions/distressed-properties/"],
+          ["Vacant Properties", "/acquisitions/vacant-properties/"],
+          ["Underutilized Properties", "/acquisitions/underutilized-properties/"],
+          ["Tired Landlord Opportunities", "/sell-your-property/tired-landlord/"]
+        ],
+        "Transaction Structures": [
+          ["Conventional Acquisition", "/acquisitions/conventional-acquisition/"],
+          ["Seller Financing", "/acquisitions/seller-financed-opportunities/"],
+          ["Joint Venture Acquisitions", "/acquisitions/joint-venture-acquisitions/"],
+          ["Private Capital Acquisitions", "/private-lenders/"],
+          ["Subject-To Opportunities", "/acquisitions/subject-to-acquisitions/"],
+          ["Flexible Transaction Structures", "/acquisitions/"]
+        ],
+        "Underwriting and Due Diligence": [
+          ["Underwriting Overview", "/underwriting/"],
+          ["Maximum Allowable Offer", "/technology/plugins/mao-engine/"],
+          ["Property Due Diligence", "/acquisitions/due-diligence/"],
+          ["Financial Review", "/underwriting/"],
+          ["Risk Review", "/underwriting/"],
+          ["Required Documents", "/forms-documents/"]
+        ]
+      }
+    },
+    "investors": {
+      "label": "Investors & Capital",
+      "route": "/investors/",
+      "columns": {
+        "Investor Network": [
+          ["Investor Overview", "/investors/"],
+          ["Join the Investor Network", "/investors/join/"],
+          ["Investor Criteria", "/investors/investor-criteria/"],
+          ["Connecticut Opportunities", "/marketplace/"],
+          ["Investor FAQ", "/investors/faq/"],
+          ["Investor Disclosures", "/investors/disclosures/"]
+        ],
+        "Buyers": [
+          ["Buyer Registration", "/buyers-register/"],
+          ["Buyer Login", "/buyer-login/"],
+          ["Buyer Dashboard", "/buyer-dashboard/"],
+          ["Available Deals", "/marketplace/"],
+          ["Buyer Marketplace", "/marketplace/"],
+          ["Buyer Profile", "/buyer-dashboard/profile/"]
+        ],
+        "Private Capital": [
+          ["Private Lenders", "/private-lenders/"],
+          ["Equity Partners", "/equity-partners/"],
+          ["Joint Venture Partners", "/joint-venture-partners/"],
+          ["Capital Partner Network", "/investors/"],
+          ["Funding Relationships", "/funding/"],
+          ["Submit an Investor Profile", "/investors/submit-investor-profile/"]
+        ],
+        "Deal Access": [
+          ["Deal Marketplace", "/marketplace/"],
+          ["Available Opportunities", "/marketplace/"],
+          ["Deal Packages", "/marketplace/"],
+          ["NDA Access", "/buyer-dashboard/nda/"],
+          ["Submit Interest", "/buyer-dashboard/deals/"],
+          ["Submit an Offer", "/buyer-dashboard/submit-offer/"]
+        ],
+        "Investor Resources": [
+          ["How We Review Deals", "/acquisitions/how-we-review-properties/"],
+          ["Investor Readiness", "/investors/investor-readiness/"],
+          ["Underwriting Standards", "/underwriting/"],
+          ["Deal Package Guide", "/forms-documents/"],
+          ["Private Lending Guide", "/private-lenders/"],
+          ["Joint Venture Guide", "/joint-venture-partners/"]
+        ],
+        "Lenders": [
+          ["Lender Overview", "/private-lenders/"],
+          ["Lender Resources", "/forms-documents/"],
+          ["Company Overview", "/about/"],
+          ["Business Plan", "/business-plan/"],
+          ["Acquisition Criteria", "/acquisition-criteria/"],
+          ["Request Documentation Access", "/contact/"]
+        ]
+      }
+    },
+    "services": {
+      "label": "Services",
+      "route": "/services/",
+      "columns": {
+        "Property Services": [
+          ["Services Overview", "/services/"],
+          ["Request a Service Consultation", "/property-service-consultation/"],
+          ["Submit a Service Request", "/property-service-request/"],
+          ["Property Condition Review", "/property-check-ins/"],
+          ["Property Document Organization", "/property-document-organization/"],
+          ["Service FAQ", "/services/faq/"]
+        ],
+        "Property Stewardship": [
+          ["Property Stewardship Services", "/property-stewardship-services/"],
+          ["Essential Property Watch", "/property-stewardship-services/essential-watch/"],
+          ["Active Stewardship", "/property-stewardship-services/active-steward/"],
+          ["Transition Stewardship", "/property-stewardship-services/transition-support/"],
+          ["Stewardship Enrollment", "/property-stewardship-services/enrollment/"],
+          ["Stewardship Portal", "/client-portal/"]
+        ],
+        "Property Monitoring": [
+          ["Property Check-Ins", "/property-check-ins/"],
+          ["Exterior Check-Ins", "/property-check-ins/exterior/"],
+          ["Authorized Interior Check-Ins", "/property-check-ins/interior/"],
+          ["Photo and Condition Reports", "/property-check-ins/photo-reports/"],
+          ["Vacant Property Monitoring", "/vacant-property-monitoring/"],
+          ["Storm Property Reviews", "/storm-property-inspections/"]
+        ],
+        "Maintenance Coordination": [
+          ["Maintenance Coordination", "/maintenance-coordination/"],
+          ["Vendor Coordination", "/vendor-coordination/"],
+          ["Contractor Coordination", "/contractor-coordination/"],
+          ["Lawn and Exterior Oversight", "/lawn-exterior-oversight/"],
+          ["Seasonal Property Reviews", "/seasonal-property-reviews/"],
+          ["Repair Scheduling", "/maintenance-coordination/"]
+        ],
+        "Property Transition Support": [
+          ["Prepare a Property for Sale", "/prepare-property-for-sale/"],
+          ["Clean-Out Coordination", "/prepare-property-for-sale/cleanout/"],
+          ["Repair Coordination", "/prepare-property-for-sale/repairs/"],
+          ["Market Readiness Review", "/prepare-property-for-sale/market-readiness/"],
+          ["Transition Planning", "/property-transition-planning/"],
+          ["Sale Options Review", "/property-options/"]
+        ],
+        "Specialized Assistance": [
+          ["Trusted Property Contact", "/trusted-property-contact/"],
+          ["Senior Property Assistance", "/senior-property-assistance/"],
+          ["Property Rescue Services", "/property-rescue-services/"],
+          ["Community Property Preservation", "/community-property-preservation/"],
+          ["Property Legacy Planning", "/property-legacy-planning/"],
+          ["Legacy Conversation", "/legacy-conversation/"]
+        ]
+      }
+    },
+    "technology": {
+      "label": "Technology",
+      "route": "/technology/",
+      "columns": {
+        "Technology Division": [
+          ["Technology Overview", "/technology/"],
+          ["ARE Technology Division", "/about/technology-division/"],
+          ["Technology Strategy", "/technology/strategy/"],
+          ["Platform Architecture", "/technology/platform-architecture/"],
+          ["Development Roadmap", "/technology/platform-roadmap/"],
+          ["Technology Contact", "/contact/"]
+        ],
+        "Platform": [
+          ["Algonquian Real Estate Platform", "/algonquian-real-estate-platform/"],
+          ["Platform Overview", "/technology/platform/"],
+          ["Shared Services", "/technology/shared-services/"],
+          ["Security and Permissions", "/technology/security-access-controls/"],
+          ["System Health", "/technology/system-health-monitoring/"],
+          ["Platform Documentation", "/technology/documentation/"]
+        ],
+        "Acquisition Systems": [
+          ["Algonquian Deal Intake", "/algonquian-deal-intake/"],
+          ["Algonquian Pipeline CRM", "/algonquian-pipeline-crm/"],
+          ["Algonquian MAO Engine", "/algonquian-mao-engine/"],
+          ["Algonquian Offer Generator", "/algonquian-offer-generator/"],
+          ["Deal Marketplace", "/marketplace/"],
+          ["Buyer Portal", "/buyer-dashboard/"]
+        ],
+        "Operations Systems": [
+          ["Funding Tracker", "/algonquian-funding-tracker/"],
+          ["Automation Engine", "/algonquian-automation-engine/"],
+          ["Document Library", "/algonquian-document-library/"],
+          ["PDF and Signature Engine", "/algonquian-pdf-signature-engine/"],
+          ["Admin Command Center", "/algonquian-admin-command-center/"],
+          ["Reporting and Analytics", "/technology/reporting-analytics/"]
+        ],
+        "Commerce and Products": [
+          ["Digital Store", "/store/"],
+          ["Product Vault", "/product-vault/"],
+          ["WooCommerce Bridge", "/technology/plugins/woocommerce-bridge/"],
+          ["Software Licensing", "/technology/software-licensing/"],
+          ["Digital Products", "/technology/digital-products/"],
+          ["Customer Account", "/my-account/"]
+        ],
+        "Guides and Documentation": [
+          ["Plugin Library", "/technology/plugins/"],
+          ["Getting Started", "/technology/getting-started/"],
+          ["User Guides", "/technology/user-guides/"],
+          ["Administrator Guides", "/technology/administrator-guides/"],
+          ["Technical Documentation", "/technology/documentation/"],
+          ["Troubleshooting", "/technology/troubleshooting/"]
+        ]
+      }
+    },
+    "company": {
+      "label": "Company",
+      "route": "/about/",
+      "columns": {
+        "About Algonquian": [
+          ["About Algonquian Real Estate", "/about/"],
+          ["Company Overview", "/about/company/"],
+          ["Mission and Vision", "/about/mission-and-vision/"],
+          ["Company Development History", "/about/company-history/"],
+          ["Connecticut Focus", "/connecticut/"],
+          ["Operating Principles", "/about/operating-principles/"]
+        ],
+        "Leadership": [
+          ["Leadership", "/about/leadership/"],
+          ["Founder and Managing Member", "/about/founder-and-managing-member/"],
+          ["Management Structure", "/about/leadership/"],
+          ["Governance", "/about/governance/"],
+          ["Company Responsibilities", "/about/operating-principles/"],
+          ["Contact Leadership", "/contact/"]
+        ],
+        "Company Information": [
+          ["Legal Entity Overview", "/about/company/"],
+          ["Company Status", "/about/company/"],
+          ["Principal Office", "/contact/"],
+          ["Registered Agent", "/about/company/"],
+          ["Company Documentation", "/forms-documents/"],
+          ["Forms and Documents", "/forms-documents/"]
+        ],
+        "Resources": [
+          ["Articles and Insights", "/insights/"],
+          ["Property Owner Resources", "/property-owner-resources/"],
+          ["Investor Resources", "/investors/investor-resources/"],
+          ["Lender Resources", "/forms-documents/"],
+          ["Frequently Asked Questions", "/faq/"],
+          ["News and Updates", "/news/"]
+        ],
+        "Work With Us": [
+          ["Contact Algonquian Real Estate", "/contact/"],
+          ["Property Inquiry", "/contact/property-inquiry/"],
+          ["Investor Inquiry", "/contact/investor-inquiry/"],
+          ["Lender Inquiry", "/contact/lender-inquiry/"],
+          ["Vendor Inquiry", "/contact/vendor-inquiry/"],
+          ["Partnership Inquiry", "/contact/partnership-inquiry/"]
+        ],
+        "Legal and Compliance": [
+          ["Privacy Policy", "/privacy-policy/"],
+          ["Terms of Use", "/terms-of-use/"],
+          ["Website Disclaimer", "/website-disclaimer/"],
+          ["Professional Services Disclaimer", "/professional-boundaries/"],
+          ["Investment Disclosures", "/investors/disclosures/"],
+          ["Accessibility Statement", "/accessibility/"]
+        ]
+      }
+    }
+  },
+  "footer": {
+    "Company": ["Home", "About", "Company Overview", "Leadership", "Company Development History", "Connecticut Focus", "Technology Division", "Contact"],
+    "Property Owners": ["Property Owner Services", "What Are My Options?", "Sell Your Property", "Legacy Conversation", "Senior Property Assistance", "Inherited Property Guidance", "Property Stewardship Services", "Trusted Property Contact"],
+    "Investors and Platform": ["Acquisitions", "Acquisition Criteria", "Investor Network", "Buyer Registration", "Deal Marketplace", "Technology Platform", "Plugin Library", "Digital Store"],
+    "Resources and Legal": ["Articles and Insights", "Forms and Documents", "Frequently Asked Questions", "Privacy Policy", "Terms of Use", "Website Disclaimer", "Investment Disclosures", "Accessibility Statement"]
+  },
+  "mobile": {
+    "mode": "accordion",
+    "open_on_first_hamburger_tap": true,
+    "independent_column_expansion": true,
+    "persistent_primary_cta": "Submit a Property",
+    "separate_account_utilities": ["Buyer Login", "Client Portal"],
+    "requires_reduced_motion_support": true
+  },
+  "production_guard": {
+    "observed_navigation_version": "0.3.0",
+    "canonical_navigation_source_version": "0.2.0",
+    "runtime_update_allowed": false,
+    "reason": "Recover or prove the exact deployed 0.3.0 source before modifying/repackaging runtime navigation."
+  }
+}
