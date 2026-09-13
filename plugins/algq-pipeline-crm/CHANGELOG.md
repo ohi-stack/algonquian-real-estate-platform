@@ -1,12 +1,19 @@
 # Changelog
 
-## 2.2.1 — Platform 3.1 service-compatibility release
+## 2.2.1 — Platform 3.1 service-compatibility and 2.1 migration completion
 
 - Promoted the 2.2 relationship architecture onto the current release line.
 - Registered Pipeline CRM as an authoritative object-backed provider through the Platform 3.1 service registry.
 - Standardized plugin ownership metadata to Algonquian Real Estate, LLC.
 - Preserved Pipeline CRM as the canonical Deal owner while exposing controlled deal, task, activity, contact, organization and relationship operations to companion systems.
-- Retained schema version 2.2.0; this release changes integration/runtime compatibility rather than the CRM table schema.
+- Retained schema version 2.2.0; this release changes integration/runtime compatibility rather than the target CRM schema number.
+- Added an explicit, verified 2.1.0 → 2.2.0 semantic migration path instead of relying on `dbDelta()` to rename production fields.
+- Retained 2.1 operational Deal fields including location, seller contact, intake linkage, underwriting/offer status, next actions, activity timestamps, archive state and soft-delete state.
+- Added preflight rejection for duplicate source identities and unknown stage values.
+- Added post-migration verification for Deal/activity counts, stage/contact/source mappings and seller relationship creation.
+- Added fail-closed startup behavior when migration verification does not pass.
+- Added a compatibility adapter for the deployed Deal Intake 2.1 nested handoff/filter contract so accepted submissions resolve to exactly one canonical Pipeline Deal.
+- Preserved the legacy Deal relationship table as migration evidence instead of forcing semantically incompatible rows into the shared relationship model.
 
 ## 2.2.0 — Shared ARE relationship CRM foundation
 

@@ -12,10 +12,10 @@ final class ALGQ_Pipeline_Repository {
     public function find( $identifier ): ?array {
         global $wpdb;
         if ( is_numeric( $identifier ) ) {
-            $sql = $wpdb->prepare( "SELECT * FROM {$this->tables['deals']} WHERE id = %d", absint( $identifier ) );
+            $sql = $wpdb->prepare( "SELECT * FROM {$this->tables['deals']} WHERE id = %d AND deleted_at IS NULL", absint( $identifier ) );
         } else {
             $identifier = sanitize_text_field( (string) $identifier );
-            $sql = $wpdb->prepare( "SELECT * FROM {$this->tables['deals']} WHERE uuid = %s OR deal_number = %s LIMIT 1", $identifier, $identifier );
+            $sql = $wpdb->prepare( "SELECT * FROM {$this->tables['deals']} WHERE deleted_at IS NULL AND (uuid = %s OR deal_number = %s) LIMIT 1", $identifier, $identifier );
         }
         $row = $wpdb->get_row( $sql, ARRAY_A );
         return $row ?: null;
@@ -28,7 +28,7 @@ final class ALGQ_Pipeline_Repository {
         }
         $row = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM {$this->tables['deals']} WHERE source_system = %s AND source_record_id = %s LIMIT 1",
+                "SELECT * FROM {$this->tables['deals']} WHERE deleted_at IS NULL AND source_system = %s AND source_record_id = %s LIMIT 1",
                 $system,
                 $record_id
             ),
@@ -59,10 +59,13 @@ final class ALGQ_Pipeline_Repository {
         global $wpdb;
         $args = wp_parse_args(
             $args,
-            array( 'stage' => '', 'search' => '', 'assigned_user_id' => 0, 'include_archived' => false, 'page' => 1, 'per_page' => 25 )
+            array( 'stage' => '', 'search' => '', 'assigned_user_id' => 0, 'include_archived' => false, 'include_deleted' => false, 'page' => 1, 'per_page' => 25 )
         );
         $where = array( '1=1' );
         $values = array();
+        if ( ! $args['include_deleted'] ) {
+            $where[] = 'deleted_at IS NULL';
+        }
         if ( ! $args['include_archived'] ) {
             $where[] = 'archived_at IS NULL';
         }
@@ -76,22 +79,25 @@ final class ALGQ_Pipeline_Repository {
         }
         if ( $args['search'] ) {
             $like = '%' . $wpdb->esc_like( sanitize_text_field( $args['search'] ) ) . '%';
-            $where[] = '(deal_number LIKE %s OR title LIKE %s OR property_address LIKE %s OR primary_contact LIKE %s)';
-            array_push( $values, $like, $like, $like, $like );
+            $where[] = '(deal_number LIKE %s OR title LIKE %s OR property_address LIKE %s OR municipality LIKE %s OR primary_contact LIKE %s OR primary_contact_email LIKE %s OR primary_contact_phone LIKE %s)';
+            array_push( $values, $like, $like, $like, $like, $like, $like, $like );
         }
         $page = max( 1, absint( $args['page'] ) );
         $per_page = min( 100, max( 1, absint( $args['per_page'] ) ) );
         $offset = ( $page - 1 ) * $per_page;
-        $sql = "SELECT * FROM {$this->tables['deals']} WHERE " . implode( ' AND ', $where ) . ' ORDER BY updated_at DESC, id DESC LIMIT %d OFFSET %d';
+        $sql = "SELECT * FROM {$this->tables['deals']} WHERE " . implode( ' AND ', $where ) . ' ORDER BY COALESCE(last_activity_at, updated_at) DESC, id DESC LIMIT %d OFFSET %d';
         array_push( $values, $per_page, $offset );
         return $wpdb->get_results( $wpdb->prepare( $sql, $values ), ARRAY_A ) ?: array();
     }
 
     public function count( array $args = array() ): int {
         global $wpdb;
-        $args = wp_parse_args( $args, array( 'stage' => '', 'include_archived' => false ) );
+        $args = wp_parse_args( $args, array( 'stage' => '', 'include_archived' => false, 'include_deleted' => false ) );
         $where = array( '1=1' );
         $values = array();
+        if ( ! $args['include_deleted'] ) {
+            $where[] = 'deleted_at IS NULL';
+        }
         if ( ! $args['include_archived'] ) {
             $where[] = 'archived_at IS NULL';
         }
@@ -105,7 +111,7 @@ final class ALGQ_Pipeline_Repository {
 
     public function count_by_stage(): array {
         global $wpdb;
-        $rows = $wpdb->get_results( "SELECT stage, COUNT(*) AS total FROM {$this->tables['deals']} WHERE archived_at IS NULL GROUP BY stage", ARRAY_A );
+        $rows = $wpdb->get_results( "SELECT stage, COUNT(*) AS total FROM {$this->tables['deals']} WHERE archived_at IS NULL AND deleted_at IS NULL GROUP BY stage", ARRAY_A );
         $counts = array_fill_keys( array_keys( ALGQ_Pipeline_Stages::all() ), 0 );
         foreach ( $rows ?: array() as $row ) {
             $counts[ $row['stage'] ] = (int) $row['total'];
@@ -119,7 +125,7 @@ final class ALGQ_Pipeline_Repository {
             $this->tables['stage_history'],
             array(
                 'deal_id' => $deal_id,
-                'from_stage' => $from,
+                'from_stage' => '' === $from ? null : $from,
                 'to_stage' => $to,
                 'reason' => $reason,
                 'context_json' => wp_json_encode( $context ),
@@ -156,7 +162,7 @@ final class ALGQ_Pipeline_Repository {
     }
 
     private function formats( array $data ): array {
-        $ints = array( 'assigned_user_id', 'record_version', 'created_by', 'updated_by' );
+        $ints = array( 'assigned_user_id', 'intake_submission_id', 'record_version', 'created_by', 'updated_by' );
         $floats = array( 'asking_price', 'offer_amount' );
         $formats = array();
         foreach ( array_keys( $data ) as $key ) {

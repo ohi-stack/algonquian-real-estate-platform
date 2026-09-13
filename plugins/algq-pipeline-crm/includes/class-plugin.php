@@ -8,7 +8,33 @@ final class ALGQ_Pipeline_Plugin {
     public static function boot(): void {
         if ( self::$booted ) { return; }
         self::$booted = true;
-        ALGQ_Pipeline_Database::maybe_upgrade();
+
+        $upgrade = ALGQ_Pipeline_Database::maybe_upgrade();
+        if ( is_wp_error( $upgrade ) ) {
+            update_option(
+                'algq_pipeline_migration_error',
+                array(
+                    'code'       => $upgrade->get_error_code(),
+                    'message'    => $upgrade->get_error_message(),
+                    'data'       => $upgrade->get_error_data(),
+                    'created_at' => current_time( 'mysql', true ),
+                ),
+                false
+            );
+            add_action( 'admin_notices', array( __CLASS__, 'migration_notice' ) );
+            do_action( 'algq_audit_event', 'pipeline.migration_blocked', array( 'plugin' => 'algq-pipeline-crm', 'code' => $upgrade->get_error_code() ) );
+            return;
+        }
+
+        delete_option( 'algq_pipeline_migration_error' );
+        update_option( 'algq_pipeline_version', ALGQ_PIPELINE_VERSION, false );
+
+        $compat_file = ALGQ_PIPELINE_DIR . 'includes/class-deal-intake-compat.php';
+        if ( is_file( $compat_file ) ) {
+            require_once $compat_file;
+            ALGQ_Pipeline_Deal_Intake_Compat::boot();
+        }
+
         ALGQ_Pipeline_Service::instance();
         ALGQ_Pipeline_CRM_Service::instance();
         ALGQ_Pipeline_REST::init();
@@ -34,6 +60,13 @@ final class ALGQ_Pipeline_Plugin {
 
     public static function deactivate(): void { flush_rewrite_rules(); }
     public static function load_textdomain(): void { load_plugin_textdomain( 'algq-pipeline-crm', false, dirname( plugin_basename( ALGQ_PIPELINE_FILE ) ) . '/languages' ); }
+
+    public static function migration_notice(): void {
+        if ( ! current_user_can( 'manage_options' ) ) { return; }
+        $error = get_option( 'algq_pipeline_migration_error', array() );
+        if ( ! is_array( $error ) || empty( $error['message'] ) ) { return; }
+        echo '<div class="notice notice-error"><p><strong>Algonquian Pipeline CRM migration blocked:</strong> ' . esc_html( (string) $error['message'] ) . ' No CRM services were started. Review the 2.1.0 → 2.2.0 migration baseline before retrying.</p></div>';
+    }
 
     public static function dependency_notice(): void {
         if ( current_user_can( 'manage_options' ) && ! function_exists( 'algq_log_event' ) ) {
